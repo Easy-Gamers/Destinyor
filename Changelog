@@ -2,3 +2,5 @@
 Changed Destinyor
 Changed UI
 Changed Tile
+
+Note to self, mouse clicking on attack at the beginning of a battle will crash because there is not input timer.
