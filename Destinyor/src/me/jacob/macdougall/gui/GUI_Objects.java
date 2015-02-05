@@ -118,6 +118,27 @@ public class GUI_Objects {
 		return false;
 	}
 	
+	/**
+	 * Was the click on the button?
+	 * @param x Click Position
+	 * @param y Click Position
+	 * @param x1 Release Position
+	 * @param y1 Release Position
+	 * @return
+	 */
+	public boolean inBox(int x, int y, int x1, int y1) {
+		int x2 = getAbsoluteX();
+		int w1 = getWidth();
+		int y2 = getAbsoluteY();
+		int h1 = getHeight();
+		if(x >= x2 && x <= x2 + w1 && x1 > x2 && x <= x2 + w1) {
+			if(y >= y2 && y <= y2 + h1 && y1 >= y2 && y1 <= y2 + h1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String getDesc() {
 		return desc;
 	}
