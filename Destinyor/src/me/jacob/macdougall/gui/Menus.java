@@ -88,7 +88,7 @@ public class Menus {
 	}
 
 	public void checkMenu() {
-		if(Keys.Escape()) {
+		if(Keys.Escape() && !Cutscene.playing) {
 			menu = 1;
 			Menus.movement();
 		}
