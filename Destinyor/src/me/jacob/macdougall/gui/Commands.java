@@ -9,14 +9,11 @@ import graphic.engine.screen.GameFont;
 import graphic.engine.screen.Screen;
 
 public class Commands extends GUI_Objects {
-
-	String name;
 	
 	private Bitmap button;
 	
 	public Commands(String name, int x, int y, int width, int height) {
-		super(x, y, width, height);
-		this.name = name;
+		super(name, x, y, width, height);
 		if(Destinyor.Debug)
 			debug();
 	}
@@ -32,6 +29,10 @@ public class Commands extends GUI_Objects {
 		if(button != null)
 			screen.render(button, getX(), getY());
 		GameFont.render(name, screen, getX(), getY());
+		
+	}
+	
+	public void update() {
 		
 	}
 

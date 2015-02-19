@@ -20,7 +20,7 @@ public class Minimap {
 	
 	public int scale = 2;
 	
-	public static int getScale = 4;
+	//public static int getScale = 4;
 	
 	public Minimap(Destinyor game) {
 		minimap =  Art.map("/map.png", LevelMap.level - 1, 512, 512, game);

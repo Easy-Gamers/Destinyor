@@ -2,7 +2,7 @@ package me.jacob.macdougall.cutscenes;
 
 import me.jacob.macdougall.DebugWriter;
 import me.jacob.macdougall.Time;
-import me.jacob.macdougall.files.DestinyorFiles;
+import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
 import me.jacob.macdougall.input.Keys;
 import me.jacob.macdougall.npcs.NPC;
@@ -53,7 +53,7 @@ public class Cutscene {
 
 	public Cutscene(String location) {
 
-		name = location.replace((DestinyorFiles.DestinyorCutsceneFolder + DestinyorFiles.fileSplit), "");
+		name = location.replace((Files.CutsceneFolder + Files.fileSplit), "");
 		textHolder = FileLoader.readCutscenes(location).replaceAll(" ", "");
 		Holder = textHolder.split(":");
 		
@@ -130,7 +130,7 @@ public class Cutscene {
 					directions.put(j, 0);
 					dir[j] = 2;
 					ddf++;
-					nDialouge = FileLoader.readDialouges(DestinyorFiles.DestinyorDialougesFolder + DestinyorFiles.fileSplit + stuff[i][j]);
+					nDialouge = FileLoader.readDialouges(Files.DialougesFolder + Files.fileSplit + stuff[i][j]);
 				}
 
 				if(stuff[i][j].contains("x = ")) {

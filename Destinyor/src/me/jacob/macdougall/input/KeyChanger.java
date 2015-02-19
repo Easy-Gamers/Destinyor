@@ -1,28 +1,19 @@
 package me.jacob.macdougall.input;
 
-import input.engine.keyboard.InputHandler;
 import input.engine.keyboard.Key;
 
 public class KeyChanger {
 	
-	public static void changeKey(InputHandler input, int keyID) {
-		for(Key key : Key.keys.values()) {
-			if(key.kevent == keyID) {
-				key.setKeyEvent(keyID);
-			}
-		}
-	}
-	
-	public static void changeKey(int keyID, String effect) {
-		for(Key key : Key.keys.values()) {
-			if(key.kevent == keyID) {
-				key.setEffect(effect);
-			}
-		}
-	}
-	
-	public static void changeKey(Key key, String effect) {
+	public static void setKey(Key key, String effect) {
 		key.setEffect(effect);
+	}
+	
+	public static void setKeys(String key, String effect) {
+		Key.keys.get(Key.getKey(key).kevent).setEffect(effect);
+	}
+	
+	public static void setKeys(int keyID, String effect) {
+		Key.keys.get(keyID).setEffect(effect);
 	}
 	
 }

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.jacob.macdougall.Time;
+import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.player.Player;
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 
@@ -38,7 +38,6 @@ public class Objects {
 		this.x = x;
 		this.y = y;
 		this.animated = animated;
-		//objects.put(name, this);
 	}
 	
 	protected Objects(Objects object) {
@@ -57,9 +56,7 @@ public class Objects {
 		this.frames = new int[frames.length];
 		for(int i = 0; i < frames.length; i++) {
 			this.frames[i] = Integer.parseInt(frames[i].trim());
-			System.out.println(frames[i]);
 		}
-		System.out.println();
 		x1 = this.frames[0];
 		f1 = x1;
 		y1 = this.frames[1];
@@ -81,14 +78,20 @@ public class Objects {
 			if(x1 >= f1+f2) {
 				x1 = f1;
 			}
-			return Art.getSpritesheet()[x1][y1];
+			return Sprites.getSprite(Sprites.SPRITE, x1, y1);
+			//return Art.getSpritesheet()[x1][y1];
 		} else {
-			return Art.getSpritesheet()[frames[0]][frames[1]];
+			return Sprites.getSprite(Sprites.SPRITE, frames[0], frames[1]);
+			//return Art.getSpritesheet()[frames[0]][frames[1]];
 		}
 	}
 	
 	public void render(Screen screen, int X, int Y) {
 		screen.render(sprite(), X + x * Tile.SIZE, Y + y * Tile.SIZE);
+	}
+	
+	public void update() {
+		
 	}
 	
 	public Objects newInstance() {

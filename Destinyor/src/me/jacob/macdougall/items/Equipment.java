@@ -31,8 +31,6 @@ public class Equipment extends Items {
 
 	public Limb limb; // What limb the item attaches to.
 
-	public boolean weapon = false;
-
 	/**
 	 * 
 	 * @param name
@@ -50,8 +48,8 @@ public class Equipment extends Items {
 		this.element = element;
 		this.limb = limb;
 		if(spelleffect != null) {
-			spelleffect = Spells.newInstance(spelleffect.name);
-			spelleffect.cost = 0;
+//			spelleffect = Spells.newInstance(spelleffect.name);
+//			spelleffect.cost = 0;
 		}
 		this.spellEffect = spelleffect;
 		this.equippable = true;
@@ -71,7 +69,7 @@ public class Equipment extends Items {
 		this.isArmour = equip.isArmour;
 	}
         
-        @Override
+    @Override
 	public Equipment newInstance() {
 		Equipment equip = new Equipment(this);
 
@@ -99,6 +97,10 @@ public class Equipment extends Items {
 			}
 		}
 	}
+	
+//	public void render(Screen screen, int number) {
+//		//screen.render(sprite, x, y);
+//	}
 
 	public static Equipment get(String key) {
 		return equipment.get(key);

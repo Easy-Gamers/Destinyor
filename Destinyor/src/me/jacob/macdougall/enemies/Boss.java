@@ -44,8 +44,8 @@ public class Boss extends Enemies {
 	 * @param y
 	 * @param level
 	 */
-	public Boss(String name, int x1, int y1, int x2, int y2, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, Element resistance, Spells[] spells, int x, int y, LevelMap level) {
-		super(name, "", lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, spells, null, x1, y1, x2, y2, level);
+	public Boss(String name, int x1, int y1, int x2, int y2, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, Element resistance, int x, int y, LevelMap level) {
+		super(name, "", lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, x1, y1, x2, y2, level);
 		this.Resistance = resistance;
 		this.npc = NPCs.getNpc(name);
 		isNpc = (npc != null);

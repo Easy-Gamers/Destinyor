@@ -1,7 +1,6 @@
 package me.jacob.macdougall.threads;
 
 import graphic.engine.screen.Screen;
-import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.battles.Battles;
 import me.jacob.macdougall.cutscenes.*;
 import me.jacob.macdougall.enemies.Enemy;
@@ -13,15 +12,14 @@ import me.jacob.macdougall.player.Move;
 // Npc_Thread in NPC_Thread handles npcs and ai
 
 /**
- * Main Thread found int Destinyor handles the rendering and player updates.
+ * Main Thread found in Destinyor handles the rendering and player updates.
  * Loading Thread handles all the loading, the Destinyor thread will render the loading screens.
  * NPC thread handles the enemy's and npcs because it requires quite a bit of processing it was moved to it's own seperate thread
- * 
+ * Cutscene thread handles the updating of cutscenes, however the rendering is still done in the main thread
  * @author Jacob
  * 
  */
 public abstract class Thread_Controller {
-	public static Destinyor game;
 	public static Cutscene cutscene;
 	public static NPCs cNpc;
 	public static NPC npc;

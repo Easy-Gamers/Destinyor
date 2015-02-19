@@ -12,5 +12,4 @@
 	
 	<tile name = "BlackTile" sprite = "0,7" solid = "1" id = "10" />
 
-
 </tiles>

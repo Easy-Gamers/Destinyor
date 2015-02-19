@@ -120,28 +120,28 @@ public class Battles {
 
 	
 
-	public void calculateDamage(Enemies[] enemies, Move move) {
-		if(spell != null && spell.inUse) {
-			spellHandler(spell.player, enemies);
-		}
-	}
-
-	public static void spellHandler(Player player, Enemies[] enemies) {
-
-		Spell: {
-			if(player.getSpells(Pointer.spell) != null) {
-				for(Enemies enemy : enemies) {
-					if(player.getTarget() != null && player.getTarget().alive()) {
-						if(player.getSpells(Pointer.spell).effect == Spells.Requires_Combo)
-							spell = player.getSpells(Pointer.spell);
-						player.getSpells(Pointer.spell).attack(player, enemy);
-						player.resetTurnTimer();
-						Pointer.spell = 1;
-						BattleRender.DrawSpells = false;
-						break Spell;
-					}
-				}
-			}
-		}
-	}
+//	public void calculateDamage(Enemies[] enemies, Move move) {
+//		if(spell != null && spell.inUse) {
+//			spellHandler(spell.player, enemies);
+//		}
+//	}
+//
+//	public static void spellHandler(Player player, Enemies[] enemies) {
+//
+//		Spell: {
+//			if(player.getSpells(Pointer.spell) != null) {
+//				for(Enemies enemy : enemies) {
+//					if(player.getTarget() != null && player.getTarget().alive()) {
+//						if(player.getSpells(Pointer.spell).effect == Spells.Requires_Combo)
+//							spell = player.getSpells(Pointer.spell);
+//						player.getSpells(Pointer.spell).attack(player, enemy);
+//						player.resetTurnTimer();
+//						Pointer.spell = 1;
+//						BattleRender.DrawSpells = false;
+//						break Spell;
+//					}
+//				}
+//			}
+//		}
+//	}
 }

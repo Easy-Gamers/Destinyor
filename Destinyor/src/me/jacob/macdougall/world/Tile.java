@@ -1,9 +1,9 @@
 package me.jacob.macdougall.world;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 import me.jacob.macdougall.graphics.Shadows;
+import me.jacob.macdougall.graphics.Sprites;
 
 public class Tile {
 	
@@ -46,7 +46,7 @@ public class Tile {
 				String[] ind = framelets[i].split(",");
 				int fx = Integer.parseInt(ind[0]);
 				int fy = Integer.parseInt(ind[1]);
-				this.frames[i] = Art.getSpritesheet()[fx][fy];
+				this.frames[i] = Sprites.getSprite(Sprites.SPRITE, fx, fy);
 				j = i;
 			}
 			af = j;
@@ -72,9 +72,9 @@ public class Tile {
 	}
 	
 	public static void renderSpritesheet(Screen screen) {
-		for(int i = 0; i < 24; i++){
-			for(int j = 0; j < 24; j++) {
-			screen.render(Art.getSpritesheet()[i][j], 32 * i, 32 * j);
+		for(int i = 0; i < Sprites.getLength(Sprites.SPRITE); i++){
+			for(int j = 0; j < Sprites.getLength(Sprites.SPRITE, i); j++) {
+			screen.render(Sprites.getSprite(Sprites.SPRITE, i, j), i * 32, j * 32);
 			}
 		}
 	}

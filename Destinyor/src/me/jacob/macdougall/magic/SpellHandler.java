@@ -1,14 +1,14 @@
 package me.jacob.macdougall.magic;
 
+import me.jacob.macdougall.enemies.Dummy;
+import me.jacob.macdougall.enemies.Enemies;
+import me.jacob.macdougall.player.Player;
+
 public class SpellHandler {
 	
-//	public static void attack(Dummy attacker, Dummy defender, int spell) {
-//		if(attacker.spells.get(spell) != null) {
-//			if(attacker.spells.get(spell).getDamage() >= 0.0f && attacker.spells.get(spell).getDamage() <= 1.0f) {
-//				
-//			}
-//		}
-//	}
+	public static void attack(Dummy caster, Dummy... targets) {
+		
+	}
 	
 	
 }

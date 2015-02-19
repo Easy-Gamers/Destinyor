@@ -78,11 +78,11 @@ public class Audio_Thread extends Thread_Controller implements Runnable {
 		
 		try {
 			if(!Playlist.checkSongs()) {
-				for(Playlist playlist : Playlist.playlists.values())
+				for(Playlist playlist : Playlist.playlists)
 				if(playlist.levelID == LevelMap.level) {
 					playlist.Play();
 					playlist.isPlaying = true;
-					}
+				}
 			}
 		} catch (LineUnavailableException | IOException e) {
 			e.printStackTrace();

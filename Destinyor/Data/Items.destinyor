@@ -1,0 +1,51 @@
+Items
+
+Name = Sword
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Right Hand
+Spell = null
+
+Name = Shield
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Left Hand
+Spell = null
+IsArmour
+
+Name = Pauldrens
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Shoulders
+Spell = null
+
+Name = Chest Plate
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Upper Torso
+Spell = null
+
+Name = Leg Plate
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Legs
+Spell = null
+
+Name = Boots
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Feet
+Spell = null
+
+Name = Gloves
+Damage = 1
+Price = 1
+Element = Physical
+Limb = Hands
+Spell = null

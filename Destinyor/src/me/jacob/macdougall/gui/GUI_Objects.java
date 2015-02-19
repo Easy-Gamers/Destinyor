@@ -1,5 +1,8 @@
 package me.jacob.macdougall.gui;
 
+import java.awt.Color;
+
+import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.GameFont;
 import graphic.engine.screen.Screen;
 import graphic.engine.window.Resolution;
@@ -10,6 +13,11 @@ public class GUI_Objects {
 	protected int width, height;
 	protected String desc;
 	protected boolean isEnabled = true;
+	protected String name;
+	protected Bitmap sprite;
+	
+	protected boolean focused = false;
+	
 	
 	/**
 	 * Default GUI Object
@@ -18,11 +26,18 @@ public class GUI_Objects {
 	 * @param width
 	 * @param height
 	 */
-	public GUI_Objects(int x, int y, int width, int height) {
+	public GUI_Objects(String name, int x, int y, int width, int height) {
+		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		if(sprite == null) {
+			sprite = new Bitmap(width, height);
+			for(int i = 0; i < sprite.pixels.length; i++) {
+				sprite.pixels[i] = Color.GREEN.getRGB();
+			}
+		}
 	}
 	
 	/**
@@ -131,7 +146,7 @@ public class GUI_Objects {
 		int w1 = getWidth();
 		int y2 = getAbsoluteY();
 		int h1 = getHeight();
-		if(x >= x2 && x <= x2 + w1 && x1 > x2 && x <= x2 + w1) {
+		if(x >= x2 && x <= x2 + w1 && x1 > x2 && x1 <= x2 + w1) {
 			if(y >= y2 && y <= y2 + h1 && y1 >= y2 && y1 <= y2 + h1) {
 				return true;
 			}
@@ -157,5 +172,29 @@ public class GUI_Objects {
 	
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setFocused(boolean focus) {
+		this.focused = focus;
+	}
+	
+	public boolean getFocused() {
+		return focused;
+	}
+	
+	public void setSprite(Bitmap sprite) {
+		this.sprite = sprite;
+	}
+	
+	public Bitmap getSprite() {
+		return sprite;
 	}
 }

@@ -1,10 +1,11 @@
 package me.jacob.macdougall.items;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import me.jacob.macdougall.graphics.Sprites;
 
 public class Items {
 	
@@ -13,7 +14,7 @@ public class Items {
 	public String name = "";
 	public int cost = 0;
 	
-	public Bitmap frame = Art.getSpritesheet()[0][0];
+	public Bitmap frame = Sprites.getSprite(Sprites.SPRITE, 0, 0);
 	
 	public boolean equippable = false;
 	

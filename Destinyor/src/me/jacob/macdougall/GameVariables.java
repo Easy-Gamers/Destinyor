@@ -2,10 +2,15 @@ package me.jacob.macdougall;
 
 public class GameVariables {
 
+	private static final String title = "Destinyor";
+	private static final int[] build = {
+		0, 0, 3, 5
+	};
+	
 	private static int FPSLimit = 60;
 
-	public static int FramesPerSecond = 0;
-	public static int UpdatesPerSecond = 0;
+	private static int fps = 0;
+	private static int ups = 0;
 
 	private static Difficultly d;
 	private static Render render;
@@ -41,7 +46,7 @@ public class GameVariables {
 	/**
 	 * 
 	 * @param diff
-	 *            0 = easy, 1 = normal, 2 = hard
+	 * 0 = easy, 1 = normal, 2 = hard
 	 */
 	public static void setDifficultly(int diff) {
 		switch (diff) {
@@ -66,5 +71,61 @@ public class GameVariables {
 
 	public static void setRender(Render renderType) {
 		render = renderType;
+	}
+	
+	public static String getBuild() {
+		String buildName = "";
+		for(int i = 0; i < build.length; i++) {
+			if(build[i] != 0) {
+				switch(i) {
+					case 0: buildName = "Release Version: " + getActualBuild(); break;
+					case 1: buildName = "Beta Version: " + build[i] + "." + build[i+1] + "." + build[i+2]; break;
+					case 2: buildName = "Alpha Version: " + build[i] + "." + build[i+1]; break;
+					case 3: buildName = "PreAlpha Version: " + build[i]; break;
+					default: buildName = "Unknown Version: " + build[i]; break;
+				}
+				break;
+			}
+		}
+		return buildName;
+	}
+	
+	public static String getTitle() {
+		return (title + " " + getBuild());
+	}
+	
+	public static String getActualTitle() {
+		return title;
+	}
+	
+	public static String getActualBuild() {
+		String buildName = "";
+		
+		for(int i = 0; i < build.length; i++) {
+			buildName += build[i] + ".";
+		}
+		
+		return buildName;
+	}
+	
+	public static void setFps(int fps) {
+		GameVariables.fps = fps;
+	}
+	
+	public static void setUps(int ups) {
+		GameVariables.ups = ups;
+	}
+	
+	public static void setFPSAndUPS(int fps, int ups) {
+		setFps(fps);
+		setUps(ups);
+	}
+	
+	public static int getFps() {
+		return GameVariables.fps;
+	}
+	
+	public static int getUps() {
+		return GameVariables.ups;
 	}
 }

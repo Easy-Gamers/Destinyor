@@ -2,6 +2,7 @@ package me.jacob.macdougall.files;
 
 import me.jacob.macdougall.DebugWriter;
 import me.jacob.macdougall.Destinyor;
+import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.enemies.Boss;
 import me.jacob.macdougall.enemies.Enemy;
 import me.jacob.macdougall.items.Equipment;
@@ -19,9 +20,39 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Reader {
 
+	public static void readConfig() {
+		InputStream input = Destinyor.class.getResourceAsStream("/Config.destinyor");
+		InputStreamReader inputReader = new InputStreamReader(input);
+		try {
+			BufferedReader br = new BufferedReader(inputReader);
+			
+			String readline = "";
+			
+			while(readline != null) {
+				readline = br.readLine();
+				if(readline != null) {
+					if(readline.contains("Path")) {
+						String path = readline.replace("Path = ", "");
+						if(!path.equals("Destinyor")) {
+							Files.DestinyorFolder = path;
+							Files.setFiles();
+						}
+					}
+				}
+			}
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public static void ReadEnemies(String location) {
 		BufferedReader br;
 		String[] Stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "Spells = ", "X&Y = " };
@@ -95,7 +126,13 @@ public class Reader {
 				}
 
 				DebugWriter.println("Menu: Reading: Enemies: " + Name);
-				Enemy.enemies.put(Name, new Enemy(Name, Frame, LVL, Exp, HP, Str, Skl, Spd, Luk, Def, Wis, Gold, Resistance, spells, Integer.parseInt(pos[0].trim()), Integer.parseInt(pos[1].trim()), Integer.parseInt(pos[2].trim()), Integer.parseInt(pos[3].trim())));
+				Enemy enemy = new Enemy(Name, Frame, LVL, Exp, HP, Str, Skl, Spd, Luk, Def, Wis, Gold, Resistance, Integer.parseInt(pos[0].trim()), Integer.parseInt(pos[1].trim()), Integer.parseInt(pos[2].trim()), Integer.parseInt(pos[3].trim()));
+				Enemy.enemies.put(Name, enemy);
+				if(spells != null) {
+					for(Spells spell : spells) {
+						enemy.putSpell(spell);
+					}
+				}
 				DebugWriter.println("Menu: Adding: " + Name);
 			}
 
@@ -139,7 +176,7 @@ public class Reader {
 				level = Integer.parseInt(br.readLine());
 
 				if(dialouge.contains(".txt")) {
-					dialouge = ReadDialouge(DestinyorFiles.DestinyorFolder + DestinyorFiles.fileSplit + "Dialouges" + DestinyorFiles.fileSplit + dialouge);
+					dialouge = ReadDialouge(Files.DestinyorFolder + Files.fileSplit + "Dialouges" + Files.fileSplit + dialouge);
 				}
 
 				endNpc = br.readLine();
@@ -203,7 +240,7 @@ public class Reader {
 
 		if(!file.exists()) {
 			String location1 = location;
-			location = DestinyorFiles.fileSplit + "Dialouges";
+			location = Files.fileSplit + "Dialouges";
 			File dir = new File(location);
 			dir.mkdirs();
 
@@ -236,7 +273,7 @@ public class Reader {
 
 	public static void ReadSettings(String location) {
 		BufferedReader br;
-		String[] Length = { "Width = ", "Height = ", "Window Mode = " };
+		String[] Length = { "Width = ", "Height = ", "Window Mode = ", "FPS Limit = " };
 
 		try {
 
@@ -253,7 +290,6 @@ public class Reader {
 			if(br.readLine().equals("@Debug")) {
 				Destinyor.Debug = true;
 				DebugWriter.println("Debugging");
-				//DebugWriter.w++;
 			} else {
 				br.reset();
 			}
@@ -263,7 +299,9 @@ public class Reader {
 			br.skip(Length[1].length());
 			Resolution.setHeight(Integer.parseInt(br.readLine()));
 			br.skip(Length[2].length());
-			Resolution.Fullscreen = br.readLine();
+			Resolution.setWindowType(br.readLine());
+			br.skip(Length[3].length());
+			GameVariables.setFPSLimit(Integer.parseInt(br.readLine()));
 
 			br.close();
 
@@ -275,7 +313,7 @@ public class Reader {
 
 	public static void ReadPlayer(String location) {
 		BufferedReader br;
-		String[] length = { "Player Name = ", "Player Gender = ", "Player Level = ", "Player Experience = ", "Player Health = ", "Player Strength = ", "Player Skill = ", "Player Speed = ", "Player Luck = ", "Player Defense = ", "Player Wisdom = ", "Player Gold = ", "Player Resistances = ", "Player Condition = ", "inParty = " };
+		String[] length = { "Player Name = ", "Player Gender = ", "Player Level = ", "Player Experience = ", "Player Health = ", "Player Strength = ", "Player Skill = ", "Player Speed = ", "Player Luck = ", "Player Defense = ", "Player Wisdom = ", "Player Gold = ", "Player Resistances = ", "inParty = " };
 
 		String name;
 		String gender;
@@ -293,7 +331,6 @@ public class Reader {
 		boolean inParty;
 
 		String nullChecker = "";
-
 		try {
 			br = new BufferedReader(new FileReader(location));
 
@@ -340,11 +377,11 @@ public class Reader {
 				// Resistances
 				br.readLine();
 				// Condition
-				br.readLine();
+				//br.readLine();
 
-				br.skip(length[14].length());
+				br.skip(length[13].length());
 				inParty = Boolean.parseBoolean(br.readLine());
-				Player.addPlayer(new Player(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, inParty, null, null));
+				Player.addPlayer(new Player(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, inParty));
 				DebugWriter.println("Menu: Adding: " + name);
 				nullChecker = br.readLine();
 			}
@@ -356,39 +393,42 @@ public class Reader {
 		}
 		br = null;
 	}
-
-	public static void ReadSpells(String location) {
+	
+	public static void readSpells(String location) {
 		BufferedReader br;
+		
 		String name;
-		String type;
-		int damage;
+		String attribute;
+		float damage;
 		int targets;
-		int cost;
-		String condition;
-
+		
+		String nullChecker = "";
+		
 		try {
 			br = new BufferedReader(new FileReader(location));
 
 			br.readLine();
 			br.readLine();
+			
+			while(nullChecker != null) {
+				name = br.readLine();
+				attribute = br.readLine();
+				damage = Float.parseFloat(br.readLine());
+				targets = Integer.parseInt(br.readLine());
+				nullChecker = br.readLine();
+				Spells.spells.put(name, new Spells(name, damage, targets, attribute));
+			}
 
-			name = br.readLine();
-			type = br.readLine();
-			damage = Integer.parseInt(br.readLine());
-			targets = Integer.parseInt(br.readLine());
-			cost = Integer.parseInt(br.readLine());
-			condition = br.readLine();
+			//DebugWriter.println("Menu: Adding: " + name);
 
-			DebugWriter.println("Menu: Adding: " + name);
-
-			Spells.spells.put(name, new Spells(name, Element.get(type), damage, targets, cost, condition));
+			//Spells.spells.put(name, new Spells(name, Element.get(type), damage, targets, cost, condition));
 
 			br.close();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		br = null;
+		
 	}
 
 	/**
@@ -489,7 +529,7 @@ public class Reader {
 		
 		String nullChecker = "";
 
-		String[] Stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "Condition = ", "X&Y = ", "Level = " };
+		String[] Stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "X&Y = ", "Level = " };
 
 		String[] stats;
 		
@@ -519,18 +559,17 @@ public class Reader {
 						stat[i - 2] = Integer.parseInt(stats[i]);
 					}
 					
-					stats[14] = stats[14].replace(", ", ",");
-					String[] xy = stats[14].split(",");
+					stats[13] = stats[13].replace(", ", ",");
+					String[] xy = stats[13].split(",");
 					
 					int x = Integer.parseInt(xy[0]);
 					int y = Integer.parseInt(xy[1]);
 					
 					Boss boss = new Boss(stats[0], 
 							frames[0], frames[1], frames[2], frames[3], stat[0], stat[1], stat[2], stat[3], stat[4], stat[5], stat[6], stat[7], stat[8], stat[9],
-							Element.get(stats[12]), null, x, y, LevelMap.maps.get(Integer.parseInt(stats[15])));
+							Element.get(stats[12]), x, y, LevelMap.maps.get(Integer.parseInt(stats[14])));
 					System.out.println(boss.getName());
 					nullChecker = br.readLine();
-
 				}
 			
 			br.close();
@@ -538,71 +577,4 @@ public class Reader {
 			e.printStackTrace();
 		}
 	}
-
-	//        public static void ReadBosses(String location) {
-	//        	BufferedReader br;
-	//        	
-	//        	String[] Stats = {
-	//        			"Name = ", "FrameStart = ", "FrameEnd = ", ""
-	//        	};
-	//        	
-	//        	String[] StatHolder = new String[18];
-	//        	
-	//        	String name;
-	//        	int frameStart[] = new int[2];
-	//        	int frameEnd[] = new int[2];
-	//        	int pos[] = new int[2];
-	//        	String[] Splitter = new String[2];
-	//        	String gender;
-	//        	String level;
-	//        	String exp;
-	//        	String hp;
-	//        	String skl;
-	//        	String spd;
-	//        	String luk;
-	//        	String def;
-	//        	String gold;
-	//        	String res;
-	//        	String cond;
-	//        	String npc;
-	//        	
-	//        	String end = "";
-	//        	
-	//        	try {
-	//                br = new BufferedReader(new FileReader(location));
-	//                
-	//               br.readLine();
-	//               
-	//               
-	//               while(end != null) {
-	//            	   br.readLine();
-	//            	   for(int i = 0; i < 17; i++) {
-	//            	   br.skip(Stats[i].length());
-	//            	   StatHolder[i] = br.readLine().trim();
-	//            	   }
-	//            	   Splitter = StatHolder[1].split(",");
-	//            	   frameStart[0] = Integer.parseInt(Splitter[0]);
-	//            	   frameStart[1] = Integer.parseInt(Splitter[1]);
-	//            	   Splitter = StatHolder[2].split(",");
-	//            	   frameEnd[0] = Integer.parseInt(Splitter[0]);
-	//            	   frameEnd[1] = Integer.parseInt(Splitter[1]);
-	//            	   Splitter = StatHolder[2].split(",");
-	//            	   pos[0] = Integer.parseInt(Splitter[15]);
-	//            	   pos[1] = Integer.parseInt(Splitter[16]);
-	//                   String[] SpellGetter = StatHolder[14].split(",");
-	//                   Spells[] spells = new Spells[SpellGetter.length];
-	//                   for(int j = 0; j < SpellGetter.length; j++) {
-	//                       spells[j] = Spells.get(SpellGetter[j]);
-	//                   }
-	//            	   Boss boss = new Boss(StatHolder[0], frameStart, frameEnd, StatHolder[3], Integer.parseInt(StatHolder[4]), Integer.parseInt(StatHolder[5]),  Integer.parseInt(StatHolder[6]), Integer.parseInt(StatHolder[7]), Integer.parseInt(StatHolder[8]), Integer.parseInt(StatHolder[9]), Integer.parseInt(StatHolder[10]), Integer.parseInt(StatHolder[11]), Integer.parseInt(StatHolder[12]), Element.get(StatHolder[13]), spells, pos, StatHolder[17]);
-	//            	   //Boss(String Name, int frameStart, int frameEnd, String Gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int gold, Element Resistance, Spells[] spells, int pos, int npc);
-	//                   //public Enemy(String name, String frame, String gender, int LVL, int EXP, int HP, int STR, int SKL, int SPD, int LUK, int DEF, int GOLD, Element Resistance, Spells[] spells, int pos, int spawn)
-	//                   end = br.readLine();
-	//               }
-	//                
-	//                br.close();
-	//                } catch(IOException e) {
-	//                    e.printStackTrace();
-	//                }
-	//        }
 }

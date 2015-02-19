@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.player.Player;
 import me.jacob.macdougall.quests.Quest;
 import me.jacob.macdougall.quests.Rewards;
@@ -18,7 +19,8 @@ public class Writer {
 		BufferedWriter bw;
 		String widthSetting = "Width = " + Resolution.width();
 		String heightSetting = "Height = " + Resolution.height();
-		String fullscreen = "Window Mode = " + Resolution.Fullscreen;
+		String fullscreen = "Window Mode = " + Resolution.getWindowType();
+		String fpsLimit = "FPS Limit = " + GameVariables.getFPSLimit();
 
 		try {
 			bw = new BufferedWriter(new FileWriter(location));
@@ -28,6 +30,8 @@ public class Writer {
 			bw.write(heightSetting);
 			bw.newLine();
 			bw.write(fullscreen);
+			bw.newLine();
+			bw.write(fpsLimit);
 
 			bw.close();
 		} catch (IOException e) {
@@ -38,7 +42,7 @@ public class Writer {
 	public static void writeCutscene(String location) {
 		BufferedWriter bw;
 		try {
-			bw = new BufferedWriter(new FileWriter(location + DestinyorFiles.fileSplit + "default.txt"));
+			bw = new BufferedWriter(new FileWriter(location + Files.fileSplit + "default.txt"));
 
 			bw.write("X = 7, Y = 7, Level = 1:");
 			bw.newLine();
@@ -72,7 +76,7 @@ public class Writer {
 					bw.write(stats[i]);
 					bw.write(npc);
 					if(npc.contains(".txt")) {
-						writeDialouge(DestinyorFiles.DestinyorDialougesFolder + DestinyorFiles.fileSplit + npc, npcs[0]);
+						writeDialouge(Files.DialougesFolder + Files.fileSplit + npc, npcs[0]);
 					}
 					i++;
 				}
@@ -122,7 +126,7 @@ public class Writer {
 		String name;
 		String gender;
 
-		String player1Spells = "Player Spells = ";
+		//String player1Spells = "Player Spells = ";
 		String player1XY = "X & Y = " + Player.X + "," + Player.Y;
 		try {
 
@@ -182,8 +186,8 @@ public class Writer {
 				bw.write(player1Gold);
 				bw.newLine();
 				bw.write(player1Resistance);
-				bw.newLine();
-				bw.write(player1Spells);
+				//bw.newLine();
+				//bw.write(player1Spells);
 				bw.newLine();
 				bw.write("inParty = true");
 
@@ -200,7 +204,7 @@ public class Writer {
 
 		String[] Format = { "Enemies", "{", "}" };
 
-		String[] stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "Condition = ", "X&Y = " };
+		String[] stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "X&Y = " };
 
 		BufferedWriter bw;
 
@@ -303,7 +307,7 @@ public class Writer {
 	public static void WriteFetchQuests(String location, String questName) {
 		BufferedWriter bw;
 		try {
-			bw = new BufferedWriter(new FileWriter(location + questName + DestinyorFiles.EXT));
+			bw = new BufferedWriter(new FileWriter(location + questName + Files.EXT));
 			
 			bw.write(questName);
 			//bw.write()

@@ -211,7 +211,7 @@ public class AIBattle {
 		Battles.endBattle = true;
 		BattleRender.DrawSpells = false;
 		Pointer.reset();
-		Pointer.p = false;
+		Pointer.point = false;
 		Pointer.ep = false;
 	}
 

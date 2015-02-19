@@ -1,6 +1,6 @@
 <objects>
 	<object name = "Key" x = "0" y = "0" animated = "true" frame = "0,5,4" />
-	<object name = "Pokeball" x = "1" y = "0" animated = "true" frame = "1,6,3" />
+	<object name = "NewKey" x = "1" y = "0" animated = "true" frame = "1,6,3" />
 	<object name = "Key" x = "1" y = "1" animated = "true" frame = "0,5,4" />
 	<object name = "Key" x = "2" y = "2" animated = "true" frame = "0,5,4" />
 	<object name = "Key" x = "3" y = "3" animated = "true" frame = "0,5,4" />

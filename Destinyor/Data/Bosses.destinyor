@@ -1,0 +1,17 @@
+Bosses
+
+Name = Undead Priest
+Frame = 12,9,12,9
+Level = 100
+Experience = 10000
+Health = 100000
+Strength = 7000
+Skill = 2000
+Speed = 3000
+Luck = 1000
+Defense = 7000
+Wisdom = 10000
+Gold = 100000
+Resistance = Dark
+X&Y = 0, 0
+Level = 1

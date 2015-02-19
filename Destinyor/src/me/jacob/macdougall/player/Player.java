@@ -3,7 +3,6 @@ package me.jacob.macdougall.player;
 import me.jacob.macdougall.Time;
 import me.jacob.macdougall.enemies.Dummy;
 import me.jacob.macdougall.enemies.Enemies;
-import me.jacob.macdougall.enemies.Enemy;
 import me.jacob.macdougall.graphics.GraphicsGetter;
 import me.jacob.macdougall.items.Equipment;
 import me.jacob.macdougall.items.Items;
@@ -31,17 +30,7 @@ public class Player extends Dummy {
 	public static Map<Integer, Items> inventory = new HashMap<>();
 	public static List<Quest> questLog = new ArrayList<>();
 	
-	//public Map<Integer, Spells> spells = new HashMap<>();
-
 	public Quest quest;
-	
-	/**
-	 * This hp is for the save files, because it won't be modified by easy difficultly and won't get taken down during battles
-	 */
-	//private int HP; // This hp is for save files, because it won't be modified by easy difficultly, also used for leveling up
-
-	@SuppressWarnings("unused")
-	private int accuracy = 100;
 
 	private int threat = 100;
 	
@@ -52,9 +41,10 @@ public class Player extends Dummy {
 	// Map X and Y and Level
 	public static int X = 6, Y = 7;
 	public static int Level = 1;
-
+	public int statPoints = 0;
+	
+	public String statSpread = "MANUAL";
 	public boolean inParty = false;
-	public boolean p1 = false, p2 = false, p3 = false, p4 = false;
 
 	// Direction constants
 	public static final int Direction_Up = 0, Direction_Down = 1,
@@ -71,24 +61,8 @@ public class Player extends Dummy {
 		return players.size();
 	}
 
-	public Player(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, boolean inParty, Spells[] spells, Equipment[] items) {
-		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, X, Y, spells, items, 0, 0, 0, 0, null);
-		
-		//HP = hp;
-
-		//this.spells.put(0, Spells.Attack);
-
-		if(spells != null) {
-			for(int s = 0; s < spells.length; s++)
-				this.spells.put(s + 1, spells[s]);
-		}
-
-		if(items != null) {
-			for(int i = 0; i < items.length; i++) {
-			}
-		}
-
-		this.spells.put(0, Spells.get("Fire Ball"));
+	public Player(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, boolean inParty) {
+		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, X, Y, 0, 0, 0, 0, null);
 
 		this.inParty = inParty;
 	}
@@ -98,7 +72,7 @@ public class Player extends Dummy {
 	 * @return an array containing up to 4 players who are in the party. Will return an array that is 4 big.<br>
 	 * if there are not 4 players in the party, than it will return an array with null values.
 	 */
-	protected static Player[] getPlayers() {
+	private static Player[] getPlayers() {
 		int p = 0;
 		for(Player player : Player.players) {
 			if(player.inParty) {
@@ -161,6 +135,10 @@ public class Player extends Dummy {
 	}
 
 	public void levelUp() {
+		if(this.getStat(LEVEL) >= Math.pow(50, getStat(LEVEL))) {
+			this.setStatRelative(LEVEL, 1);
+			statPoints += 10;
+		}
 		//            if(Exp >= 50 * Lvl) {
 		//                Lvl += 1;
 		//                Str += 10;
@@ -206,26 +184,14 @@ public class Player extends Dummy {
 		g.drawRect(x, y, width, height);
 		g.fillRect(x, y, width2, height);
 	}
-
-//	public void attack(Enemies enemies) {
-//		int damage = 0;
-//		if(!miss(enemies)) {
-//			damage = random.nextInt(PlayerBattle.pAttack(this, enemies));
-//			if(damage < 1) {
-//				damage = 1;
-//			}
-//			enemies.setStatRelative(Enemies.HEALTH_POINTS, -damage);
-//		}
-//		PlayerBattle.setAttacking(this, enemies, damage);
-//		turnTimer = 0;
-//		attacked = false;
-//	}
 	
 	
 
-	public void useSpell(int spell, Enemy enemy) {
-		if(!miss(enemy)) {
-			enemy.setStat(Enemies.HEALTH_POINTS, -spells.get(spell).damage);
+	public void useSpell(int spell, Dummy... targets) {
+		for(int i = 0; i < targets.length; i++) {
+			if(!miss(targets[i])) {
+				spells.get(spell).attack(this, target);
+			}
 		}
 	}
 
@@ -337,8 +303,6 @@ public class Player extends Dummy {
 		bw.write("Player Gold = " + getStat(Player.GOLD));
 		bw.newLine();
 		bw.write("Player Resistances = ");
-		bw.newLine();
-		bw.write("Player Spells = ");
 		bw.newLine();
 		bw.write("inParty = " + isInParty());
 	}

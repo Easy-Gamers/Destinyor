@@ -1,7 +1,7 @@
 package me.jacob.macdougall.gui;
 
+import me.jacob.macdougall.graphics.Sprites;
 import input.engine.mouse.Mouse;
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 
@@ -16,16 +16,18 @@ public class ScrollBar extends GUI_Objects {
 	
 	protected int i = 0;
 
-	public ScrollBar(int x, int y, int width, int height, Bitmap bitmap) {
-		super(x, y, width, height);
+	public ScrollBar(String name, int x, int y, int width, int height, Bitmap bitmap) {
+		super(name, x, y, width, height);
 		defaultX = x;
 		defaultY = y;
-		sprite = Art.getScrollbars()[0][0];
+		sprite = Sprites.getSprite(Sprites.SCROLL, 0, 0);
+		//sprite = Art.getScrollbars()[0][0];
 	}
 
-	public ScrollBar() {
-		super(100, 60, 10, 20);
-		sprite = Art.getScrollbars()[0][0];
+	public ScrollBar(String name) {
+		super(name, 100, 60, 10, 20);
+		sprite = Sprites.getSprite(Sprites.SCROLL, 0, 0);
+		//sprite = Art.getScrollbars()[0][0];
 		defaultX = x;
 		defaultY = y;
 	}
@@ -37,13 +39,12 @@ public class ScrollBar extends GUI_Objects {
 	public void update(Mouse mouse) {
 		if(inBox(mouse.getPressed(Mouse.X), mouse.getPressed(Mouse.Y))) {
 			clicked = true;
-			i = mouse.releasedX;
+			i = mouse.getReleased(Mouse.X);
 		}
-		if(mouse.pressed) {
+		if(mouse.isPressed()) {
 			move(i);
 		}
-		if(!mouse.pressed && clicked) {
-
+		if(!mouse.isPressed() && clicked) {
 			clicked = false;
 		}
 			

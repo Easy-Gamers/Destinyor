@@ -4,7 +4,7 @@
 // Made by me.jacob.macdougall@gmail.com
 
 /* To Do:
- * Fix Destinyor game code to make it look pretty and easier to find and change methods and variables // this.setMinPriority(); // HAHA GOOD JOKE!
+ * Fix Destinyor game code to make it look pretty and easier to find and change methods and variables // this.setMinPriority(); // HAHA GOOD JOKE! // NEVER GOING TO HAPPEN
  * Implement Music fully // sorta done
  * Implement SoundEffects // working on it.
  * Implement Spells fully 
@@ -20,19 +20,18 @@
  * Make economy 
  * Add Quests and rewards // DONE-ish
  * Add txt moddability to quests and rewards
- * Add UI Adjustments as needed
- * Add Battle UI to give more feedback
- * Fix bugs
+ * Add UI Adjustments as needed // DONE-ISH
+ * Add Battle UI to give more feedback // DONE-ISH
+ * Fix bugs // GOOD JOKE
  * Add random text to the npcs
- * Make a timer class DONE
+ * Make a timer class // DONE
  * Maybe add semi random duengeons
  * Create element txt file //Why? Because Modding
- * Create effect txt file
- * Restructre all the Map<> Variables aka add a Name<String> = new HashMap<>();
+ * Create effect txt file // ?
  * Change all the reader files to a simple for(int i = 0; i < x lines of code; i++) { br.skip(Stats[i].length); statHolder[i] = br.readLine(); }
  * add txt mod file for limbs // DONE
- * add txt file for keys
- * add moddable keys aka remapable WORKING ON IT SHEESH // It's 3 months since you've had the ability too!
+ * add txt file for keys // DONE
+ * add moddable keys aka remapable WORKING ON IT SHEESH // It's 3 months since you've had the ability too! // DONE
  * 
  * it should be attack stat +plus weapon attack - armour and defense right
  * Armour effects psyical damage as well as magic, weapons do not, but can have a wis+ stat.
@@ -85,28 +84,31 @@ import me.jacob.macdougall.battles.*;
 import me.jacob.macdougall.cutscenes.*;
 import me.jacob.macdougall.files.*;
 import me.jacob.macdougall.files.mod.FileChecker;
+import me.jacob.macdougall.files.saves.Saves;
+import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
-import me.jacob.macdougall.gui.Menus;
+import me.jacob.macdougall.gui.MenuHandler;
+import me.jacob.macdougall.input.GetKeys;
 import me.jacob.macdougall.input.Keys;
 import me.jacob.macdougall.items.Equipment;
 import me.jacob.macdougall.items.PlayerInventory;
 import me.jacob.macdougall.items.PlayerEquipment;
+import me.jacob.macdougall.launcher.Launcher;
 import me.jacob.macdougall.magic.*;
 import me.jacob.macdougall.minimap.Minimap;
 import me.jacob.macdougall.npcs.*;
 import me.jacob.macdougall.player.*;
 import me.jacob.macdougall.threads.Thread_Controller;
 import me.jacob.macdougall.world.*;
-import graphic.engine.screen.Art;
 import graphic.engine.screen.GameFont;
 import graphic.engine.screen.Screen;
+import graphic.engine.screen.SpriteHandler;
 
 import java.awt.Font;
 
 import javax.swing.JFrame;
 
 import input.engine.keyboard.InputHandler;
-import input.engine.keyboard.Key;
 import input.engine.mouse.Mouse;
 import graphic.engine.screen.Dialouge;
 import graphic.engine.window.Resolution;
@@ -115,9 +117,6 @@ public class Destinyor extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public static final String title = "Destinyor";
-	public static final String build = "000.000.003.0";
-
 	public static boolean create = true; // Create the files
 	public static boolean write = false; // Write over the files
 	public static boolean read = false; // Read the files
@@ -125,18 +124,15 @@ public class Destinyor extends Canvas implements Runnable {
 	public static boolean Override = false;
 	public static boolean Debug = false;
 
-	public static boolean menu = false;
-
-	public static int FramesPerSecond;
-	public static int UpdatesPerSecond;
-
+	private static boolean refresh = false;
+	
 	public static String song = "";
 
 	private static LevelMap map;
 
 	private static Thread thread;
 	public static JFrame frame;
-
+	
 	// Input Objects
 	private static InputHandler input;
 	private static Mouse mouse;
@@ -151,35 +147,34 @@ public class Destinyor extends Canvas implements Runnable {
 	// Entities Objects
 
 	// Other Objects
-
-	private static Menus menus;
+	private static MenuHandler menu;
 
 	private Cutscene cutscene;
 	private Cities city1;
 	private PlayerInventory pInv;
-	private PlayerEquipment pEquip;
 
 	private static final Clock clock = new Clock();
 
 	private boolean running = false;
 
-	public Destinyor() {
+	private Destinyor() {
+		
+	}
+
+	private void init() {
+		screen = new Screen(1024 / 2, 768 / 2);
 		Sound music2 = new Sound(Destinyor.class.getResource("/Orc March.wav").getPath().replace("%20", " "), true);
 
 		@SuppressWarnings("unused")
 		Playlist playlist = new Playlist(1, music2);
 
 		GameVariables.setDifficultly(GameVariables.Difficultly.NORMAL);
-		
-	}
-
-	public void init() {
-		screen = new Screen(1024 / 2, 768 / 2);
-		
 		map = LevelMap.maps.get(1);
 		input = new InputHandler(this);
+		GetKeys.getKeys();
 		battle = new Battles();
-		menus = new Menus(this, input);
+		//menus = new Menus(this);
+		menu = new MenuHandler();
 		Thread_Controller.init(screen, battle);
 		Thread_Controller.startAudio();
 
@@ -193,7 +188,6 @@ public class Destinyor extends Canvas implements Runnable {
 		city1 = new Cities("Default", 12, 12, 100, 2, 5, 16, 19, 1, 2);
 
 		move = new Move(map);
-		Menus.movement();
 
 		Thread_Controller.setNpc(move);
 
@@ -225,11 +219,10 @@ public class Destinyor extends Canvas implements Runnable {
 		}
 
 		pInv = new PlayerInventory();
-		pEquip = new PlayerEquipment();
 
 		Thread_Controller.startNPC();
 
-		cutscene = new Cutscene(DestinyorFiles.DestinyorCutsceneFolder + DestinyorFiles.fileSplit + "default.txt");
+		cutscene = new Cutscene(Files.CutsceneFolder + Files.fileSplit + "default.txt");
 	}
 
 	private void RenderSpellBook(Player player) {
@@ -238,12 +231,12 @@ public class Destinyor extends Canvas implements Runnable {
 		if(!player.spells.isEmpty() || player.spells.size() >= 1) {
 			for(int i = 1; i < player.spells.size(); i++) {
 				Spells spell = player.spells.get(i);
-				GameFont.render(spell.name + ", " + spell.damage + ", " + spell.cost, screen, 12, 8);
-				GameFont.render("Name: " + spell.name, screen, 12, 288);
-				GameFont.render("Useable: " + spell.UseAbleOutsideCombat, screen, 12, 288 + 16);
-				GameFont.render("Attack: " + spell.damage, screen, 12, 288 + 32);
-				GameFont.render("Price: " + spell.cost, screen, 12, 288 + 48);
-				GameFont.render("Element: " + spell.element.getElement(), screen, 12, 288 + 64);
+				//GameFont.render(spell.getName() + ", " + spell.getDamage() + ", " + spell.cost, screen, 12, 8);
+				GameFont.render("Name: " + spell.getName(), screen, 12, 288);
+				//GameFont.render("Useable: " + spell.UseAbleOutsideCombat, screen, 12, 288 + 16);
+				GameFont.render("Attack: " + spell.getDamage(), screen, 12, 288 + 32);
+				//GameFont.render("Price: " + spell.cost, screen, 12, 288 + 48);
+				//GameFont.render("Element: " + spell.element.getElement(), screen, 12, 288 + 64);
 			}
 		}
 	}
@@ -254,8 +247,9 @@ public class Destinyor extends Canvas implements Runnable {
 		battle.render(Player.getActualPlayers(), screen, AIBattle.enemies); // Renders enemies and Players
 	}
 
-	public void renderMenu() {
-		menus.render(screen);
+	private void renderMenu() {
+		//menus.render(screen);
+		menu.render(screen);
 	}
 
 	public void renderSave() {
@@ -272,7 +266,7 @@ public class Destinyor extends Canvas implements Runnable {
 		Player.Attackable = true; // Makes Sure Player Can be Attacked By Enemy
 		map.render(screen, -Camera.cX, -Camera.cY);
 		map.renderObjects(screen);
-		if(UI.menu == 0 || UI.menu == 2 && !Destinyor.menu) {
+		if(UI.menu == 0 || UI.menu == 2) {
 			if(!Cutscene.playing) {
 				npcLoop();
 			} else {
@@ -293,6 +287,7 @@ public class Destinyor extends Canvas implements Runnable {
 	
 	private static void npcLoop() {
 		for(NPC n : NPC.npcs)
+			
 			if(n.inRange()) {
 				n.render(screen);
 				if(n.isSpeaking())
@@ -301,7 +296,7 @@ public class Destinyor extends Canvas implements Runnable {
 	}
 
 	// Starts Game
-	public void start() {
+	private void start() {
 		running = true;
 		thread = new Thread(this, "MainThread");
 		thread.setPriority(Thread.MAX_PRIORITY);
@@ -311,6 +306,11 @@ public class Destinyor extends Canvas implements Runnable {
 	// Stops Game
 	public void stop() {
 		running = false;
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		System.exit(0);
 	}
 
@@ -326,22 +326,23 @@ public class Destinyor extends Canvas implements Runnable {
 		
 		// Draw Things with Screen
 		// if is faster than switch in this case
-		if(Menus.menu == Menus.NONE) { // If menu is not on render normal
+		//if(Menus.menu == Menus.NONE) { // If menu is not on render normal
+		if(MenuHandler.menu == MenuHandler.NONE) {
 			switch(UI.menu) {
 				case UI.Map: RenderMaps(); break;
 				case UI.Minimap: RenderMaps(); break;
 				case UI.Fight: RenderUI(); break;
 				case UI.Inventory: pInv.renderInventory(screen); break;
-				case UI.Equipment: pEquip.renderEquipment(screen); break;
+				case UI.Equipment: PlayerEquipment.renderEquipment(screen); break;
 				case UI.Spellbook: RenderSpellBook(Player.getMainCharacter()); break;
 			}
 			if(Cutscene.playing)
 				RenderMaps();
-			if(Dialouge.isEmpty())
+			if(!Dialouge.isEmpty())
 				UI.TextBox(screen);
 			Dialouge.render(screen);
 		} else {
-			menus.render(screen);
+			renderMenu();
 		}
 		
 		// Draw Screen onto Frame
@@ -359,9 +360,9 @@ public class Destinyor extends Canvas implements Runnable {
 
 		g.setColor(Color.GREEN);
 		g.setFont(new Font("Arial", Font.BOLD, 16));
-		g.drawString("Fps: " + String.valueOf(FramesPerSecond) + ", " + "Ups: " + String.valueOf(UpdatesPerSecond), 1, 16);
+		g.drawString("Fps: " + String.valueOf(GameVariables.getFps()) + ", " + "Ups: " + String.valueOf(GameVariables.getUps()), 1, 16);
 		g.drawString(song, this.getWidth() - (song.length() * 9), 16);
-
+		g.drawString(mouse.getMousePos(0) + ", " + mouse.getMousePos(1), mouse.getMousePos(0), mouse.getMousePos(1));
 		if(Debug) {
 			g.drawString("Player X Pos = " + Player.X + ", Player Y Pos = " + Player.Y, 1, 33); // Displays Player x and y position
 			g.drawString("Steps: " + Move.steps, 1, 65);
@@ -374,7 +375,11 @@ public class Destinyor extends Canvas implements Runnable {
 		// Finalize & Dispose
 		g.dispose();
 		strategy.show();
-		UI.REFRESH(screen);
+		
+		if(refresh) {
+			UI.REFRESH(screen);
+			refresh = false;
+		}
 	}
 
 	// Updates Game Logic
@@ -384,33 +389,26 @@ public class Destinyor extends Canvas implements Runnable {
 		
 		Saves.update(mouse, screen, this);
 		
-		for(Key key : Key.keys.values())
-			key.tick();
+		input.tick();
 
 		move.Movement();
 
 		
 
 		city1.goToTown(this);
-		//sb.update(mouse);
 		pInv.updateInventory();
-		pEquip.updateEquipment();
-
-		menus.mouseChecker(mouse, Resolution.width(), Resolution.height());
-		menus.inputChecker();
+		PlayerEquipment.updateEquipment();
+		
+		menu.update(this, mouse);
 		cutscene.startCutscene();
 
-		if(Keys.Escape()) {
-			menus.checkMenu();
-		}
-
-		if(UI.menu == 1) {
+		if(UI.menu == UI.Fight) {
 			if(Battles.enemiesCreated) {
 				PlayerBattle.update();
 				if(AIBattle.enemies != null) {
 					battle.assignTarget(mouse, AIBattle.enemies);
 					battle.bInput.clicker(mouse, AIBattle.enemies);
-					battle.calculateDamage(AIBattle.enemies, move);
+					//battle.calculateDamage(AIBattle.enemies, move);
 				}
 			}
 		}
@@ -466,8 +464,8 @@ public class Destinyor extends Canvas implements Runnable {
 			// FPS Timer
 			if(System.currentTimeMillis() - fps_Timer > 1000) {
 				System.out.printf("\n Main_Thread: %d fps, %d updates", fps, update);
-				FramesPerSecond = fps;
-				UpdatesPerSecond = update;
+				GameVariables.setFps(fps);
+				GameVariables.setUps(update);
 				fUnprocessed = 0;
 				fps = 0;
 				update = 0;
@@ -485,32 +483,42 @@ public class Destinyor extends Canvas implements Runnable {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		FileLoader.CreateFolder(DestinyorFiles.DestinyorFolder);
+		Reader.readConfig();
+		FileLoader.CreateFolder(Files.DestinyorFolder);
+		FileLoader.CreateFile(Files.Settings);
+		FileLoader.ReadFromFiles(Files.Settings);
 		FileChecker fc = new FileChecker();
-		FileLoader.CreateFile(DestinyorFiles.DestinyorSettings);
-		FileLoader.ReadFromFiles(DestinyorFiles.DestinyorSettings);
-		FileLoader.CreateFolder(DestinyorFiles.DestinyorSaveFolder);
 		
-		// http://www.innerbody.com/anatomy/integumentary for limbs
+		Destinyor game = new Destinyor();
+		
+		Launcher.setLauncher(new Launcher(game));
+		while(Launcher.isRunning()) {
+			fc.setMod("");
+		}
+		FileLoader.ReadFromFiles(Files.Settings);
+		FileLoader.CreateFolder(Files.SaveFolder);
+		
+		// http://www.innerbody.com/anatomy/integumentary // for limbs
 
 		Dimension Res = new Dimension(Resolution.width(), Resolution.height());
-		Destinyor game = new Destinyor();
-		Art.setSpritesheet("/icon0.png", 32, 32, game);
-		Art.setFont(DestinyorFiles.DestinyorFont, 8, 8, game);
-		Art.setButtons("/button.png", 120, 20, game);
-		Art.setMap(DestinyorFiles.DestinyorMap, 512, 512, game);
-		Art.setScrollbars("/Scrollbar.png", 10, 20, game);
+		
+		Sprites.setSprite(Sprites.SPRITE, new SpriteHandler(Files.SpriteSheet, 32, 32, game));
+		
+		Sprites.setSprite(Sprites.MAP, new SpriteHandler(Files.DestinyorMap, 512, 512, game));
+		
+		Sprites.setSprite(Sprites.SCROLL, new SpriteHandler("/Scrollbar.png", 10, 20, game));
+		
+		
 		Saves.loadSaves();
 		Element.setElements();
 		DynamicsLoader.init();
 		
 		Destinyor.map = LevelMap.maps.get(1);
 
-		FileLoader.CreateFolder(DestinyorFiles.DestinyorDialougesFolder);
-		FileLoader.CreateFolder(DestinyorFiles.DestinyorCutsceneFolder);
-		Writer.writeCutscene(DestinyorFiles.DestinyorCutsceneFolder);
+		FileLoader.CreateFolder(Files.DialougesFolder);
+		FileLoader.CreateFolder(Files.CutsceneFolder);
+		Writer.writeCutscene(Files.CutsceneFolder);
 
 		Default.SetEntities();
 		Default.setEnemies();
@@ -519,17 +527,15 @@ public class Destinyor extends Canvas implements Runnable {
 		Default.SetItems();
 		Default.setBosses();
 
-		Writer.WriteDefault(DestinyorFiles.DestinyorBosses, "Bosses", Default.getBosses(), Default.getBossFormat());
-		Reader.readBosses(DestinyorFiles.DestinyorBosses);
-
-		
+		Writer.WriteDefault(Files.Bosses, "Bosses", Default.getBosses(), Default.getBossFormat());
+		Reader.readBosses(Files.Bosses);
 
 		Thread_Controller.startLoading();
 
 		Destinyor.waitForLoading();
 
-		Reader.readEntities(DestinyorFiles.DestinyorEntities);
-		FileLoader.ReadFromFiles(DestinyorFiles.DestinyorItems);
+		Reader.readEntities(Files.Entities);
+		FileLoader.ReadFromFiles(Files.Items);
 
 		game.setSize(Res);
 
@@ -537,16 +543,15 @@ public class Destinyor extends Canvas implements Runnable {
 			game.setSize(Resolution.width(), Resolution.height());
 
 		// Frame
-		JFrame frame = new JFrame(title + " " + build);
-
+		JFrame frame = new JFrame(GameVariables.getTitle());
 		frame.setResizable(false);
 
-		switch (Resolution.Fullscreen) {
-			case "Fullscreen":
+		switch (Resolution.getWindowType()) {
+			case Resolution.FULLSCREEN:
 				frame.setUndecorated(true);
 				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 				break;
-			case "Borderless Window":
+			case Resolution.B_WINDOW:
 				frame.setUndecorated(true);
 				break;
 		}
@@ -572,6 +577,8 @@ public class Destinyor extends Canvas implements Runnable {
 			}
 		}
 
+		Launcher.clear();
+		
 		// Starts Game
 		game.init();
 		Destinyor.frame = frame;
@@ -581,20 +588,30 @@ public class Destinyor extends Canvas implements Runnable {
 			Player.Attackable = false;
 		}
 	}
-
+	
+	// Okay I figured it out it means: 
+	/*
+	 * This method is for testing purposes only, the real way to change
+	 * the screen is in the move class.
+	 * That's what happens when you do a 6 hour coding spree.
+	 */
 	// Testing only, in move class/file // ENGLISH?
 	public static void ChangeScreenToUI() {
-		if(Keys.PageDown())
+		if(Keys.PageDown()) {
 			UI.menu = UI.Fight;
+			Destinyor.refresh();
+		}
 	}
 
 	// Testing only, in move class/file // ENGLISH?
 	public static void ChangeScreenToMap() {
-		if(Keys.Home())
+		if(Keys.Home()) {
 			UI.menu = UI.Map;
+			Destinyor.refresh();
+		}
 	}
 
-	public static void waitForLoading() {
+	private static void waitForLoading() {
 		do {
 			if(Thread_Controller.doneLoading) {
 				Thread_Controller.pauseLoading();
@@ -602,17 +619,12 @@ public class Destinyor extends Canvas implements Runnable {
 		} while (!Thread_Controller.doneLoading);
 	}
 
-	public static void pauseLoading() {
-		if(Thread_Controller.doneLoading) {
-			Thread_Controller.pauseLoading();
-		}
-	}
-
 	public static void setSettings() {
-		int amount = 3;
+		int amount = 4;
 		
 		if(Override)
 			amount++;
+		
 		if(Debug)
 			amount++;
 		
@@ -631,13 +643,16 @@ public class Destinyor extends Canvas implements Runnable {
 		i++;
 		Stats[i] = "Height = " + Resolution.height();
 		i++;
-		Stats[i] = "Window Mode = " + Resolution.Fullscreen;
-		file.engine.writer.Writer.WriteDefault(DestinyorFiles.DestinyorSettings, Stats);
+		Stats[i] = "Window Mode = " + Resolution.getWindowType();
+		i++;
+		Stats[i] = "FPS Limit = " + GameVariables.getFPSLimit();
+		file.engine.writer.Writer.WriteDefault(Files.Settings, Stats);
 	}
 
 	public void changeLevel(int level) {
 		map = LevelMap.maps.get(level);
 		minimap = new Minimap(this);
+		refresh();
 	}
 
 	public static void wait(int n) {
@@ -650,6 +665,10 @@ public class Destinyor extends Canvas implements Runnable {
 
 	public static LevelMap getCurrentLevel() {
 		return map;
+	}
+	
+	public static void refresh() {
+		refresh = true;
 	}
 
 }

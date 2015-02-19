@@ -26,7 +26,7 @@ public class Sound implements LineListener {
 	public static int nextSong;
 
 	public boolean isPlaying = false;
-	public AudioInputStream ais; // Permanet AudioInputStream object
+	//public AudioInputStream ais; // Permanet AudioInputStream object
 	public AudioInputStream audioInputStream;
 	public Clip clip;
 	public Line line;
@@ -124,7 +124,8 @@ public class Sound implements LineListener {
 			clip = (Clip) line;
 			clip.addLineListener(this);
 			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-			ais = audioInputStream;
+			//audioInputStream.read();
+			//ais = audioInputStream;
 		} catch (Exception ex) {
 			DebugWriter.println("Error with playing sound: " + name);
 			ex.printStackTrace();

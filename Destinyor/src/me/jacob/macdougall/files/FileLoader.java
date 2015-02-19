@@ -91,7 +91,7 @@ public class FileLoader {
 			String path;
 
 			path = location;
-			location = DestinyorFiles.DestinyorFolder;
+			location = Files.DestinyorFolder;
 			File dir = new File(location);
 			dir.mkdirs();
 
@@ -104,53 +104,52 @@ public class FileLoader {
 		File file = new File(location);
 		if(!file.exists()) {
 			
-			file = CreateFolderAndReturn(DestinyorFiles.DestinyorFolder);
+			file = CreateFolderAndReturn(Files.DestinyorFolder);
 			
 			Writer.WriteDefault(location, name, STATS, format);
 		}
 	}
 
 	public static void ReadFromFiles(String location) {
-
-		if(location.equals(DestinyorFiles.DestinyorSettings)) {
+		if(location.equals(Files.Settings)) {
 			Reader.ReadSettings(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorEnemies)) {
+		if(location.equals(Files.Enemies)) {
 			Reader.ReadEnemies(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorCharacters)) {
+		if(location.equals(Files.Characters)) {
 			Reader.ReadPlayer(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorSpells)) {
-			Reader.ReadSpells(location);
+		if(location.equals(Files.Spells)) {
+			Reader.readSpells(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorNpcs)) {
+		if(location.equals(Files.Npcs)) {
 			Reader.ReadNpcs(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorItems)) {
+		if(location.equals(Files.Items)) {
 			Reader.ReadItems(location);
 		}
 	}
 
 	public static void WriteToFiles(String location) {
 
-		if(location.equals(DestinyorFiles.DestinyorSettings)) {
+		if(location.equals(Files.Settings)) {
 			Writer.writeSettingFile(location);
 		}
-		if(location.equals(DestinyorFiles.DestinyorCharacters)) {
+		if(location.equals(Files.Characters)) {
 			Writer.writeDefaultCharacterFile(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorSpells)) {
+		if(location.equals(Files.Spells)) {
 			Writer.WriteSpellFile(location);
 		}
 
-		if(location.equals(DestinyorFiles.DestinyorNpcs)) {
+		if(location.equals(Files.Npcs)) {
 			Writer.writeNpcs(location);
 		}
 

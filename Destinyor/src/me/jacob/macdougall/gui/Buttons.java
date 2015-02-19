@@ -1,60 +1,61 @@
 package me.jacob.macdougall.gui;
 
-import graphic.engine.screen.Art;
+import java.awt.Color;
+
+import me.jacob.macdougall.graphics.Sprites;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.GameFont;
 import graphic.engine.screen.Screen;
 
 public class Buttons extends GUI_Objects {
 	
-	String name;
-	
 	public boolean isScrollbar = false;
-	
-	protected Bitmap bitmap;
+	private Bitmap disabledBitmap;
 	
 	public Buttons(String name, int x, int y, int width, int height) {
-		super(x, y, width, height);
-		this.name = name;
-		bitmap = Art.getButtons()[0][0];
+		super(name, x, y, width, height);
+		setSprite(Sprites.getSprite(Sprites.BUTTON, 0, 0));
 	}
 	
 	public Buttons(String name, int x, int y) {
-		super(x, y, 120, 20);
+		super(name, x, y, 120, 20);
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.width = 120;
 		this.height = 20;
-		bitmap = Art.getButtons()[0][0];
-	}
-	
-	public Buttons(String name, int x, int y, int width, int height, Bitmap bitmap) {
-		super(x, y, width, height);
-		this.name = name;
-		this.bitmap = bitmap;
+		setSprite(Sprites.getSprite(Sprites.BUTTON, 0, 0));
 	}
 	
 	public void render(Screen screen) {
-		screen.render(bitmap, x, y);
-		int x1 =  (50 - (name.length() * 2)) + x;
+		if(isEnabled()) {
+			screen.render(getSprite(), x, y);
+		} else {
+			if(disabledBitmap == null) {
+				disabledBitmap = new Bitmap(width, height);
+				for(int i = 0; i < disabledBitmap.pixels.length; i++) {
+					Color color = new Color(disabledBitmap.pixels[i]);
+					color = new Color(color.getRed() / 2, color.getGreen() / 2, color.getBlue() / 2);
+					disabledBitmap.pixels[i] = color.getRGB();
+				}
+			}
+			screen.render(disabledBitmap, x, y);
+		}	
+		int x1 = (int) ((width / 2.5) - (name.length() * 2)) + x;
 		GameFont.render(name, screen, x1, y + 6);
 	}
 	
 	public void pressed() {
-		bitmap = Art.getButtons()[1][0];
+		if(isEnabled())
+			setSprite(Sprites.getSprite(Sprites.BUTTON, 1, 0));
 	}
 	
-	public void setName(String name) {
-		this.name = name;
+	public void pressed(Bitmap sprite) {
+		setSprite(sprite);
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
-	public Bitmap getSprite() {
-		return bitmap;
+	public void update() {
+		
 	}
 	
 }

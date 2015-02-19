@@ -28,8 +28,8 @@ public class Screenshot {
 	}
 	
 	public Screenshot(Screen screen, String FilePath) {
-		File image = new File(FilePath + DestinyorFiles.fileSplit + "Icon.png");
-		path = FilePath + DestinyorFiles.fileSplit + "Icon.png";
+		File image = new File(FilePath + Files.fileSplit + "Icon.png");
+		path = FilePath + Files.fileSplit + "Icon.png";
 		try {
 			ImageIO.write(screen.image, "PNG", image);
 		} catch(IOException e) {

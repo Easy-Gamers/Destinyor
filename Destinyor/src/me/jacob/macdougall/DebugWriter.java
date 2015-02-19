@@ -24,9 +24,9 @@ public class DebugWriter {
 			if(DebugWriter.getln(i).contains(remove)) {
 				DebugWriter.removeln(DebugWriter.getln(i));
 				i--;
+				Debug.refresh();
 			}
 		}
-		Debug.Refresh();
 	}
 
 }

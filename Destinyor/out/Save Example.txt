@@ -8,3 +8,9 @@ player1 stats
 player2 stats
 
 etc
+
+player1 spells = {
+	Fire Ball
+}
+
+ect

@@ -3,6 +3,7 @@ package me.jacob.macdougall.graphics;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 
@@ -25,7 +26,8 @@ public class Shadows {
 	
 	public Shadows(Bitmap bitmap) {
 		try {
-                    image = Art.convertSpritesheet(bitmap, this);
+			image = Art.convert(bitmap, 32, 32, this, Sprites.getSprites(Sprites.SPRITE));
+			//image = Art.convertSpritesheet(bitmap, this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

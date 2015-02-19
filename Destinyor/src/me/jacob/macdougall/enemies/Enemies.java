@@ -17,13 +17,13 @@ public class Enemies extends Dummy {
 	
 	public boolean attacking = false;
 	
-	public Enemies(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, Spells[] spells, Equipment[] equipment, int spriteXStart, int spriteYStart, int spriteXEnd, int spriteYEnd, LevelMap map) {
-		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, spells, equipment, spriteXStart, spriteYStart, spriteXEnd, spriteYEnd, map);
+	public Enemies(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, int spriteXStart, int spriteYStart, int spriteXEnd, int spriteYEnd, LevelMap map) {
+		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, spriteXStart, spriteYStart, spriteXEnd, spriteYEnd, map);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Enemies(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, Spells[] spells, Equipment[] equipment, LevelMap map) {
-		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, spells, equipment, 0, 0, 0, 0, map);
+	public Enemies(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, LevelMap map) {
+		super(name, gender, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, x, y, 0, 0, 0, 0, map);
 	}
 	
 	protected Enemies(Enemies enemy) {

@@ -1,0 +1,15 @@
+NPCs #Note for Modding: Copy and paste the npc characteristics than alter it, also always leave a space between npcs
+
+Name = Jacob
+Frames = 16, 13
+X = 5
+Y = 5
+Dialouge Location = jacob.txt
+Level = 1
+
+Name = Izak
+Frames = 16, 12
+X = 9
+Y = 9
+Dialouge Location = izak.txt
+Level = 1

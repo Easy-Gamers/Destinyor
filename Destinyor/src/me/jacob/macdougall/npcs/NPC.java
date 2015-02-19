@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Dialouge;
 import graphic.engine.screen.Screen;
 import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.Time;
+import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.input.Keys;
 import me.jacob.macdougall.player.Move;
 import me.jacob.macdougall.player.Player;
@@ -94,8 +94,12 @@ public class NPC {
 			// Not Applicable for changing to add more frames
 
 			this.frames = new Bitmap[2];
-			this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
-			this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
+			this.frames[0] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1]); // Get First Frame
+			this.frames[1] = Sprites.getSprite(Sprites.SPRITE, framez[0] + 1, framez[1]); // Move over one to get next frame
+			//this.frames[2] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1] + 1);; // Move down one to get next frame
+			
+//			this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
+//			this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
 			// this.frames[2] = Art.spritesheet[framez[0]][framez[1] + 1]; // Move down one to get next frame
 		}
 	}
@@ -126,8 +130,13 @@ public class NPC {
 			// Not Applicable for changing to add more frames
 
 			this.frames = new Bitmap[2];
-			this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
-			this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
+			
+			this.frames[0] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1]); // Get First Frame
+			this.frames[1] = Sprites.getSprite(Sprites.SPRITE, framez[0] + 1, framez[1]); // Move over one to get next frame
+			//this.frames[2] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1] + 1);; // Move down one to get next frame
+			
+//			this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
+//			this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
 			// this.frames[2] = Art.spritesheet[framez[0]][framez[1] + 1]; // Move down one to get next frame
 		}
 		this.map = map;

@@ -4,7 +4,7 @@ import static me.jacob.macdougall.Destinyor.create;
 import static me.jacob.macdougall.Destinyor.read;
 import static me.jacob.macdougall.Destinyor.write;
 import me.jacob.macdougall.files.Default;
-import me.jacob.macdougall.files.DestinyorFiles;
+import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
 import me.jacob.macdougall.files.Reader;
 import me.jacob.macdougall.files.Writer;
@@ -54,27 +54,27 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
     private void reader() {
         switch(reader) {
         	
-        	case 0: Reader.readEntities(DestinyorFiles.DestinyorEntities);
+        	case 0: Reader.readEntities(Files.Entities);
         	reader++;
         	break;
         	
-            case 1: FileLoader.ReadFromFiles(DestinyorFiles.DestinyorSpells);
+            case 1: FileLoader.ReadFromFiles(Files.Spells);
             reader++;
             break;
             
-            case 2: Reader.ReadItems(DestinyorFiles.DestinyorItems);
+            case 2: Reader.ReadItems(Files.Items);
             reader++;
             break;
             
-            case 3: FileLoader.ReadFromFiles(DestinyorFiles.DestinyorCharacters);
+            case 3: FileLoader.ReadFromFiles(Files.Characters);
             reader++;
             break;
             
-            case 4: FileLoader.ReadFromFiles(DestinyorFiles.DestinyorEnemies);
+            case 4: FileLoader.ReadFromFiles(Files.Enemies);
             reader++;
             break;
             
-            case 5: FileLoader.ReadFromFiles(DestinyorFiles.DestinyorNpcs);
+            case 5: FileLoader.ReadFromFiles(Files.Npcs);
             reader++;
             break;
                 
@@ -86,32 +86,33 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
                 reader = 10;
                 break;
         }
+        //System.out.println(reader);
     }
     
     private void writer() {
         switch(writer) {
         	
-        	case 0: Writer.WriteDefault(DestinyorFiles.DestinyorEntities, "Entities", Default.getEntities(), Default.getEntitiesFormat());
+        	case 0: Writer.WriteDefault(Files.Entities, "Entities", Default.getEntities(), Default.getEntitiesFormat());
         	writer++;
         	break;
         	
-        	case 1: FileLoader.WriteToFiles(DestinyorFiles.DestinyorSpells);
+        	case 1: FileLoader.WriteToFiles(Files.Spells);
             writer++;
             break;
         	
-        	case 2: Writer.WriteDefault(DestinyorFiles.DestinyorItems, "Items", Default.getItems(), Default.getItemsFormat());
+        	case 2: Writer.WriteDefault(Files.Items, "Items", Default.getItems(), Default.getItemsFormat());
         	writer++;
         	break;
             
-            case 3: FileLoader.WriteToFiles(DestinyorFiles.DestinyorCharacters);
+            case 3: FileLoader.WriteToFiles(Files.Characters);
             writer++;
             break;
             
-            case 4: Writer.WriteDefault(DestinyorFiles.DestinyorEnemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
+            case 4: Writer.WriteDefault(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
             writer++;
             break;
             
-            case 5: FileLoader.WriteToFiles(DestinyorFiles.DestinyorNpcs);
+            case 5: FileLoader.WriteToFiles(Files.Npcs);
             writer++;
             break;
             
@@ -125,27 +126,27 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
     private void creater() {
         switch(creator) {
         	
-        	case 0: FileLoader.CreateDefaultFile(DestinyorFiles.DestinyorEntities, "Entities", Default.getEntities(), Default.getEntitiesFormat());
+        	case 0: FileLoader.CreateDefaultFile(Files.Entities, "Entities", Default.getEntities(), Default.getEntitiesFormat());
         	creator++;
         	break;
         	
-        	case 1: FileLoader.CreateFile(DestinyorFiles.DestinyorSpells);
+        	case 1: FileLoader.CreateFile(Files.Spells);
             creator++;
             break;
             
-        	case 2: FileLoader.CreateDefaultFile(DestinyorFiles.DestinyorItems, "Items", Default.getItems(), Default.getItemsFormat());
+        	case 2: FileLoader.CreateDefaultFile(Files.Items, "Items", Default.getItems(), Default.getItemsFormat());
         	creator++;
         	break;
         	
-            case 3: FileLoader.CreateFile(DestinyorFiles.DestinyorCharacters);
+            case 3: FileLoader.CreateFile(Files.Characters);
             creator++;
             break;
             
-            case 4: FileLoader.CreateDefaultFile(DestinyorFiles.DestinyorEnemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
+            case 4: FileLoader.CreateDefaultFile(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
             creator++;
             break;
             
-            case 5: FileLoader.CreateFile(DestinyorFiles.DestinyorNpcs);
+            case 5: FileLoader.CreateFile(Files.Npcs);
             creator++;
             break;
             

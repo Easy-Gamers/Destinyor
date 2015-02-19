@@ -4,9 +4,9 @@ import me.jacob.macdougall.*;
 import me.jacob.macdougall.battles.Battles;
 import me.jacob.macdougall.graphics.UI;
 import me.jacob.macdougall.input.Keys;
+import me.jacob.macdougall.items.PlayerEquipment;
 import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.world.*;
-import graphic.engine.screen.Bitmap;
 
 public class Move {
 
@@ -17,44 +17,35 @@ public class Move {
 	public static int steps = 0;
 	public static int location = 0;
 
-	public static final int DIR_UP = 0, DIR_DOWN = 1, DIR_LEFT = 2,
+	private static final int DIR_UP = 0, DIR_DOWN = 1, DIR_LEFT = 2,
 			DIR_RIGHT = 3;
 	public static int dir = DIR_DOWN;
-
-	public int x = Player.X * Tile.SIZE;
-
-	public int y = Player.Y * Tile.SIZE;
-
-	public Bitmap[][] frames = Player.frames;
 
 	public static int frame = 0;
 
 	public static boolean canMove = true;
-	public static boolean collision = false;
-	public boolean run = true;
-	public boolean hasMoved = false;
 
 	public Move(LevelMap lvlmap) {
 		map = lvlmap;
 	}
 
 	public static int GetXDir() {
-		if(dir == DIR_LEFT) {
+		if(dir == DIR_LEFT)
 			return -1;
-		}
-		if(dir == DIR_RIGHT) {
+		
+		if(dir == DIR_RIGHT)
 			return -1;
-		}
+		
 		return 0;
 	}
 
 	public static int GetYDir() {
-		if(dir == DIR_UP) {
+		if(dir == DIR_UP)
 			return -1;
-		}
-		if(dir == DIR_DOWN) {
+		
+		if(dir == DIR_DOWN)
 			return 1;
-		}
+		
 		return 0;
 	}
 
@@ -64,79 +55,62 @@ public class Move {
 			Battles.endBattle = false;
 		}
 
-		if(UI.menu == UI.Map || UI.menu == UI.Minimap) {
+		if(UI.menu == UI.Map || UI.menu == UI.Minimap)
 			tick();
-		}
 
-		if(UI.menu != UI.Fight) {
-			if(Keys.Inventory() && Time.inventoryTimer(10)) {
-				if(UI.menu != UI.Inventory) {
-					UI.menu = UI.Inventory;
-					//                            UI.InventoryOn = true;
-					//                            UI.MapOn = false;
-					//Destinyor.Refresh();
-				} else {
-					UI.menu = UI.Map;
-					//                            UI.InventoryOn = false;
-					//                            UI.MapOn = true;
-					//Destinyor.Refresh();
-				}
-			}
-			if(Keys.Equipment()) {
-				if(Time.inventoryTimer(10)) {
-					if(UI.menu != UI.Equipment) {
-						UI.menu = UI.Equipment;
-						//Destinyor.Refresh();
-					} else {
+		if(UI.menu != UI.Fight) 
+			if(Time.inventoryTimer(10)) {
+				if(Keys.Inventory())
+					if(UI.menu != UI.Inventory)
+						UI.menu = UI.Inventory;
+					else
 						UI.menu = UI.Map;
-						//Destinyor.Refresh();
+				
+				if(Keys.Equipment())
+					if(UI.menu != UI.Equipment)
+						UI.menu = UI.Equipment;
+					else
+						UI.menu = UI.Map;
+			}
+		if(UI.menu == UI.Equipment || UI.menu == UI.Inventory) {
+			if(UI.menu == UI.Equipment) {
+				if(Keys.MoveRight() && Time.getKeyTimer(10, false)) {
+					PlayerEquipment.setCurrentPlayerRelative(1);
+					if(PlayerEquipment.getCurrentPlayer() > 3) {
+						PlayerEquipment.setCurrentPlayer(0);
 					}
+					if(PlayerEquipment.getCurrentPlayer() < 0) {
+						PlayerEquipment.setCurrentPlayer(3);
+					}
+					Time.resetKeyTimer();
 				}
-			}
-		}
-		if(UI.menu == UI.Equipment || UI.menu == UI.Inventory || (UI.menu >= UI.Player1 && UI.menu <= UI.Player4)) {
-			if(Keys.MoveRight() && Time.getKeyTimer(10, false)) {
-				if(UI.menu >= UI.Player1 && UI.menu <= UI.Player4) {
-					UI.menu++;
-					;
+				if(Keys.MoveLeft() && Time.getKeyTimer(10, false)) {
+					PlayerEquipment.setCurrentPlayerRelative(-1);
+					if(PlayerEquipment.getCurrentPlayer() < 0) {
+						PlayerEquipment.setCurrentPlayer(3);
+					}
+					if(PlayerEquipment.getCurrentPlayer() > 3) {
+						PlayerEquipment.setCurrentPlayer(0);
+					}
+					Time.resetKeyTimer();
 				}
-				if(UI.menu > UI.Player4) {
-					UI.menu = UI.Player1;
-				}
-				if(UI.menu <= UI.Player1) {
-					UI.menu = UI.Player1;
-				}
-				Time.resetKeyTimer();
-			}
-			if(Keys.MoveLeft() && Time.getKeyTimer(10, false)) {
-				if(UI.menu >= UI.Player1 && UI.menu <= UI.Player4) {
-					UI.menu--;
-				}
-				if(UI.menu < UI.Player1) {
-					UI.menu = UI.Player4;
-				}
-				Time.resetKeyTimer();
 			}
 		}
 
 		Destinyor.ChangeScreenToUI();
 		Destinyor.ChangeScreenToMap();
 
-		if(UI.menu == 0 || UI.menu == 2)
+		if(UI.menu == UI.Map || UI.menu == UI.Minimap)
 			minimap();
 	}
 
 	public void minimap() {
-		if(Keys.Minimap()) {
-			if(Time.mapTimer(10)) {
-				if(UI.menu != UI.Minimap) {
+		if(Keys.Minimap())
+			if(Time.mapTimer(10))
+				if(UI.menu != UI.Minimap)
 					UI.menu = UI.Minimap;
-				} else {
+				else
 					UI.menu = UI.Map;
-					//Destinyor.Refresh();
-				}
-			}
-		}
 	}
 
 	public void tick() {
@@ -176,32 +150,24 @@ public class Move {
 		if(!canMove)
 			return;
 
-		if(!Time.moveTimer(20))
+		if(!Time.moveTimer(20) || (!Time.moveTimer(10) && Keys.Shift()))
 			return;
 
-		if(dir == DIR_LEFT) {
-			if(canMove(dir)) {
+		if(dir == DIR_LEFT)
+			if(canMove(dir))
 				MoveLeft();
-			}
-		}
 
-		if(dir == DIR_RIGHT) {
-			if(canMove(dir)) {
+		if(dir == DIR_RIGHT)
+			if(canMove(dir))
 				MoveRight();
-			}
-		}
 
-		if(dir == DIR_UP) {
-			if(canMove(dir)) {
+		if(dir == DIR_UP)
+			if(canMove(dir))
 				MoveUp();
-			}
-		}
 
-		if(dir == DIR_DOWN) {
-			if(canMove(dir)) {
+		if(dir == DIR_DOWN)
+			if(canMove(dir))
 				MoveDown();
-			}
-		}
 	}
 
 	public int invertDir(int dir) {
@@ -271,7 +237,7 @@ public class Move {
 		Player.X -= 1;
 		frame += 1;
 		Battles.enterCombat();
-		//Destinyor.Refresh();
+		Destinyor.refresh();
 	}
 
 	public void MoveRight() {
@@ -280,7 +246,7 @@ public class Move {
 		Player.X += 1;
 		frame += 1;
 		Battles.enterCombat();
-		//Destinyor.Refresh();
+		Destinyor.refresh();
 	}
 
 	public void MoveUp() {
@@ -289,7 +255,7 @@ public class Move {
 		Player.Y -= 1;
 		frame += 1;
 		Battles.enterCombat();
-		//Destinyor.Refresh();
+		Destinyor.refresh();
 	}
 
 	public void MoveDown() {
@@ -298,7 +264,7 @@ public class Move {
 		Player.Y += 1;
 		frame += 1;
 		Battles.enterCombat();
-		//Destinyor.Refresh();
+		Destinyor.refresh();
 	}
 
 }

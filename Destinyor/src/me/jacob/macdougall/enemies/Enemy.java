@@ -1,6 +1,5 @@
 package me.jacob.macdougall.enemies;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 
@@ -8,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.items.Items;
 import me.jacob.macdougall.magic.Element;
 import me.jacob.macdougall.magic.Spells;
@@ -53,13 +53,13 @@ public class Enemy extends Enemies {
 	 * @param yPos
 	 * @param ySpawn
 	 */
-	public Enemy(String name, String frame, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, Element Resistance, Spells[] spells, int xPos, int xSpawn, int yPos, int ySpawn) {
-		super(name, null, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, 0, 0, spells, null, 0, 0, 0, 0, null);
+	public Enemy(String name, String frame, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, Element Resistance, int xPos, int xSpawn, int yPos, int ySpawn) {
+		super(name, null, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, 0, 0, 0, 0, 0, 0, null);
 		names.put(names.size(), name);
-		this.spells.put(0, Spells.Attack);
-		if(spells != null)
-			for(int s = 0; s < spells.length; s++)
-				this.spells.put(s + 1, spells[s]);
+		//this.spells.put(0, Spells.Attack);
+//		if(spells != null)
+//			for(int s = 0; s < spells.length; s++)
+//				this.spells.put(s + 1, spells[s]);
 
 		this.X = xPos;
 		this.Y = yPos;
@@ -78,9 +78,13 @@ public class Enemy extends Enemies {
 				// Not Applicable for changing to add more frames
 
 				this.frames = new Bitmap[2];
-				this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
-				this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
-				//				this.frames[2] = Art.spritesheet[framez[0]][framez[1] + 1]; // Move down one to get next frame
+				this.frames[0] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1]); // Get First Frame
+				this.frames[1] = Sprites.getSprite(Sprites.SPRITE, framez[0] + 1, framez[1]); // Move over one to get next frame
+				// this.frames[2] = Sprites.getSprite(Sprites.SPRITE, framez[0], framez[1] + 1); // Move down one to get next frame
+				
+				//this.frames[0] = Art.getSpritesheet()[framez[0]][framez[1]]; // Get First Frame
+				//this.frames[1] = Art.getSpritesheet()[framez[0] + 1][framez[1]]; // Move over one to get next frame
+				//this.frames[2] = Art.spritesheet[framez[0]][framez[1] + 1]; // Move down one to get next frame
 			}
 		}
 	}

@@ -9,18 +9,29 @@ import me.jacob.macdougall.player.Player;
 
 public class PlayerEquipment {
 
-	public PlayerEquipment() {
+	private static int currentEquipment = 0;
+	//int p = 6;
+	private static int currentPlayer = 0;
 
+	//Player player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
+	private static Player player = Player.getActualPlayer(currentPlayer);
+
+	public static void setCurrentPlayer(int cp) {
+		currentPlayer = cp;
 	}
-
-	int currentEquipment = 0;
-	int p = 6;
-
-	Player player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
-
-	public void renderEquipment(Screen screen) {
-		p = UI.menu;
-		player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
+	
+	public static int getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	public static void setCurrentPlayerRelative(int cp) {
+		currentPlayer += cp;
+	}
+	
+	public static void renderEquipment(Screen screen) {
+		//p = UI.menu;
+		player = Player.getActualPlayer(currentPlayer);
+		//player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
 		int px = 30;
 		int py = 0;
 		int x = 6;
@@ -42,7 +53,6 @@ public class PlayerEquipment {
 				GameFont.render("Equipped to: " + item.limb.getName(), screen, 12, 288 - 16);
 			}
 
-			if(UI.menu >= 6 && UI.menu <= 9 && UI.menu < Player.getActualPlayers().length + 6) {
 				for(int i = 0; i < Equipment.items.size(); i++) {
 					GameFont.render(player.getName(), screen, px, py);
 					if(player.equipped.size() > 0 && player.getEquipment(i) != null) {
@@ -56,13 +66,13 @@ public class PlayerEquipment {
 				px += 144 - 10;
 				x += ((768 / 2) / 4) + 50;
 			}
-		}
 	}
 
-	public void updateEquipment() {
-		if(UI.menu >= 6 && UI.menu <= 9 && UI.menu < Player.getActualPlayers().length + 6) {
-			p = UI.menu;
-			player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
+	public static void updateEquipment() {
+		if(UI.menu == UI.Equipment) {
+			//p = UI.menu;
+			//player = (p-6 >= 0 && p-6 <= 4) ? Player.getActualPlayers()[p - 6] : Player.getActualPlayers()[0];
+			Player.getActualPlayer(currentPlayer);
 			
 			if(player != null) {
 				if(Time.getKeyTimer(10, false)) {

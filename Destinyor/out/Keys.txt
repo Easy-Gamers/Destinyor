@@ -1,0 +1,7 @@
+W = Up
+S = Down
+A = Left
+D = Right
+I = Inventory
+E = Equipment
+M = Minimap

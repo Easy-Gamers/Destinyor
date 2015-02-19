@@ -24,7 +24,7 @@ public class Default {
 		"Name = ", "Frame = ", "Level = ",
 		"Experience = ", "Health = ", "Strength = ",
 		"Skill = ", "Speed = ", "Luck = ", "Defense = ",
-		"Wisdom = ", "Gold = ", "Resistance = ", "Condition = ",
+		"Wisdom = ", "Gold = ", "Resistance = ", "Spells = ",
 		"X&Y = "
 	};
 	
@@ -32,8 +32,7 @@ public class Default {
 		"Name = ", "Frame = ", "Level = ",
 		"Experience = ", "Health = ", "Strength = ",
 		"Skill = ", "Speed = ", "Luck = ", "Defense = ",
-		"Wisdom = ", "Gold = ", "Resistance = ", "Condition = ",
-		"X&Y = ", "Level = "
+		"Wisdom = ", "Gold = ", "Resistance = ", "X&Y = ", "Level = "
 	};
 	
 	private static final String[] itemsFormat = {
@@ -155,8 +154,7 @@ public class Default {
 
 	public static void setSpells() {
 
-		String[] FireBall = { "Fire Ball", "Fire", "20", "1", "20",
-				"0" };
+		String[] FireBall = { "Fire Ball", "HP", "20", "1" };
 
 		setSpell(FireBall);
 
@@ -236,8 +234,8 @@ public class Default {
 				"7", "2", "3", "1", "7", "1", "1000", "null", "null", "1, 25, 1, 25" };
 
 		String[] RGoblinStats = { "Fire Goblin", "16,10", "5", "100", "1000",
-				"70", "20", "30", "10", "70", "10", "10000", "Fire",
-				"Fire Ball", "1, 50, 26, 50" };
+				"70", "20", "30", "10", "70", "10", "10000", "Fire", "null",
+				"1, 50, 26, 50" };
 
 		String[] BGoblinStats = { "Water Goblin", "16,11", "10", "1000",
 				"10000", "700", "200", "300", "100", "700", "100", "10000",
@@ -331,7 +329,7 @@ public class Default {
 	public static void setBosses() {
 		final String[] pUndeadStats = { "Undead Priest", "12,9,12,9", "100", "10000",
 				"100000", "7000", "2000", "3000", "1000", "7000", "10000",
-				"100000", "Dark", "Fire Ball", "0, 0", "1" };
+				"100000", "Dark", "0, 0", "1" };
 		
 		setBoss(pUndeadStats);
 	}

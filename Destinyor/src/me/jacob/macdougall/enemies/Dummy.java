@@ -18,12 +18,12 @@ public class Dummy extends MassSprites {
 	
 	public static final int LEVEL = 0, EXPERIENCE = 1, HEALTH_POINTS = 2,
 			STRENGTH = 3, SKILL = 4, SPEED = 5, LUCK = 6, DEFENCE = 7,
-			WISDOM = 8, GOLD = -1;
+			WISDOM = 8, GOLD = -1, ACCURACY = 9;
 
-	public Map<Integer, Equipment> equipped = new HashMap<>();
-	public Map<Integer, Spells> spells = new HashMap<>();
+	public Map<Integer, Equipment> equipped = new HashMap<>(); // Needs to be in exact order
+	public Map<Integer, Spells> spells = new HashMap<>(); // Needs to be in exact order
 
-	LevelMap level;
+	protected LevelMap level;
 	
 	protected int chanceToMiss = 0;
 	
@@ -40,6 +40,7 @@ public class Dummy extends MassSprites {
 	protected int def;
 	protected int wis;
 	protected int gold;
+	protected int acc;
 
 	protected int mapLvl;
 	protected int maxExp;
@@ -82,7 +83,7 @@ public class Dummy extends MassSprites {
 	 * @param spriteYEnd
 	 * @param map
 	 */
-	public Dummy(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, Spells[] spells, Equipment[] equipment, int spriteXStart, int spriteYStart, int spriteXEnd, int spriteYEnd, LevelMap map) {
+	public Dummy(String name, String gender, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, int x, int y, int spriteXStart, int spriteYStart, int spriteXEnd, int spriteYEnd, LevelMap map) {
 		super(x, y, spriteXStart, spriteYStart, spriteXEnd, spriteYEnd, map);
 		this.name = name;
 		this.gender = gender;
@@ -99,16 +100,16 @@ public class Dummy extends MassSprites {
 		this.gold = gold;
 		this.x = x;
 		this.y = y;
-		if(spells != null && spells.length > 0) {
-			for(int i = 0; i < spells.length; i++) {
-				this.spells.put(i, spells[i]);
-			}
-		}
-		if(equipment != null && equipment.length > 0) {
-			for(int i = 0; i < equipment.length; i++) {
-				this.equipped.put(i, equipment[i]);
-			}
-		}
+//		if(spells != null && spells.length > 0) {
+//			for(int i = 0; i < spells.length; i++) {
+//				this.spells.put(i, spells[i]);
+//			}
+//		}
+//		if(equipment != null && equipment.length > 0) {
+//			for(int i = 0; i < equipment.length; i++) {
+//				this.equipped.put(i, equipment[i]);
+//			}
+//		}
 	}
 
 	/**
@@ -478,7 +479,6 @@ public class Dummy extends MassSprites {
 			}
 			dummy.setStatRelative(Dummy.HEALTH_POINTS, -damage);
 		}
-		//PlayerBattle.setAttacking(this, enemies, damage);
 		resetTurnTimer();
 		return damage;
 	}
@@ -487,7 +487,7 @@ public class Dummy extends MassSprites {
 		int rand = 0;
 		rand = (int) (getStat(Dummy.LUCK) + (getStat(Dummy.LUCK) * skillcheck(dummy)) * 1);
 		// If you can't hit the target you get a 50/50 chance to hit
-		if(rand == 0 || rand == 1) {
+		if(rand <= 1) {
 			rand = 2;
 		}
 		chanceToMiss = random.nextInt(rand);
@@ -511,6 +511,46 @@ public class Dummy extends MassSprites {
 			crit = dummy.getStat(Dummy.SKILL) % this.getStat(Dummy.SKILL);
 		}
 		return crit;
+	}
+	
+	public static int convertToAttribute(String attr) {
+		if(attr.toLowerCase().contains("lvl") || attr.toLowerCase().contains("level")) {
+			return LEVEL;
+		}
+		if(attr.toLowerCase().contains("exp")) {
+			return EXPERIENCE;
+		}
+		if(attr.toLowerCase().contains("str")) {
+			return STRENGTH;
+		}
+		if(attr.toLowerCase().contains("skl") || attr.toLowerCase().contains("skill")) {
+			return SKILL;
+		}
+		if(attr.toLowerCase().contains("spd") || attr.toLowerCase().contains("speed")) {
+			return SPEED;
+		}
+		if(attr.toLowerCase().contains("luk") || attr.toLowerCase().contains("luck")) {
+			return LUCK;
+		}
+		if(attr.toLowerCase().contains("def")) {
+			return DEFENCE;
+		}
+		if(attr.toLowerCase().contains("wis")) {
+			return WISDOM;
+		}
+		if(attr.toLowerCase().contains("gold")) {
+			return GOLD;
+		}
+		
+		return HEALTH_POINTS;
+	}
+	
+	public void putSpell(Spells spell) {
+		spells.put(spells.size(), spell);
+	}
+	
+	public void putSpell(String spell) {
+		spells.put(spells.size(), Spells.get(spell));
 	}
 	
 	

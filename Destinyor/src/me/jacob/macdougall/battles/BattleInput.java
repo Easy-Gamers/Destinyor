@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import input.engine.mouse.Mouse;
+import me.jacob.macdougall.Time;
 import me.jacob.macdougall.enemies.Enemies;
 import me.jacob.macdougall.gui.Commands;
 import me.jacob.macdougall.input.Keys;
@@ -25,11 +26,11 @@ public class BattleInput {
 		commands.put(2, new Commands("Items", 155, 315, (8 * "Items".length()), 8));
 		commands.put(3, new Commands("Flee", 155, 335, (8 * "Flee".length()), 8));
 		
-		commands.put(4, new Commands("Enemy1", 32, 32, 32, 32));
-		commands.put(5, new Commands("Enemy2", 32, 88, 32, 32));
-		commands.put(6, new Commands("Enemy3", 32, 140, 32, 32));
-		commands.put(7, new Commands("Enemy4", 32, 192, 32, 32));
-		commands.put(8, new Commands("Enemy5", 32, 244, 32, 32));
+		commands.put(4, new Commands("Enemy1", 32, 16, 32, 32));
+		commands.put(5, new Commands("Enemy2", 32, 68, 32, 32));
+		commands.put(6, new Commands("Enemy3", 32, 120, 32, 32));
+		commands.put(7, new Commands("Enemy4", 32, 172, 32, 32));
+		commands.put(8, new Commands("Enemy5", 32, 224, 32, 32));
 	}
 
 	public void clicker(Mouse mouse, Enemies[] enemies) {
@@ -38,9 +39,10 @@ public class BattleInput {
 				switch (i) {
 					case 0:
 						Player player = Player.getPlayerAttack();
-						if(player != null) {
+						if(player != null && player.getTarget() != null && Time.getKeyTimer(10, false)) {
 							int damage = player.attack(player.getTarget(), PlayerBattle.pAttack(player, player.getTarget()));
 							PlayerBattle.setAttacking(player, player.getTarget(), damage);
+							Time.resetKeyTimer();
 						}
 						break;
 					case 1:

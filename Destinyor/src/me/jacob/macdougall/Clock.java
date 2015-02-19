@@ -1,5 +1,7 @@
 package me.jacob.macdougall;
 
+import graphic.engine.window.Resolution;
+
 import java.awt.Graphics;
 
 public class Clock {
@@ -12,7 +14,7 @@ public class Clock {
 	
 	/**
 	 * 
-	 * @return a String contianing time in week:day:hour:minute:second format
+	 * @return a String containing time in week:day:hour:minute:second format
 	 */
 	public String getTime() {
 		String time = weeks + " : " + days + " : " + hours + " : " + minutes + " : " + seconds;
@@ -20,7 +22,7 @@ public class Clock {
 	}
 	
 	public void render(Graphics g) {
-		g.drawString(getTime(), 1, 96);
+		g.drawString(getTime(), 1, Resolution.height() - 30);
 	}
 	
 	// Tick tock goes the clock

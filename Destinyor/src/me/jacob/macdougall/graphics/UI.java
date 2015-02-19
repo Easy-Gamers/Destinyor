@@ -2,7 +2,6 @@ package me.jacob.macdougall.graphics;
 
 import java.awt.Color;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 import graphic.engine.window.Resolution;
@@ -23,14 +22,6 @@ public class UI {
 
 	private static final int BorderWidth = 16, BorderHeight = 12;
 	private static final int GroundWidth = 16, GroundHeight = 12;
-
-	public static void renderSpritesheet(Screen screen) {
-		for(int i = 0; i < Art.getSpritesheet().length; i++) {
-			for(int j = 0; j < Art.getSpritesheet()[i].length; j++) {
-				screen.render(Art.getSpritesheet()[i][j], i * Tile.SIZE, j * Tile.SIZE);
-			}
-		}
-	}
 
 	public static void render(Screen screen) {
 		Ground(screen, GroundWidth, GroundHeight);
@@ -54,7 +45,8 @@ public class UI {
 	
 	private static void BorderSaves(Screen screen, int w) {
 		for(int i = 0; i < w; i++) {
-			screen.render(Art.getSpritesheet()[17][3], (i + 0) * Tile.SIZE, (4) * Tile.SIZE);
+			
+			screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 0) * Tile.SIZE, (4) * Tile.SIZE);
 		}
 	}
 
@@ -66,7 +58,7 @@ public class UI {
 	public static void TextBox(Screen screen) {
 		for(int i = 0; i < 8; i++) {
 			for(int j = 0; j < 2; j++) {
-				screen.render(Art.getSpritesheet()[0][0], (i + 4) * Tile.SIZE, (j + 9) * Tile.SIZE);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 0, 0), (i + 4) * Tile.SIZE, (j + 9) * Tile.SIZE);
 			}
 		}
 	}
@@ -85,13 +77,13 @@ public class UI {
 	
 	private static void CommandsBorderY(Screen screen, int h) {
 		for(int j = 0; j < h; j++) {
-			screen.render(Art.getSpritesheet()[18][3], 7 * Tile.SIZE, (j + 8) * Tile.SIZE);
+			screen.render(Sprites.getSprite(Sprites.SPRITE, 18, 3), 7 * Tile.SIZE, (j + 8) * Tile.SIZE);
 		}
 	}
 
 	private static void BorderBattleInfo(Screen screen, int w) {
 		for(int i = 0; i < w; i++) {
-			screen.render(Art.getSpritesheet()[17][3], (i + 7) * Tile.SIZE, 10 * Tile.SIZE);
+			screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 7) * Tile.SIZE, 10 * Tile.SIZE);
 		}
 	}
 
@@ -103,15 +95,15 @@ public class UI {
 
 	private static void BorderTextBottom(Screen screen, int w) {
 		for(int i = 0; i < w; i++) {
-			screen.render(Art.getSpritesheet()[17][3], (i + 0) * Tile.SIZE, 8 * Tile.SIZE);
+			screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 0) * Tile.SIZE, 8 * Tile.SIZE);
 		}
 	}
 
 	private static void BorderX(Screen screen, int w, int h) {
 		for(int i = 0; i < w; i++) {
 			for(int j = 0; j < h; j++) {
-				screen.render(Art.getSpritesheet()[17][3], (i + 0) * Tile.SIZE, (11 * Tile.SIZE) + 12);
-				screen.render(Art.getSpritesheet()[16][3], (i + 0) * Tile.SIZE, (-1 * Tile.SIZE) + 6);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 0) * Tile.SIZE, (11 * Tile.SIZE) + 12);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 16, 3), (i + 0) * Tile.SIZE, (-1 * Tile.SIZE) + 6);
 			}
 		}
 	}
@@ -119,8 +111,8 @@ public class UI {
 	private static void BorderY(Screen screen, int w, int h) {
 		for(int i = 0; i < w; i++) {
 			for(int j = 0; j < h; j++) {
-				screen.render(Art.getSpritesheet()[18][3], (0 * Tile.SIZE), ((j + 0) * Tile.SIZE));
-				screen.render(Art.getSpritesheet()[19][3], (15 * Tile.SIZE) - 3, (j + 0) * Tile.SIZE);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 18, 3), (0 * Tile.SIZE), ((j + 0) * Tile.SIZE));
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 19, 3), (15 * Tile.SIZE) - 3, (j + 0) * Tile.SIZE);
 			}
 		}
 	}
@@ -128,21 +120,21 @@ public class UI {
 	private static void BorderTextTop(Screen screen, int w, int h) {
 		for(int i = 0; i < w; i++) {
 			for(int j = 0; j < h; j++) {
-				screen.render(Art.getSpritesheet()[17][3], (i + 0) * Tile.SIZE, 8 * Tile.SIZE);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 0) * Tile.SIZE, 8 * Tile.SIZE);
 			}
 		}
 	}
 
 	private static void BorderEnemyText(Screen screen, int h) {
 			for(int j = 0; j < h; j++) {
-				screen.render(Art.getSpritesheet()[18][3], 4 * Tile.SIZE, (j + 8) * Tile.SIZE);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 18, 3), 4 * Tile.SIZE, (j + 8) * Tile.SIZE);
 			}
 	}
 
 	private static void Ground(Screen screen, int w, int h) {
 		for(int i = 0; i < w; i++) {
 			for(int j = 0; j < h; j++) {
-				screen.render(Art.getSpritesheet()[3][0], (i + 0) * Tile.SIZE, (j + 0) * Tile.SIZE);
+				screen.render(Sprites.getSprite(Sprites.SPRITE, 3, 0), (i + 0) * Tile.SIZE, (j + 0) * Tile.SIZE);
 			}
 		}
 	}

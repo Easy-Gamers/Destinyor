@@ -2,7 +2,6 @@ package me.jacob.macdougall.graphics;
 
 import me.jacob.macdougall.world.LevelMap;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
 import graphic.engine.screen.Screen;
 
@@ -46,7 +45,7 @@ public class MassSprites {
 
 		for(int i = 0; i < (x2 - x1); i++) { // Gets the size of the x co-ord
 			for(int j = 0; j < (y2 - y1); j++) { // Gets the size of the y co-ord
-				bitmap[i][j] = Art.getSpritesheet()[x1 + i][y1 + j];
+				bitmap[i][j] = Sprites.getSprite(Sprites.SPRITE, x1 + i, y1 + j);
 			}
 		}
 		this.map = map;

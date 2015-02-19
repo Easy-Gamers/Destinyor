@@ -1,8 +1,8 @@
 package me.jacob.macdougall.audio;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -12,10 +12,12 @@ import me.jacob.macdougall.world.LevelMap;
 
 public class Playlist {
 
+	public static List<Playlist> playlists = new ArrayList<>();
+	
+	public List<Sound> songs = new ArrayList<>();
+	
 	public int levelID = 0;
-	public Map<Integer, Sound> songs = new HashMap<>();
-
-	public static Map<Integer, Playlist> playlists = new HashMap<>();
+	
 
 	public static Random rand = new Random();
 	public static int nextSong;
@@ -26,16 +28,16 @@ public class Playlist {
 
 	public Playlist(int levelID, Sound... sound) {
 		this.levelID = levelID;
-		for(int i = 0; i < sound.length; i++) {
-			songs.put(i, sound[i]);
+		for(Sound song : sound) {
+			songs.add(song);
 		}
-		playlists.put(playlists.size(), this);
+		playlists.add(this);
 	}
 
 	@SuppressWarnings("unused")
 	public void Play() throws LineUnavailableException, IOException {
 		if(levelID == LevelMap.level) {
-			for(Sound song : songs.values()) {
+			for(Sound song : songs) {
 				if(checkSongs())
 					return;
 			}
@@ -62,8 +64,8 @@ public class Playlist {
 			return true;
 		}
 
-		for(Playlist playlist : playlists.values()) {
-			for(Sound sounds : playlist.songs.values()) {
+		for(Playlist playlist : playlists) {
+			for(Sound sounds : playlist.songs) {
 				if(sounds.isPlaying) { // Checks to make sure the song is a song
 										// and not a sound effect
 					return true;

@@ -1,12 +1,16 @@
 package me.jacob.macdougall.files.mod;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import me.jacob.macdougall.files.DestinyorFiles;
+import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
 
 public class FileChecker {
 
+	public static List<File> directories = new ArrayList<>();
+	
 	public static final String characters = "Characters.destinyor";
 	public static final String enemies = "Enemies.destinyor";
 	public static final String spells = "Spells.destinyor";
@@ -24,20 +28,28 @@ public class FileChecker {
 	public static String[] pictureNames = { spriteSheet, character1Sheet, character2Sheet, character3Sheet, character4Sheet };
 
 	public FileChecker() {
-		File file = FileLoader.CreateFolderAndReturn(DestinyorFiles.DestinyorModFolder);
+		File file = FileLoader.CreateFolderAndReturn(Files.ModFolder);
 		if(file.isDirectory()) {
-			for(File files : file.listFiles()) {
-				//System.out.println(files.getPath());
-
-				for(String fileName : fileNames)
-					if(files.getPath().contains(fileName))
-						DestinyorFiles.setFile(fileName, files.getPath());
-
-				for(String pictureName : pictureNames)
-					if(files.getPath().contains(pictureName))
-						DestinyorFiles.setPictures(pictureName);
+			for(File dir : file.listFiles()) {
+				if(dir.isDirectory()) {
+					directories.add(dir);
+				}
 			}
 		}
 	}
+	
+	public void setMod(String file) {
+		for(File files : directories) {
+			if(files.getName().contains(file)) {
+				for(String fileName : fileNames)
+					if(files.getPath().contains(fileName))
+						Files.setFile(fileName, files.getPath());
+
+				for(String pictureName : pictureNames)
+					if(files.getPath().contains(pictureName))
+						Files.setPictures(pictureName);
+				}
+			}
+		}	
 
 }

@@ -1,17 +1,21 @@
 package me.jacob.macdougall.player;
 
-import graphic.engine.screen.Art;
 import graphic.engine.screen.Bitmap;
+import graphic.engine.screen.SpriteHandler;
 
 import java.io.File;
 
 import me.jacob.macdougall.Destinyor;
-import me.jacob.macdougall.files.DestinyorFiles;
+import me.jacob.macdougall.files.Files;
 
 public class SpriteChecker {
     
-	public static final boolean exists = new File(DestinyorFiles.DestinyorCharacter1Sheet).exists();
-	public static final Bitmap[][] sprite = (exists) ? Art.cut(32, 32, DestinyorFiles.DestinyorCharacter1Sheet) : Art.cut(DestinyorFiles.DestinyorCharacter1Sheet, 32, 32, Destinyor.class);
+	//private static Sprites player = new Sprites()
+	private static Bitmap[][] defaultSprite = new SpriteHandler(Files.DestinyorCharacter1Sheet, 32, 32, Destinyor.class).getSpritesheet();
+	//private static Bitmap[][] moddedSprite = new Sprites(Files.DestinyorCharacter1Sheet, 32, 32).getSpritesheet();
+	
+	public static final boolean exists = new File(Files.DestinyorCharacter1Sheet).exists();
+	public static final Bitmap[][] sprite = (exists) ? new SpriteHandler(Files.DestinyorCharacter1Sheet, 32, 32).getSpritesheet() : defaultSprite;
 	
 	public static final Bitmap[][] frame1 = 	
 	{

@@ -20,7 +20,7 @@ public class SetGame {
 //		}
 		
 		
-		input = file.engine.reader.Reader.Read(DestinyorFiles.DestinyorSpells);
+		input = file.engine.reader.Reader.Read(Files.Spells);
 		splitter = input.split("");
 		
 		for(int i = 1; i < splitter.length; i++) {

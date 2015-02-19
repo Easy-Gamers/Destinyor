@@ -1,0 +1,63 @@
+Players
+Level = 1
+X & Y = 6,7
+
+Player Name = Kyro
+Player Gender = Male
+Player Level = 1
+Player Experience = 0
+Player Health = 100
+Player Strength = 10
+Player Skill = 10
+Player Speed = 10
+Player Luck = 10
+Player Defense = 10
+Player Wisdom = 10
+Player Gold = 0
+Player Resistances = 
+inParty = true
+
+Player Name = Karen
+Player Gender = Female
+Player Level = 1
+Player Experience = 0
+Player Health = 100
+Player Strength = 10
+Player Skill = 10
+Player Speed = 10
+Player Luck = 10
+Player Defense = 10
+Player Wisdom = 10
+Player Gold = 0
+Player Resistances = 
+inParty = true
+
+Player Name = Mark
+Player Gender = Male
+Player Level = 1
+Player Experience = 0
+Player Health = 100
+Player Strength = 10
+Player Skill = 10
+Player Speed = 10
+Player Luck = 10
+Player Defense = 10
+Player Wisdom = 10
+Player Gold = 0
+Player Resistances = 
+inParty = true
+
+Player Name = Lesie
+Player Gender = Female
+Player Level = 1
+Player Experience = 0
+Player Health = 100
+Player Strength = 10
+Player Skill = 10
+Player Speed = 10
+Player Luck = 10
+Player Defense = 10
+Player Wisdom = 10
+Player Gold = 0
+Player Resistances = 
+inParty = true

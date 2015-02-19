@@ -1,0 +1,15 @@
+Entities
+
+Humanoid {
+	Head, Neck, Upper Torso, Shoulders, Arms,
+	Lower Torso, Hands, Legs, Feet
+}
+
+Angelic {
+	Head, Neck, Upper Torso, Shoulders, Wings,
+	Arms, Lower Torso, Hands, Legs, Feet
+}
+
+Slime {
+	Head
+}
