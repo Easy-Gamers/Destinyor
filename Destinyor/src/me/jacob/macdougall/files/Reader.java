@@ -52,6 +52,39 @@ public class Reader {
 		}
 	}
 	
+	public static String[][] readDefault(String location, String[] header, String[] args) {
+		String[][] info;
+		
+		InputStream input = Destinyor.class.getResourceAsStream("/Config.destinyor");
+		InputStreamReader inputReader = new InputStreamReader(input);
+		try {
+			BufferedReader br = new BufferedReader(inputReader);
+			
+			for(int i = 0; i < header; i++) {
+				br.readLine();
+			}
+			
+			String readline = "";
+			
+			while(readline != null) {
+				for(int i = 0; i < args.length; i++) {
+					br.skip(args[i].length);
+					readline = br.readLine();
+					if(readline != null) {
+						
+					}	
+				}
+				
+			}
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return info;
+	}
+	
 	
 	public static void ReadEnemies(String location) {
 		BufferedReader br;
