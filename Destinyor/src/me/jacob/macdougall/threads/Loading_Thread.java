@@ -145,7 +145,7 @@ public class Loading_Thread implements Runnable {
             creator++;
             break;
             
-            case 4: FileLoader.CreateDefaultFile(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
+            case 4: // FileLoader.CreateDefaultFile(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
             creator++;
             break;
             

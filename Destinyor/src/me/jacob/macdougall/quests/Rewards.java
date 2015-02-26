@@ -47,6 +47,7 @@ public class Rewards {
 
 		for(String r : rewards) {
 			if(r.contains("gold")) {
+				
 				break;
 			}
 

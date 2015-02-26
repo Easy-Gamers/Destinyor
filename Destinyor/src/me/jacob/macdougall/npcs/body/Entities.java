@@ -19,7 +19,7 @@ public class Entities {
 	public Limb[] limbs;
 	public float[] percents;
 	
-	public String name;
+	private String name;
 
 	/**
 	 * Direct call, can only be used internally
@@ -128,6 +128,10 @@ public class Entities {
 			}
 		}
 		return limbs[limb];
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }

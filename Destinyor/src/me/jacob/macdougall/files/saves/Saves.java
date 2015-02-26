@@ -17,6 +17,7 @@ import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.Screenshot;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
+import me.jacob.macdougall.gui.DropDowns;
 import me.jacob.macdougall.gui.GUI_Objects;
 import me.jacob.macdougall.gui.MenuHandler;
 import me.jacob.macdougall.gui.TextBox;
@@ -26,6 +27,8 @@ import me.jacob.macdougall.world.Tile;
 public class Saves {
 	
 	public static List<Saves> saves = new ArrayList<>();
+	
+	public static DropDowns dd;
 	
 	public static Saves emptySave = new Saves("Create new save", -1, null);
 	private static final int maxSaves = 999;
@@ -184,14 +187,20 @@ public class Saves {
 	
 	public static void loadSaves() {
 		System.out.println("Checking saves");
+		
 		if(!FileLoader.checkIfFolderIsEmpty(Files.SaveFolder)) {
 			String[] saveFiles = FileLoader.getFilesAndFolders(Files.SaveFolder, "Save");
 			if(saveFiles != null && saveFiles.length > 0) {
+				GUI_Objects[] saves = new GUI_Objects[saveFiles.length];
 				for(int i = 0; i < saveFiles.length; i++) {
 					System.out.println("Found save: " + saveFiles[i]);
 					add(new Saves(saveFiles[i], i, Art.getAndConvert(Files.SaveFolder + Files.fileSplit + saveFiles[i] + Files.fileSplit + "Icon.png", 160, 120, false)));
+					saves[i] = get(i).saveslot;
 					System.out.println("Added save: " + saveFiles[i]);
 				}
+				dd = new DropDowns("Saves", 0, 0, 16 * Tile.SIZE, 4 * Tile.SIZE, 3, 0, saves);
+				
+				//public DropDowns(String name, int x, int y, int width, int height, int amountPerScroll, int startingLocation, GUI_Objects... options) {
 			}
 		}
 	}

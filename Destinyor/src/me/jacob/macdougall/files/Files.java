@@ -16,7 +16,7 @@ public class Files {
     public static String DestinyorHome = DestinyorFolder + fileSplit;
     public static final String EXT = ".destinyor";
     
-    public static String DialougesFolder = DestinyorHome + "Dialouges";
+    public static String DialougesFolder = "/Dialouges/";
     public static String CutsceneFolder = DestinyorHome + "Cutscenes";
     public static String ModFolder = DestinyorHome + "Mod";
     public static String SaveFolder = DestinyorHome + "Saves";

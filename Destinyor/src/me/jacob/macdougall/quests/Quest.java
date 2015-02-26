@@ -25,24 +25,27 @@ public class Quest {
 	public Cutscene[] cutscenes;
 	private boolean isAccepted = false;
 	private boolean completed = false;
+	public boolean rewarded = false;
 	protected QuestReader questReader;
 	
 	private String startDialouge;
 	private String endDialouge;
 
-	public boolean Completed = false;
+	
 
 	public Quest(Rewards[] rewards, NPC questNpc, Cutscene[] cutscene, String startDialouge, String endDialouge, boolean completed) {
 		this.questGiver = questNpc;
 		this.rewards = rewards;
 		this.startDialouge = startDialouge;
 		this.endDialouge =  endDialouge;
-		this.Completed = completed;
+		this.completed = completed;
 	}
 
 	public Rewards[] getRewards() {
-		if(Completed)
+		if(completed) {
+			rewarded = true;
 			return rewards;
+		}
 		return null;
 	}
 
@@ -72,6 +75,10 @@ public class Quest {
 	
 	public boolean isCompleted() {
 		return completed;
+	}
+	
+	public void setCompleted(boolean complete) {
+		this.completed = complete;
 	}
 	
 	/**

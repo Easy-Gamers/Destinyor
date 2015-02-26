@@ -1,0 +1,3 @@
+Hello, welcome to my game!
+END
+Bonjour, bienvenue sur mon jeu!

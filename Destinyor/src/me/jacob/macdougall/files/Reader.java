@@ -51,56 +51,6 @@ public class Reader {
 		}
 	}
 
-	public static void ReadNpcs(String location) {
-		BufferedReader br;
-		String[] Stats = { "Name = ", "Frames = ", "X = ", "Y = ", "Dialouge Location = ", "Level = " };
-
-		try {
-			br = new BufferedReader(new FileReader(new File(location)));
-			br.readLine();
-
-			int x;
-			int y;
-
-			String Name;
-			String Frame;
-			String dialouge;
-			int level;
-			String endNpc = br.readLine();
-			
-
-			while (endNpc != null) {
-				br.skip(Stats[0].length());
-				Name = br.readLine();
-				br.skip(Stats[1].length());
-				Frame = br.readLine().trim();
-				br.skip(Stats[2].length());
-				x = Integer.parseInt(br.readLine().trim());
-				br.skip(Stats[3].length());
-				y = Integer.parseInt(br.readLine().trim());
-				br.skip(Stats[4].length());
-				dialouge = br.readLine();
-				br.skip(Stats[5].length());
-				level = Integer.parseInt(br.readLine());
-
-				if(dialouge.contains(".txt")) {
-					dialouge = ReadDialouge(Files.DestinyorFolder + Files.fileSplit + "Dialouges" + Files.fileSplit + dialouge);
-				}
-
-				endNpc = br.readLine();
-
-				NPC.npcs.add(new NPC(Name, Frame, x, y, dialouge, true, LevelMap.maps.get(level)));
-
-				DebugWriter.println("Menu: Reading: Npcs: " + Name);
-			}
-
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		br = null;
-	}
-
 	public static String ReadCutscenes(String location) {
 		BufferedReader br;
 		BufferedReader reader;
@@ -144,17 +94,6 @@ public class Reader {
 	}
 
 	public static String ReadDialouge(String location) {
-		File file = new File(location);
-
-		if(!file.exists()) {
-			String location1 = location;
-			location = Files.fileSplit + "Dialouges";
-			File dir = new File(location);
-			dir.mkdirs();
-
-			location = location1;
-		}
-
 		String dialouge = "";
 
 		String endDialouge = "";
@@ -171,7 +110,6 @@ public class Reader {
 			}
 
 			br.close();
-			br = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

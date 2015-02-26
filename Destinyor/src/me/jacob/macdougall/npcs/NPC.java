@@ -348,7 +348,7 @@ public class NPC {
 		int lvl = Integer.parseInt(args[i++]);
 		
 		if(dialouge.contains(".txt")) {
-			String location = Files.DialougesFolder + Files.fileSplit + dialouge;
+			String location = Files.DialougesFolder + dialouge;
 			dialouge = Reader.ReadDialouge(location);
 		}
 		

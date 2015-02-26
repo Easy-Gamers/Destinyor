@@ -85,6 +85,7 @@ import me.jacob.macdougall.cutscenes.*;
 import me.jacob.macdougall.files.*;
 import me.jacob.macdougall.files.mod.FileChecker;
 import me.jacob.macdougall.files.mod.Mod;
+import me.jacob.macdougall.files.saves.SaveData;
 import me.jacob.macdougall.files.saves.Saves;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
@@ -521,11 +522,13 @@ public class Destinyor extends Canvas implements Runnable {
 		Writer.writeCutscene(Files.CutsceneFolder);
 
 		Default.SetEntities();
-		Default.setEnemies();
+		//Default.setEnemies();
 		Default.setSpells();
-		Default.setNpcs();
+		//Default.setNpcs();
 		Default.SetItems();
 		Default.setBosses();
+		
+		
 
 		Writer.WriteDefault(Files.Bosses, "Bosses", Default.getBosses(), Default.getBossFormat());
 		Reader.readBosses(Files.Bosses);
@@ -536,7 +539,10 @@ public class Destinyor extends Canvas implements Runnable {
 
 		Reader.readEntities(Files.Entities);
 		FileLoader.ReadFromFiles(Files.Items);
-
+		
+		SaveData sd = new SaveData(Files.SaveFolder + Files.fileSplit);
+		sd.writeCharacters();
+		
 		game.setSize(Res);
 
 		if(game.getSize().getWidth() != Res.getWidth() || game.getSize().getHeight() != Res.getHeight())

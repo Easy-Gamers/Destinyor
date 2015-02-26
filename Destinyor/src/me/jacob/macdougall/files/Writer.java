@@ -57,54 +57,54 @@ public class Writer {
 		}
 	}
 
-	public static void writeNpcs(String location) {
-		BufferedWriter bw;
-		try {
-			bw = new BufferedWriter(new FileWriter(location));
+//	public static void writeNpcs(String location) {
+//		BufferedWriter bw;
+//		try {
+//			bw = new BufferedWriter(new FileWriter(location));
+//
+//			String[] stats = { "Name = ", "Frames = ", "X = ", "Y = ", "Dialouge Location = ", "Level = " };
+//
+//			String Format = "NPCs";
+//
+//			bw.write(Format + " #Note for Modding: Copy and paste the npc characteristics than alter it, also always leave a space between npcs");
+//
+//			for(String[] npcs : Default.getNpcs()) {
+//				int i = 0;
+//				bw.newLine();
+//				for(String npc : npcs) {
+//					bw.newLine();
+//					bw.write(stats[i]);
+//					bw.write(npc);
+//					if(npc.contains(".txt")) {
+//						writeDialouge(Files.DialougesFolder + Files.fileSplit + npc, npcs[0]);
+//					}
+//					i++;
+//				}
+//				i = 0;
+//			}
+//			bw.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-			String[] stats = { "Name = ", "Frames = ", "X = ", "Y = ", "Dialouge Location = ", "Level = " };
-
-			String Format = "NPCs";
-
-			bw.write(Format + " #Note for Modding: Copy and paste the npc characteristics than alter it, also always leave a space between npcs");
-
-			for(String[] npcs : Default.getNpcs()) {
-				int i = 0;
-				bw.newLine();
-				for(String npc : npcs) {
-					bw.newLine();
-					bw.write(stats[i]);
-					bw.write(npc);
-					if(npc.contains(".txt")) {
-						writeDialouge(Files.DialougesFolder + Files.fileSplit + npc, npcs[0]);
-					}
-					i++;
-				}
-				i = 0;
-			}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeDialouge(String location, String name) {
-		BufferedWriter bw;
-		try {
-			bw = new BufferedWriter(new FileWriter(location));
-
-			String[] stats = Default.getDialouges(name);
-
-			for(String stat : stats) {
-				bw.write(stat);
-				bw.newLine();
-			}
-			bw.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void writeDialouge(String location, String name) {
+//		BufferedWriter bw;
+//		try {
+//			bw = new BufferedWriter(new FileWriter(location));
+//
+//			String[] stats = Default.getDialouges(name);
+//
+//			for(String stat : stats) {
+//				bw.write(stat);
+//				bw.newLine();
+//			}
+//			bw.close();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void writeDefaultCharacterFile(String location) {
 		BufferedWriter bw;
@@ -200,37 +200,37 @@ public class Writer {
 		}
 	}
 
-	public static void WriteEnemyFile(String location) {
-
-		String[] Format = { "Enemies", "{", "}" };
-
-		String[] stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "X&Y = " };
-
-		BufferedWriter bw;
-
-		try {
-
-			bw = new BufferedWriter(new FileWriter(location));
-
-			bw.write(Format[0] + " #Note for Modding: Copy and paste the enemy characteristics than alter it, also always leave a space between enemies");
-
-			for(String[] enemies : Default.getEnemies()) {
-				int i = 0;
-				bw.newLine();
-				for(String enemy : enemies) {
-					bw.newLine();
-					bw.write(stats[i]);
-					bw.write(enemy);
-					i++;
-				}
-				i = 0;
-			}
-
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public static void WriteEnemyFile(String location) {
+//
+//		String[] Format = { "Enemies", "{", "}" };
+//
+//		String[] stats = { "Name = ", "Frame = ", "Level = ", "Experience = ", "Health = ", "Strength = ", "Skill = ", "Speed = ", "Luck = ", "Defense = ", "Wisdom = ", "Gold = ", "Resistance = ", "X&Y = " };
+//
+//		BufferedWriter bw;
+//
+//		try {
+//
+//			bw = new BufferedWriter(new FileWriter(location));
+//
+//			bw.write(Format[0] + " #Note for Modding: Copy and paste the enemy characteristics than alter it, also always leave a space between enemies");
+//
+//			for(String[] enemies : Default.getEnemies()) {
+//				int i = 0;
+//				bw.newLine();
+//				for(String enemy : enemies) {
+//					bw.newLine();
+//					bw.write(stats[i]);
+//					bw.write(enemy);
+//					i++;
+//				}
+//				i = 0;
+//			}
+//
+//			bw.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void WriteSpellFile(String location) {
 		BufferedWriter bw;

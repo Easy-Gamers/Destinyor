@@ -130,9 +130,9 @@ public class FileLoader {
 			Reader.readSpells(location);
 		}
 
-		if(location.equals(Files.Npcs)) {
-			Reader.ReadNpcs(location);
-		}
+//		if(location.equals(Files.Npcs)) {
+//			Reader.ReadNpcs(location);
+//		}
 
 		if(location.equals(Files.Items)) {
 			Reader.ReadItems(location);
@@ -144,17 +144,17 @@ public class FileLoader {
 		if(location.equals(Files.Settings)) {
 			Writer.writeSettingFile(location);
 		}
-		if(location.equals(Files.Characters)) {
-			Writer.writeDefaultCharacterFile(location);
-		}
+//		if(location.equals(Files.Characters)) {
+//			Writer.writeDefaultCharacterFile(location);
+//		}
 
 		if(location.equals(Files.Spells)) {
 			Writer.WriteSpellFile(location);
 		}
 
-		if(location.equals(Files.Npcs)) {
-			Writer.writeNpcs(location);
-		}
+//		if(location.equals(Files.Npcs)) {
+//			Writer.writeNpcs(location);
+//		}
 
 	}
 
