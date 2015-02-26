@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.jacob.macdougall.cutscenes.Cutscene;
-import me.jacob.macdougall.enemies.Boss;
 import me.jacob.macdougall.npcs.*;
 
 public class Quest {
@@ -17,36 +16,28 @@ public class Quest {
 	// Boss killing quest
 	// previous quest completion
 
+	public static final String BOSS = "Boss", MONSTER = "Monster Hunting", BOUNTY = "Bounty Hunter", FETCH = "Fetch";
+	
 	public static Map<Integer, Quest> quests = new HashMap<>();
 
 	public Rewards[] rewards;
 	private NPC questGiver;
-	private Boss boss;
 	public Cutscene[] cutscenes;
 	private boolean isAccepted = false;
+	private boolean completed = false;
+	protected QuestReader questReader;
 	
 	private String startDialouge;
 	private String endDialouge;
 
 	public boolean Completed = false;
 
-	public Quest(Rewards[] rewards, NPC questNpc, Boss boss, Cutscene[] cutscene, String startDialouge, String endDialouge, boolean completed) {
-		this.boss = boss;
+	public Quest(Rewards[] rewards, NPC questNpc, Cutscene[] cutscene, String startDialouge, String endDialouge, boolean completed) {
 		this.questGiver = questNpc;
-		if(boss != null)
-		//this.bossNpc = NPC.npcs.get(boss.getName());
 		this.rewards = rewards;
 		this.startDialouge = startDialouge;
 		this.endDialouge =  endDialouge;
 		this.Completed = completed;
-	}
-
-	public Boss getBosses() {
-		return boss;
-	}
-
-	public boolean hasBoss() {
-		return (boss != null);
 	}
 
 	public Rewards[] getRewards() {
@@ -77,6 +68,10 @@ public class Quest {
 	
 	public static void checkQuest(String questType) {
 		
+	}
+	
+	public boolean isCompleted() {
+		return completed;
 	}
 	
 	/**

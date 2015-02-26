@@ -17,6 +17,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import me.jacob.macdougall.DebugWriter;
+import me.jacob.macdougall.threads.Thread_Controller;
 
 public class Sound implements LineListener {
 
@@ -53,14 +54,13 @@ public class Sound implements LineListener {
 		}
 
 		if(clip != null && !clip.isOpen()) {
-			// System.out.println("Opening: " + name);
 			clip.open(audioInputStream);
 			try {
 				volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 				volume.setValue(audioLevel);
 			} catch(IllegalArgumentException e) { // If on linux use something else instead
 				DebugWriter.println("Sound: IllegalArgumentException has been thrown");
-				//e.printStackTrace();
+				Thread_Controller.stopAudio();
 			}
         }
 	}
@@ -78,6 +78,11 @@ public class Sound implements LineListener {
 		if(clip != null && clip.isOpen()) {
 			// System.out.println("Closing: " + name);
 			clip.close();
+			try {
+				audioInputStream.reset();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -124,8 +129,6 @@ public class Sound implements LineListener {
 			clip = (Clip) line;
 			clip.addLineListener(this);
 			audioInputStream = AudioSystem.getAudioInputStream(soundFile);
-			//audioInputStream.read();
-			//ais = audioInputStream;
 		} catch (Exception ex) {
 			DebugWriter.println("Error with playing sound: " + name);
 			ex.printStackTrace();

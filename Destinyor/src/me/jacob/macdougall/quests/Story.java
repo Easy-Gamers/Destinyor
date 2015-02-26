@@ -7,7 +7,7 @@ import me.jacob.macdougall.npcs.NPC;
 public class Story extends Quest {
 
 	public Story(Rewards[] rewards, NPC questNpc, Boss boss, Cutscene[] cutscene, String startDialouge, String endDialouge, boolean completed) {
-		super(rewards, questNpc, boss, cutscene, startDialouge, endDialouge, completed);
+		super(rewards, questNpc, cutscene, startDialouge, endDialouge, completed);
 		// TODO Auto-generated constructor stub
 	}
 

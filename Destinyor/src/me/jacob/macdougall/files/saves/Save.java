@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.files.Files;
+import me.jacob.macdougall.magic.Spells;
 import me.jacob.macdougall.player.Player;
 
-@SuppressWarnings("unused")
 public class Save {
 	
 	public static List<Save> saves = new ArrayList<>();
@@ -26,10 +27,10 @@ public class Save {
 	
 	public Save(String location, int id) {
 		saveFile = new File(location + Files.fileSplit + "Characters.destinyor");
-		if(!saveFile.exists()) {
+		achievements = new File(location + Files.fileSplit + "Achievements.destinyor");
+		if(!achievements.exists() || !saveFile.exists()) {
 			createSave();
 		}
-		achievements = new File(location + Files.fileSplit + "Achievements.destinyor");
 		this.id = id;
 	}
 	
@@ -37,11 +38,11 @@ public class Save {
 		return id;
 	}
 	
-	public void createSave() {
-		if(saveFile.mkdir()) {
+	private void createSave() {
+		if(saveFile.mkdir() && !saveFile.exists()) {
 			writeSave();
 		}
-		if(achievements.mkdir()) {
+		if(achievements.mkdir() && !achievements.exists()) {
 			writeAchievements();
 		}
 	}
@@ -49,6 +50,39 @@ public class Save {
 	private void writeSave() {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
+			
+			for(Player player : Player.players) {
+				bw.newLine();
+				player.writeStats(bw);
+				bw.newLine();
+			}
+			for(Player player : Player.players) {
+				bw.newLine();
+				bw.write(player.getName() + " spells = {");
+				bw.newLine();
+				if(player.spells.size() > 0) { 
+					int s = 0;
+					int i = 0;
+					for(Spells spell : player.spells.values()) {
+						
+						if(s < player.spells.size() - 1)
+							bw.write(spell.getName() + ", ");
+						else
+							bw.write(spell.getName());
+						
+						if(i > 4) {
+							bw.newLine();
+							i = 0;
+						}
+						
+						s++;
+						i++;
+					}
+				}
+				bw.newLine();
+				bw.write("}");
+				bw.newLine();
+			}
 			
 			bw.close();
 		} catch (IOException e) {
@@ -60,6 +94,10 @@ public class Save {
 	private void writeAchievements() {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(achievements));
+			
+			bw.write("Difficultly = " + GameVariables.getDifficultly().toString());
+			bw.write("Level = " + Player.Level);
+			bw.write("X & Y = " + Player.X + "," + Player.Y);
 			
 			bw.close();
 		} catch (IOException e) {

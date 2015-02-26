@@ -19,7 +19,7 @@ import me.jacob.macdougall.player.Move;
  * @author Jacob
  * 
  */
-public abstract class Thread_Controller {
+public class Thread_Controller {
 	public static Cutscene cutscene;
 	public static NPCs cNpc;
 	public static NPC npc;
@@ -30,20 +30,11 @@ public abstract class Thread_Controller {
 	protected static NPC_Thread nThread;
 	protected static Loading_Thread lThread;
 	protected static Audio_Thread aThread;
-	protected Thread NPCThread;
-	protected Thread LoadingThread;
-	protected Thread CutsceneThread;
-	protected Thread AudioThread;
+	
 
-	protected boolean NPCs = false;
-	protected boolean Loading = false;
-	protected boolean cutscenes = false;
-	protected boolean audio = false;
+	protected Thread CutsceneThread;
 
 	public static boolean doneLoading = false;
-
-	protected int Updates = 0;
-	protected int Frames = 0;
 
 	public static void init(Screen screen, Battles battles) {
 		Thread_Controller.screen = screen;
@@ -80,17 +71,9 @@ public abstract class Thread_Controller {
 		aThread = new Audio_Thread();
 		aThread.start();
 	}
-
-	public abstract void start();
-
-	public abstract void stop();
-
-	public abstract void pause();
-
-	public abstract void resume();
-
-	protected abstract void update();
-
-	protected abstract void render();
+	
+	public static void stopAudio() {
+		aThread.stop();
+	}
 
 }

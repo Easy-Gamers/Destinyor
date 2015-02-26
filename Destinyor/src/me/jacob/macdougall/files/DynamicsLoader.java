@@ -35,7 +35,7 @@ public class DynamicsLoader {
 		BufferedImage mp = null;
 		
 		try {
-			mp = ImageIO.read(Destinyor.class.getResource("/map.png"));
+			mp = ImageIO.read(Destinyor.class.getResource(Files.DestinyorMap));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

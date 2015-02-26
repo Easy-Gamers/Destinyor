@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import me.jacob.macdougall.Destinyor;
-import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.Time;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.input.Keys;
@@ -46,7 +45,7 @@ public class MenuHandler {
 	public MenuHandler() {
 		Buttons[] buttons;
 		DropDowns[] dropDowns;
-		TextBox[] textboxes;
+		//TextBox[] textboxes;
 		
 		// Main Menu
 		buttons = new Buttons[buttonNames[MAIN].length];
@@ -87,7 +86,7 @@ public class MenuHandler {
 			buttons[i] = new Buttons(Resolution.getResolution(i), 130, 0);
 		}
 		
-		DropDowns res = new DropDowns("Resolution", 130, 32, 120, 20, 3, Resolution.getResolutionInt(), buttons);
+		DropDowns res = new DropDowns(dropDownNames[0][0], 130, 32, 120, 20, 3, Resolution.getResolutionInt(), buttons);
 		
 		buttons = new Buttons[3];
 		
@@ -99,7 +98,7 @@ public class MenuHandler {
 		buttons[1] = border;
 		buttons[2] = full;
 		
-		DropDowns win = new DropDowns("Window", 382, 32, 120, 20, 3, 0, buttons);
+		DropDowns win = new DropDowns(dropDownNames[0][1], 382, 32, 120, 20, 3, 0, buttons);
 		
 		dropDowns = new DropDowns[2];
 		dropDowns[0] = res;

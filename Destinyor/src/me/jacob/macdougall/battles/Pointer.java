@@ -253,12 +253,6 @@ public class Pointer {
 		}
 	}
 	
-//	commands.put(4, new Commands("Enemy1", 32, 16, 32, 32));
-//	commands.put(5, new Commands("Enemy2", 32, 68, 32, 32));
-//	commands.put(6, new Commands("Enemy3", 32, 120, 32, 32));
-//	commands.put(7, new Commands("Enemy4", 32, 172, 32, 32));
-//	commands.put(8, new Commands("Enemy5", 32, 224, 32, 32));
-	
 
 	private void commands(Player player, Enemies[] enemies) {
 		switch (command) {

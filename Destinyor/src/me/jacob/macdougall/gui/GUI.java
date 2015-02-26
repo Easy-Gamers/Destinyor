@@ -16,6 +16,7 @@ public class GUI {
 	public Map<String, Buttons> buttons = new HashMap<>();
 	public Map<String, TextBox> textBoxes = new HashMap<>();
 	public Map<String, DropDowns> dropDowns = new HashMap<>();
+	public Map<String, CheckBoxes> checkBoxes = new HashMap<>();
 	
 	public GUI_Objects focused = null;
 	
@@ -38,7 +39,9 @@ public class GUI {
 	}
 	
 	public void add(CheckBoxes... checkBoxes) {
-		
+		for(CheckBoxes checkbox : checkBoxes) {
+			this.checkBoxes.put(checkbox.getName(), checkbox);
+		}
 	}
 	
 	public void add(TextBox... textBoxes) {
@@ -76,8 +79,17 @@ public class GUI {
 				}
 		}
 		for(DropDowns dropDown : dropDowns.values()) {
-			if(dropDown.isEnabled())
+			if(dropDown.isEnabled()) {
 				dropDown.update(mouse);
+			}
+		}
+		for(CheckBoxes checkbox : checkBoxes.values()) {
+			if(checkbox.isEnabled()) {
+				if(checkbox.inBox(mouse.getPressed(Mouse.X), mouse.getPressed(Mouse.Y), mouse.getReleased(Mouse.X), mouse.getReleased(Mouse.Y))) {
+					checkbox.Toggle();
+					focused = checkbox;
+				}
+			}
 		}
 	}
 	
@@ -90,6 +102,9 @@ public class GUI {
 		}
 		for(DropDowns dropDown : dropDowns.values()) {
 			dropDown.render(screen);
+		}
+		for(CheckBoxes checkbox : checkBoxes.values()) {
+			checkbox.render(screen);
 		}
 	}
 	

@@ -6,7 +6,6 @@ import java.util.List;
 import graphic.engine.screen.Screen;
 import me.jacob.macdougall.cutscenes.NPCs;
 import me.jacob.macdougall.magic.Element;
-import me.jacob.macdougall.magic.Spells;
 import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.world.LevelMap;
 

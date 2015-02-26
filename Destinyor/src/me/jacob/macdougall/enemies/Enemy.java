@@ -5,12 +5,9 @@ import graphic.engine.screen.Screen;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import me.jacob.macdougall.graphics.Sprites;
-import me.jacob.macdougall.items.Items;
 import me.jacob.macdougall.magic.Element;
-import me.jacob.macdougall.magic.Spells;
 
 public class Enemy extends Enemies {
 
@@ -25,8 +22,6 @@ public class Enemy extends Enemies {
 	public int X = 0, Y = 0, X1 = 0, Y1 = 0;
 
 	protected boolean removed = false;
-
-	private Items[] item;
 
 	public int damage = 0;
 
@@ -140,15 +135,15 @@ public class Enemy extends Enemies {
 		screen.render(frames[fr], x, y);
 	}
 
-	public Items death() {
-		Items items = null;
-		if(item != null) {
-			Random random = new Random();
-			int rand = random.nextInt(item.length);
-			items = item[rand];
-		}
-		return items;
-	}
+//	public Items death() {
+//		Items items = null;
+//		if(item != null) {
+//			Random random = new Random();
+//			int rand = random.nextInt(item.length);
+//			items = item[rand];
+//		}
+//		return items;
+//	}
 
 	public static Enemy getRandomEntity() {
 
@@ -162,5 +157,37 @@ public class Enemy extends Enemies {
 
 	public void setEnemy(int enemyNumber) {
 		enemy = enemyNumber;
+	}
+	
+	public static Enemy readStats(String[] args) {
+		Enemy enemy = null;
+		int i = 0;
+		String name = args[i++];
+		String frame = args[i++];
+		int lvl = Integer.parseInt(args[i++]);
+		int exp = Integer.parseInt(args[i++]);
+		int hp = Integer.parseInt(args[i++]);
+		int str = Integer.parseInt(args[i++]);
+		int skl = Integer.parseInt(args[i++]);
+		int spd = Integer.parseInt(args[i++]);
+		int luk = Integer.parseInt(args[i++]);
+		int def = Integer.parseInt(args[i++]);
+		int wis = Integer.parseInt(args[i++]);
+		int gold = Integer.parseInt(args[i++]);
+		String resistances = args[i++];
+		String spells = args[i++];
+		String[] pos = args[i++].split(",");
+		
+		int[] finalPos = new int[pos.length];
+		
+		for(int j = 0; j < pos.length; j++) {
+			pos[j] = pos[j].trim();
+			finalPos[j] = Integer.parseInt(pos[j]);
+		}
+		
+		enemy = new Enemy(name, frame, lvl, exp, hp, str, skl, spd, luk, def, wis, gold, null, finalPos[0], finalPos[1], finalPos[2], finalPos[3]);
+		
+		return enemy;
+		//public Enemy(String name, String frame, int lvl, int exp, int hp, int str, int skl, int spd, int luk, int def, int wis, int gold, Element Resistance, int xPos, int xSpawn, int yPos, int ySpawn) {
 	}
 }

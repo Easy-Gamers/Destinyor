@@ -23,8 +23,8 @@ public class Files {
     public static String FileFolder = DestinyorHome + "Game Files";
     public static String QuestFolder = DestinyorHome + "Quests";
     
-    public static String Characters = DestinyorHome + "Characters" + EXT;
-    public static String Enemies = DestinyorHome + "Enemies" + EXT;
+    public static String Characters = "/Characters" + EXT;
+    public static String Enemies = "/Enemies" + EXT;
     public static String Settings = DestinyorHome + "Settings" + ".ini";
     public static String Spells = DestinyorHome + "Spells" + EXT;
     public static String Npcs = DestinyorHome + "Npcs" + EXT;
@@ -33,14 +33,17 @@ public class Files {
     public static String Bosses = DestinyorHome + "Bosses" + EXT;
     //public static String Quests = QuestFolder + fileSplit;
     
-    public static String SpriteSheet = "/icon0.png";
-    public static String DestinyorCharacter1Sheet = "/Character1.png";
-    public static String DestinyorCharacter2Sheet = "/Character2.png";
-    public static String DestinyorCharacter3Sheet = "/Character3.png";
-    public static String DestinyorCharacter4Sheet = "/Character4.png";
-    public static String DestinyorEnemiesSheet = "/Enemies.png";
-    public static String DestinyorMap = "/map.png";
-    public static String DestinyorFont = "/8font.png";
+    private static String spriteFolder = "/sprites/";
+    public static String SpriteSheet = spriteFolder + "icon0.png";
+    public static String[] playerSheets;
+    public static String DestinyorCharacter1Sheet = spriteFolder + "Character1.png";
+    public static String DestinyorCharacter2Sheet = spriteFolder + "Character2.png";
+    public static String DestinyorCharacter3Sheet = spriteFolder + "Character3.png";
+    public static String DestinyorCharacter4Sheet = spriteFolder + "Character4.png";
+    public static String DestinyorEnemiesSheet = spriteFolder + "Enemies.png";
+    public static String DestinyorMap = spriteFolder + "map.png";
+    public static String DestinyorFont = spriteFolder + "8font.png";
+    public static String Buttons = spriteFolder + "buttons.png";
     
     public static void setFiles() {
     	DestinyorHome = DestinyorFolder + fileSplit;
@@ -49,8 +52,8 @@ public class Files {
     	ModFolder = DestinyorHome + "Mod";
     	SaveFolder = DestinyorHome + "Saves";
     	QuestFolder = DestinyorHome + "Quests";
-    	Characters = DestinyorHome + "Characters" + EXT;
-    	Enemies = DestinyorHome + "Enemies" + EXT;
+    	//Characters = DestinyorHome + "Characters" + EXT;
+    	//Enemies = DestinyorHome + "Enemies" + EXT;
     	Settings = DestinyorHome + "Settings" + ".ini";
     	Spells = DestinyorHome + "Spells" + EXT;
     	Npcs = DestinyorHome + "Npcs" + EXT;
@@ -59,8 +62,13 @@ public class Files {
     	Bosses = DestinyorHome + "Bosses" + EXT;
     }
     
+    public static void setPlayerSheet(int i, String name) {
+    	//playerSheets = Reader.
+    }
+    
     
     public static void setFile(String file, String url) {
+    	System.out.println(url);
     	if(Characters.contains(file) || file.contains("Characters.destinyor"))
     		Characters = url;
     	

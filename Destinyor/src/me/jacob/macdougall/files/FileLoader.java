@@ -2,6 +2,8 @@ package me.jacob.macdougall.files;
 
 import java.io.*;
 
+import me.jacob.macdougall.ArrayHandler;
+
 public class FileLoader {
 
 	// Allows the coder to only do Fileloader.CreateFiles, ReadFiles, WriteFiles in one method
@@ -38,16 +40,25 @@ public class FileLoader {
 	}
 	
 	public static String[] fileChecker(String[] files, String check) {
-		String[] list = null;
+		ArrayHandler ah = new ArrayHandler();
+		//String[] list = null;
 		for(String file : files) {
 			if(accept(file, check)) {
-				list = infiniteArray(list, file);
+				ah.add(file);
 			}
 		}
 		
-		return list;
+		ah.close();
+		
+		String[] arrayOfFiles = new String[ah.get()[0].length];
+		for(int i = 0; i < files.length; i++) {
+			arrayOfFiles[i] = (String) ah.get()[0][i];
+		}
+		
+		return arrayOfFiles;
 	}
 	
+	@SuppressWarnings("unused")
 	private static String[] infiniteArray(String[] array, String object) {
 		if(array != null) {
 			String[] temp = new String[array.length + 1];
@@ -113,14 +124,6 @@ public class FileLoader {
 	public static void ReadFromFiles(String location) {
 		if(location.equals(Files.Settings)) {
 			Reader.ReadSettings(location);
-		}
-
-		if(location.equals(Files.Enemies)) {
-			Reader.ReadEnemies(location);
-		}
-
-		if(location.equals(Files.Characters)) {
-			Reader.ReadPlayer(location);
 		}
 
 		if(location.equals(Files.Spells)) {

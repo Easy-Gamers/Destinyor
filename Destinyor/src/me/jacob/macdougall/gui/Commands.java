@@ -10,24 +10,32 @@ import graphic.engine.screen.Screen;
 
 public class Commands extends GUI_Objects {
 	
-	private Bitmap button;
-	
-	public Commands(String name, int x, int y, int width, int height) {
-		super(name, x, y, width, height);
+	public Commands(String name, int x, int y) {
+		super(name, x, y, 8 * name.length(), 8);
 		if(Destinyor.Debug)
 			debug();
+		else
+			setSprite(null);
+	}
+	
+	public Commands(String name, int x, int y, int width, int height) {
+		super(name, x, y, 8 * name.length(), 8);
+		if(Destinyor.Debug)
+			debug();
+		else
+			setSprite(null);
 	}
 	
 	private void debug() {
-		button = new Bitmap(width, height);
-		for(int i = 0; i < button.pixels.length; i++) {
-			button.pixels[i] = Color.BLACK.getRGB();
+		setSprite(new Bitmap(width, height));
+		for(int i = 0; i < getSprite().pixels.length; i++) {
+			getSprite().pixels[i] = Color.BLACK.getRGB();
 		}
 	}
 	
 	public void render(Screen screen) {
-		if(button != null)
-			screen.render(button, getX(), getY());
+		if(getSprite() != null)
+			masterRender(screen);
 		GameFont.render(name, screen, getX(), getY());
 		
 	}

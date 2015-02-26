@@ -139,14 +139,6 @@ public class Player extends Dummy {
 			this.setStatRelative(LEVEL, 1);
 			statPoints += 10;
 		}
-		//            if(Exp >= 50 * Lvl) {
-		//                Lvl += 1;
-		//                Str += 10;
-		//                Def += 10;
-		//                Hp = get("stat.hp") + 50;
-		//                put("stat.hp", Hp);
-		//                DebugWriter.println("Leveling Up: " + Name);
-		//            }
 	}
 	
 	@Override
@@ -305,6 +297,34 @@ public class Player extends Dummy {
 		bw.write("Player Resistances = ");
 		bw.newLine();
 		bw.write("inParty = " + isInParty());
+	}
+	
+	public static Player readStats(String[] args) {
+		Player player = null;
+		int i = 0;
+		String name = args[i++];
+		String gender = args[i++];
+		int level = Integer.parseInt(args[i++]);
+		int exp = Integer.parseInt(args[i++]);
+		int hp = Integer.parseInt(args[i++]);
+		int str = Integer.parseInt(args[i++]);
+		int skl = Integer.parseInt(args[i++]);
+		int spd = Integer.parseInt(args[i++]);
+		int luk = Integer.parseInt(args[i++]);
+		int def = Integer.parseInt(args[i++]);
+		int wis = Integer.parseInt(args[i++]);
+		int gold = Integer.parseInt(args[i++]);
+		i++;
+		String inparty = args[i++].toLowerCase();
+		boolean inParty = false;
+		
+		if(inparty.contains("true") || inparty.contains("yes")) {
+			inParty = true;
+		}
+		
+		player = new Player(name, gender, level, exp, hp, str, skl, spd, luk, def, wis, gold, inParty);
+		
+		return player;
 	}
 
 }

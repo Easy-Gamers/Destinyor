@@ -1,12 +1,15 @@
 package me.jacob.macdougall.enemies;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.graphics.MassSprites;
 import me.jacob.macdougall.items.Equipment;
+import me.jacob.macdougall.items.Items;
 import me.jacob.macdougall.magic.Spells;
 import me.jacob.macdougall.npcs.body.Entities;
 import me.jacob.macdougall.npcs.body.Limb;
@@ -22,6 +25,7 @@ public class Dummy extends MassSprites {
 
 	public Map<Integer, Equipment> equipped = new HashMap<>(); // Needs to be in exact order
 	public Map<Integer, Spells> spells = new HashMap<>(); // Needs to be in exact order
+	public List<Items> inventory = new ArrayList<>();
 
 	protected LevelMap level;
 	
@@ -453,7 +457,7 @@ public class Dummy extends MassSprites {
 	}
 
 	public Limb[] getLimbs() {
-		return (Limb[]) entity.limbs.toArray();
+		return entity.getLimbs();
 	}
 
 	protected static Dummy newInstance(Dummy dummy) {
@@ -486,9 +490,9 @@ public class Dummy extends MassSprites {
 	public boolean miss(Dummy dummy) {
 		int rand = 0;
 		rand = (int) (getStat(Dummy.LUCK) + (getStat(Dummy.LUCK) * skillcheck(dummy)) * 1);
-		// If you can't hit the target you get a 50/50 chance to hit
+		// If you can't hit the target you get a 1/10 chance to hit
 		if(rand <= 1) {
-			rand = 2;
+			rand = 10;
 		}
 		chanceToMiss = random.nextInt(rand);
 		if(chanceToMiss <= 0) {

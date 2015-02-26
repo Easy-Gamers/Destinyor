@@ -9,7 +9,6 @@
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/GameVariables.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/battles/Calculations.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/files/Writer.java</file>
-            <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/files/DestinyorFiles.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/Time.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/enemies/Boss.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/battles/AIBattle.java</file>
@@ -32,9 +31,7 @@
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/Clock.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/Debug.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/battles/BattleRender.java</file>
-            <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/files/Saves.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/items/PlayerInventory.java</file>
-            <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/magic/Combo_Spell.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/cutscenes/Cutscene.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/gui/Buttons.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/input/KeyChanger.java</file>
@@ -50,7 +47,6 @@
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/input/Keys.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/magic/Effect.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/files/SetGame.java</file>
-            <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/gui/Menus.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/files/DynamicsLoader.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/battles/Battles.java</file>
             <file>file:/D:/workspace/Destinyor/src/me/jacob/macdougall/items/Equipment.java</file>

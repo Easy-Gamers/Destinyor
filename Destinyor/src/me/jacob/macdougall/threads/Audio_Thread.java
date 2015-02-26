@@ -8,8 +8,11 @@ import me.jacob.macdougall.audio.Playlist;
 //import me.jacob.macdougall.audio.Sound;
 import me.jacob.macdougall.world.LevelMap;
 
-public class Audio_Thread extends Thread_Controller implements Runnable {
+public class Audio_Thread implements Runnable {
 
+	protected Thread AudioThread;
+	private boolean running = false;
+	
 	@Override
 	public synchronized void run() {
 		//int fps = 0, update = 0;
@@ -17,15 +20,13 @@ public class Audio_Thread extends Thread_Controller implements Runnable {
         double unsPerUpdate = 1000000000 / 60;
         double uthen = System.nanoTime();
         double unprocessed = 0;
-        while(audio) {
+        while(running) {
         	double unow = System.nanoTime();
         	unprocessed += (unow - uthen) / unsPerUpdate;
         	uthen = unow;
         	
         	// Update queue
         	while(unprocessed >= 1){
-        		// Update
-                //update++;
                 update();
                 unprocessed--;
         	}
@@ -34,9 +35,6 @@ public class Audio_Thread extends Thread_Controller implements Runnable {
         	
         	// FPS Timer
         	if(System.currentTimeMillis() - fps_Timer > 1000){
-        		//System.out.printf("\n Audio_Thread: %d fps, %d updates", fps, update);
-                //fps = 0;
-                //update = 0;
                 fps_Timer += 1000;
                 
                 try {
@@ -48,32 +46,22 @@ public class Audio_Thread extends Thread_Controller implements Runnable {
         }
 	}
 
-	@Override
 	public void start() {
-		audio = true;
-		this.AudioThread = new Thread(this, "AudioHandler");
-        this.AudioThread.setPriority(Thread.MIN_PRIORITY);
-		this.AudioThread.start();
+		running = true;
+		AudioThread = new Thread(this, "AudioHandler");
+        AudioThread.setPriority(Thread.MIN_PRIORITY);
+		AudioThread.start();
 	}
 
-	@Override
 	public void stop() {
-		
+		running = false;
+		try {
+			AudioThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected void update() {
 		
 		try {
@@ -89,9 +77,5 @@ public class Audio_Thread extends Thread_Controller implements Runnable {
 		}
 	}
 
-	@Override
-	protected void render() {
-		
-	}
 
 }

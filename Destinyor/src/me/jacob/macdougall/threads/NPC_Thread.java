@@ -7,37 +7,41 @@ import me.jacob.macdougall.cutscenes.NPCs;
 import me.jacob.macdougall.graphics.UI;
 import me.jacob.macdougall.npcs.NPC;
 
-public class NPC_Thread extends Thread_Controller implements Runnable {
+public class NPC_Thread implements Runnable {
 
-	@Override
+	protected Thread NPCThread;
+	
+	private boolean running = false;
+	
+	
 	public void start() {
-		this.NPCs = true;
-		this.NPCThread = new Thread(this, "NpcHandler");
-		this.NPCThread.setPriority(Thread.NORM_PRIORITY);
-		this.NPCThread.start();
+		running = true;
+		NPCThread = new Thread(this, "NpcHandler");
+		NPCThread.setPriority(Thread.NORM_PRIORITY);
+		NPCThread.start();
 	}
 
-	@Override
+
 	public void resume() {
-		NPCs = true;
+		running = true;
 	}
 
-	@Override
+
 	public void pause() {
-		NPCs = false;
+		running = false;
 	}
 
-	@Override
+
 	public void stop() {
-		this.NPCs = false;
+		running = false;
 		try {
-			this.NPCThread.join();
+			NPCThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
+
 	protected void update() {
 		if(UI.menu == 0 || UI.menu == 2) {
 
@@ -47,22 +51,22 @@ public class NPC_Thread extends Thread_Controller implements Runnable {
 					if(n.inRange()) {
 						n.Speaking();
 						if(n.isSpeaking()) {
-							npc = n;
+							Thread_Controller.npc = n;
 						}
 					}
 				}
 			} else {
-				if(cutscene != Cutscene.cutscenes.get(Cutscene.getName))
-				cutscene = Cutscene.cutscenes.get(Cutscene.getName);
-				cutscene.update();
-				for(NPCs n : cutscene.npc.values()) {
+				if(Thread_Controller.cutscene != Cutscene.cutscenes.get(Cutscene.getName))
+					Thread_Controller.cutscene = Cutscene.cutscenes.get(Cutscene.getName);
+				Thread_Controller.cutscene.update();
+				for(NPCs n : Thread_Controller.cutscene.npc.values()) {
 					n.tick();
 					if(n.isSpeaking()) {
-						cNpc = n;
+						Thread_Controller.cNpc = n;
 					}
 				}
-				if(cutscene.finished) {
-					cutscene.stopCutscene();
+				if(Thread_Controller.cutscene.finished) {
+					Thread_Controller.cutscene.stopCutscene();
 				}
 			}
 
@@ -82,35 +86,24 @@ public class NPC_Thread extends Thread_Controller implements Runnable {
 	}
 
 	@Override
-	protected void render() {
-
-	}
-
-	@Override
 	public synchronized void run() {
-		//int fps = 0, update = 0;
 		long fps_Timer = System.currentTimeMillis();
 		double unsPerUpdate = 1000000000 / 60;
 		// Last update in nanoseconds
 		double uthen = System.nanoTime();
 		double unprocessed = 0;
-		while (this.NPCs) {
+		while (running) {
 			double unow = System.nanoTime();
 			unprocessed += (unow - uthen) / unsPerUpdate;
 			uthen = unow;
 			// Update queue
 			while (unprocessed >= 1) {
-				// Update
-				//update++;
 				update();
 				unprocessed--;
 			}
 
 			// FPS Timer
 			if(System.currentTimeMillis() - fps_Timer > 1000) {
-				//System.out.printf("\n Npc_Thread: %d fps, %d updates", fps, update);
-				//fps = 0;
-				//update = 0;
 				fps_Timer += 1000;
 
 				try {

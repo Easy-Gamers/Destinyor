@@ -21,10 +21,10 @@ public class BattleInput {
 	public BattleInput(Pointer point) {
 		this.point = point;
 
-		commands.put(0, new Commands("Attack", 155, 275, (8 * "Attack".length()), 8));
-		commands.put(1, new Commands("Spells", 155, 295, (8 * "Spells".length()), 8));
-		commands.put(2, new Commands("Items", 155, 315, (8 * "Items".length()), 8));
-		commands.put(3, new Commands("Flee", 155, 335, (8 * "Flee".length()), 8));
+		commands.put(0, new Commands("Attack", 155, 275));
+		commands.put(1, new Commands("Spells", 155, 295));
+		commands.put(2, new Commands("Items", 155, 315));
+		commands.put(3, new Commands("Flee", 155, 335));
 		
 		commands.put(4, new Commands("Enemy1", 32, 16, 32, 32));
 		commands.put(5, new Commands("Enemy2", 32, 68, 32, 32));

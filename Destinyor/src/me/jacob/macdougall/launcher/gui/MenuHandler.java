@@ -5,23 +5,36 @@ import graphic.engine.window.Resolution;
 
 import input.engine.mouse.Mouse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import me.jacob.macdougall.ArrayHandler;
 import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.Writer;
 import me.jacob.macdougall.files.mod.FileChecker;
+import me.jacob.macdougall.files.mod.Mod;
+import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.gui.Buttons;
+import me.jacob.macdougall.gui.CheckBoxes;
 import me.jacob.macdougall.gui.DropDowns;
 import me.jacob.macdougall.gui.GUI;
 import me.jacob.macdougall.launcher.Launcher;
 
+// I made this it's own class instead of merging it with the already existing MenuHandler because
+// the launcher is seperate from the game
+// and I don't want to load in stuff that hasn't been create yet in the game data
 public class MenuHandler {
 	
 	public static final int NONE = -1, MAIN = 0, MODS = 1, OPTIONS = 2;
 	
 	public Map<Integer, GUI> menus = new HashMap<>();
+	public List<Mod> mods = new ArrayList<>();
+	
+	private int actualWidth;
+	private int actualHeight;
 	
 	private static final String[][] buttonNames = {
 		{ "Main", "Mods", "Options", "Start", "Exit" },
@@ -56,27 +69,33 @@ public class MenuHandler {
 	
 	private void createModsMenu() {
 		Buttons[] buttons;
+		CheckBoxes[] checkboxes;
 		int i = 0;
 		
-		buttons = new Buttons[buttonNames[MODS].length + FileChecker.directories.size()];
+		buttons = new Buttons[buttonNames[MODS].length];
 		for(i = 0; i < buttonNames[MODS].length; i++) {
 			buttons[i] = new Buttons(buttonNames[MODS][i], 64 + (130 * i), 386 / 8);
 		}
 		buttons[1].setEnabled(false);
+		
+		checkboxes = new CheckBoxes[FileChecker.getMods(null).length];
 		int x = 64;
 		int y = 80;
 		int yy = 0;
-		for(int j = 0; i < buttons.length; j++) {
-			buttons[i] = new Buttons(FileChecker.directories.get(j).getName(), x, y + (25 * yy));
+		for(i = 0; i < checkboxes.length; i++) {
+			checkboxes[i] = new CheckBoxes(FileChecker.getMod(i).getName(), x, y + (25 * yy), 120, 20, false, Sprites.getSprite(Sprites.BUTTON, 0, 0));
 			yy++;
 			if(yy > 9) {
 				x = 64 + 260;
 				yy = 0;
 			}
-			i++;
+			if(yy > 9 * 2) {
+				break;
+			}
 		}
 		GUI gui = new GUI("Mod Menu", MODS);
 		gui.add(buttons);
+		gui.add(checkboxes);
 		menus.put(MODS, gui);
 	}
 	
@@ -107,6 +126,8 @@ public class MenuHandler {
 		}
 		
 		DropDowns res = new DropDowns(dropDownNames[0][0], 64, 153, 120, 20, 3, Resolution.getResolutionInt(), buttons);
+		actualWidth = Resolution.width();
+		actualHeight = Resolution.height();
 		
 		buttons = new Buttons[3];
 		
@@ -145,19 +166,16 @@ public class MenuHandler {
 					
 					case "Main":
 						menu = MAIN;
-						System.out.println("main");
 						gui.reset();
 						break;
 						
 					case "Mods": 
 						menu = MODS;
-						System.out.println("mod");
 						gui.reset();
 						break;
 					
 					case "Options": 
 						menu = OPTIONS;
-						System.out.println("option");
 						gui.reset(); 
 						break;
 						
@@ -165,18 +183,16 @@ public class MenuHandler {
 						menu = NONE;
 						mouse.resetMouseWheel();
 						gui.reset();
-						Launcher.launch();
+						Launcher.launch(getMods());
 						break;
 					
-					
-						
 					case "Exit": 
 						gui.reset(); 
 						System.exit(0); 
 						break; // Unreachable code.
 						
 					case "Accept":
-						if(!Resolution.getResolution(Resolution.getResolutionInt(gui.dropDowns.get("Resolution").getCurrent().getName())).equals((Resolution.width() + " * " + Resolution.height()))) {
+						if(!Resolution.getResolution(Resolution.getResolutionInt(gui.dropDowns.get("Resolution").getCurrent().getName())).equals((actualWidth + " * " + actualHeight))) {
 							int width = Resolution.getWidth(Resolution.getResolutionInt(gui.dropDowns.get("Resolution").getCurrent().getName()));
 							int height = Resolution.getHeight(Resolution.getResolutionInt(gui.dropDowns.get("Resolution").getCurrent().getName()));
 							Resolution.setWindowType(gui.dropDowns.get("Window").getCurrent().getName());
@@ -193,6 +209,11 @@ public class MenuHandler {
 					
 					case "Resolution": break;
 					case "Window": break;
+					default: // Assume it's a mod
+						modHandler(gui);
+						mouse.reset();
+						gui.reset();
+						break; 
 				}
 			}
 		}
@@ -210,5 +231,132 @@ public class MenuHandler {
 		Writer.writeSettingFile(Files.Settings);
 		Resolution.setWidth(800);
 		Resolution.setHeight(600);
+	}
+	
+	public void modHandler(GUI gui) {
+		if(!resetting(gui)) {
+			if(getFocused(gui).isChecked()) {
+			boolean[] enabled = new boolean[gui.checkBoxes.size()];
+			Mod[] mods = FileChecker.getMods(FileChecker.getMod(gui.focused.getName()));
+			
+			int j = 0;
+			for(int i = 0; i < mods.length; i++) {
+				j = 0;
+				for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+					if(!checkbox.getName().equals(mods[i].getName())) {
+						if(!enabled[j])
+							enabled[j] = false;
+					} else {
+						if(checkbox.isEnabled())
+							enabled[j] = true;
+						else
+							enabled[j] = false;
+					}
+					j++;
+				}
+			}
+			
+			int i = 0;
+			for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+				checkbox.setEnabled(enabled[i]);
+				i++;
+			}
+			addMods(FileChecker.getMod(gui.focused.getName()));
+			} else {
+				removeMods(FileChecker.getMod(getFocused(gui).getName()));
+			}
+		}
+	}
+	
+	public boolean resetting(GUI gui) {
+		CheckBoxes focused = getFocused(gui);
+		if(!focused.isChecked()) {
+			boolean anychecked = false;
+			for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+				if(checkbox.isChecked()) {
+					anychecked = true;
+				}
+			}
+			if(!anychecked) {
+				for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+					checkbox.setEnabled(true);
+					removeMods(FileChecker.getMod(checkbox.getName()));
+				}
+				return true;
+			} else {
+				for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+					if(checkbox.isChecked()) {
+						System.out.println("Checkbox " + checkbox.getName() + " is checked.");
+						boolean[] enabled = new boolean[gui.checkBoxes.size()];
+						Mod[] mods = FileChecker.getMods(FileChecker.getMod(checkbox.getName()));
+						int j = 0;
+						for(int i = 0; i < mods.length; i++) {
+							j = 0;
+							for(CheckBoxes checkboxes : gui.checkBoxes.values()) {
+								if(!checkboxes.getName().equals(mods[i].getName())) {
+									if(!enabled[j])
+										enabled[j] = false;
+								} else {
+									enabled[j] = true;
+								}
+								j++;
+							}
+						}
+						
+						int i = 0;
+						for(CheckBoxes checkboxes : gui.checkBoxes.values()) {
+							checkboxes.setEnabled(enabled[i]);
+							i++;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public CheckBoxes getFocused(GUI gui) {
+		for(CheckBoxes checkbox : gui.checkBoxes.values()) {
+			if(gui.focused.getName().equals(checkbox.getName())) {
+				return checkbox;
+			}
+		}
+		return null;
+	}
+	
+	public Mod[] getMods() {
+		Object[] array = ArrayHandler.convertSingle(mods);
+		Mod[] modArray = new Mod[array.length];
+		
+		for(int i = 0; i < array.length; i++) {
+			modArray[i] = (Mod) array[i];
+		}
+		
+		for(int i = 0; i < modArray.length; i++) {
+			System.out.println("Loading: " + modArray[i].getName());
+		}
+		return modArray;
+	}
+	
+	public void addMods(Mod mod) {
+		mods.add(mod);
+		System.out.println("Adding Mod: " + mod.getName());
+		for(Mod cMod : mods) {
+			System.out.println("Currently Loaded Mods: " + cMod.getName());
+		}
+	}
+	
+	public void removeMods(Mod mod) {
+		if(mods.contains(mod)) {
+			mods.remove(mod);
+			System.out.println("Removing Mod: " + mod.getName());
+			if(mods.size() > 0) {
+				for(Mod cMod : mods) {
+					System.out.println("Currently Loaded Mods: " + cMod.getName());
+				}
+			} else {
+				System.out.println("No Mods Currently Loaded.");
+			}
+		}
 	}
 }

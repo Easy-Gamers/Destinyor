@@ -197,4 +197,9 @@ public class GUI_Objects {
 	public Bitmap getSprite() {
 		return sprite;
 	}
+	
+	public void masterRender(Screen screen) {
+		if(sprite != null)
+		screen.render(sprite, x, y);
+	}
 }

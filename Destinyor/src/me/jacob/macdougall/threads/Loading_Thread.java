@@ -6,44 +6,45 @@ import static me.jacob.macdougall.Destinyor.write;
 import me.jacob.macdougall.files.Default;
 import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
+import me.jacob.macdougall.files.ReadDefault;
 import me.jacob.macdougall.files.Reader;
 import me.jacob.macdougall.files.Writer;
 
-public class Loading_Thread extends Thread_Controller implements Runnable { 
+public class Loading_Thread implements Runnable { 
+	
+	protected Thread LoadingThread;	
+	
+	private boolean running = false;
 	
     int creator = 0;
     int writer = 0;
     int reader = 0;
     
-    boolean setShadows = true;;
+    boolean setShadows = true;
     
     //int max = 20;
     
     int fps;
     int ups;
     
-    @Override
     public void start() {
-        this.Loading = true;
-        this.LoadingThread = new Thread(this, "LoadingHandler");
-        this.LoadingThread.start();
+    	running = true;
+        LoadingThread = new Thread(this, "LoadingHandler");
+        LoadingThread.start();
     }
     
-    @Override
     public void resume() {
-        doneLoading = false;
+        Thread_Controller.doneLoading = false;
         start();
     }
     
-    @Override
     public void pause() {
-        Loading = false;
-        doneLoading = true;
+        running = false;
+        Thread_Controller.doneLoading = true;
     }
     
-    @Override
     public void stop() {
-        this.Loading = false;
+        this.running = false;
 		try {
 			this.LoadingThread.join();
 		} catch (InterruptedException e) {
@@ -66,11 +67,13 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
             reader++;
             break;
             
-            case 3: FileLoader.ReadFromFiles(Files.Characters);
+            case 3:
+            	ReadDefault.addPlayers(Files.Characters);
             reader++;
             break;
             
-            case 4: FileLoader.ReadFromFiles(Files.Enemies);
+            case 4: 
+            	ReadDefault.addEnemies(Files.Enemies);
             reader++;
             break;
             
@@ -104,11 +107,11 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
         	writer++;
         	break;
             
-            case 3: FileLoader.WriteToFiles(Files.Characters);
+            case 3: //FileLoader.WriteToFiles(Files.Characters);
             writer++;
             break;
             
-            case 4: Writer.WriteDefault(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
+            case 4: //Writer.WriteDefault(Files.Enemies, "Enemies", Default.getEnemies(), Default.getEnemiesFormat());
             writer++;
             break;
             
@@ -157,7 +160,6 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
         }
     }
     
-    @Override
     protected void update() {
         if(create)
         creater();
@@ -167,19 +169,14 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
         reader();
         
         ups++;
-        
-//        doneLoading = true;
-//        pause();
     }
     
-    @Override
     protected void render() {
         fps++;
     }
     
-    @Override
     public synchronized void run() {
-        while(Loading) {
+        while(running) {
             update();
             render();
             if(!create) {
@@ -194,11 +191,6 @@ public class Loading_Thread extends Thread_Controller implements Runnable {
                 }
             }
         }
-        try {
-			Thread.sleep(60);
-		} catch (InterruptedException e) {
-			return; // If interrupted continue from the start and check if loading is true else try again
-		}
     }
     
 }

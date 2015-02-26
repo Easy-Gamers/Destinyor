@@ -10,6 +10,8 @@ import graphic.engine.screen.Dialouge;
 import graphic.engine.screen.Screen;
 import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.Time;
+import me.jacob.macdougall.files.Files;
+import me.jacob.macdougall.files.Reader;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.input.Keys;
 import me.jacob.macdougall.player.Move;
@@ -334,6 +336,21 @@ public class NPC {
 
 	public void speak() {
 		Dialouge.setText(dialouge, dL);
+	}
+	
+	public static void readStats(String[] args) {
+		int i = 0;
+		String name = args[i++];
+		String frames = args[i++];
+		int x = Integer.parseInt(args[i++]);
+		int y = Integer.parseInt(args[i++]);
+		String dialouge = args[i++];
+		int lvl = Integer.parseInt(args[i++]);
+		
+		if(dialouge.contains(".txt")) {
+			String location = Files.DialougesFolder + Files.fileSplit + dialouge;
+			Reader.ReadDialouge(location);
+		}
 	}
 
 }

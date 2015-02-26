@@ -29,12 +29,12 @@ public class Buttons extends GUI_Objects {
 	
 	public void render(Screen screen) {
 		if(isEnabled()) {
-			screen.render(getSprite(), x, y);
+			masterRender(screen);
 		} else {
 			if(disabledBitmap == null) {
 				disabledBitmap = new Bitmap(width, height);
 				for(int i = 0; i < disabledBitmap.pixels.length; i++) {
-					Color color = new Color(disabledBitmap.pixels[i]);
+					Color color = new Color(getSprite().pixels[i]);
 					color = new Color(color.getRed() / 2, color.getGreen() / 2, color.getBlue() / 2);
 					disabledBitmap.pixels[i] = color.getRGB();
 				}

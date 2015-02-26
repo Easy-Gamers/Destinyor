@@ -4,7 +4,7 @@ public class GameVariables {
 
 	private static final String title = "Destinyor";
 	private static final int[] build = {
-		0, 0, 3, 5
+		0, 0, 3, 7
 	};
 	
 	private static int FPSLimit = 60;
@@ -28,7 +28,17 @@ public class GameVariables {
 	}
 
 	public static enum Difficultly {
-		EASY, NORMAL, HARD
+		EASY("Easy"), NORMAL("Normal"), HARD("Hard");
+		
+		private String difficultly;
+		
+		Difficultly(String difficultly) {
+			this.difficultly = difficultly;
+		}
+		
+		public String toString() {
+			return difficultly;
+		}
 	}
 
 	public static enum Render {

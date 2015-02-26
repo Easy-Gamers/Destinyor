@@ -13,8 +13,12 @@ public class Entities {
 	public static Map<String, Entities> entities = new HashMap<>();
 	public static List<String> names = new ArrayList<>();
 
-	public List<Limb> limbs = new ArrayList<>();
+	//public Map<Integer, Limb> limbs = new HashMap<>(); // They need to stay in a predictable manner
+	//public Map<Integer, Float> hp = new HashMap<>();
 
+	public Limb[] limbs;
+	public float[] percents;
+	
 	public String name;
 
 	/**
@@ -25,9 +29,7 @@ public class Entities {
 	 */
 	public Entities(String name, Limb... limbs) {
 		this.name = name;
-		for(int i = 0; i < limbs.length; i++) {
-			this.limbs.add(limbs[i]);
-		}
+		this.limbs = limbs;
 	}
 
 	public Entities(String name, String limbNames) {
@@ -36,9 +38,10 @@ public class Entities {
 		limbNames = limbNames.trim();
 		limbNames = limbNames.replace(", ", ",");
 		String[] limbs = limbNames.split(",");
-
+		
+		this.limbs = new Limb[limbs.length];
 		for(int i = 0; i < limbs.length; i++) {
-			this.limbs.add(Limb.getLimb(limbs[i]));
+			this.limbs[i] = Limb.getLimb(limbs[i]);
 		}
 	}
 
@@ -62,12 +65,6 @@ public class Entities {
 	}
 
 	public Limb[] getLimbs() {
-		Limb[] limbs = new Limb[this.limbs.size()];
-
-		for(int i = 0; i < limbs.length; i++) {
-			limbs[i] = this.limbs.get(i);
-		}
-
 		return limbs;
 	}
 
@@ -119,6 +116,18 @@ public class Entities {
 	public void put() {
 		entities.put(name, this);
 		names.add(name);
+	}
+	
+	public Limb getWeakestLimb() {
+		float weakest = 100;
+		int limb = 0;
+		for(int i = 0; i < percents.length; i++) {
+			if(percents[i] < weakest) {
+				weakest = percents[i];
+				limb = i;
+			}
+		}
+		return limbs[limb];
 	}
 
 }

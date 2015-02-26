@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import me.jacob.macdougall.Destinyor;
+import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.graphics.UI;
 import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.player.Camera;
@@ -23,7 +24,7 @@ public class Minimap {
 	//public static int getScale = 4;
 	
 	public Minimap(Destinyor game) {
-		minimap =  Art.map("/map.png", LevelMap.level - 1, 512, 512, game);
+		minimap =  Art.map(Files.DestinyorMap, LevelMap.level - 1, 512, 512, game);
 	}
 	
 //	public void render(Graphics g) {

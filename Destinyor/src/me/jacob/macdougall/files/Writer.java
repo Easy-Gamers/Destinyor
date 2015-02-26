@@ -289,12 +289,9 @@ public class Writer {
 			
 			for(int i = 0; i < Quest.quests.size(); i++) {
 				Quest quest = Quest.quests.get(i);
-					// Bosses
-					bw.write(quest.getBosses().getName());
 					
 					// Npcs
 					bw.write(quest.getQuestGiver().getName());
-					bw.write(quest.getBosses().getName());
 				for(Rewards reward : Quest.quests.get(i).rewards)
 					bw.write(reward.name);
 			}

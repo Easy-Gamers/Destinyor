@@ -10,7 +10,9 @@ import javax.swing.JFrame;
 
 import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.GameVariables;
+import me.jacob.macdougall.Time;
 import me.jacob.macdougall.files.Files;
+import me.jacob.macdougall.files.mod.Mod;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
 import me.jacob.macdougall.launcher.gui.MenuHandler;
@@ -22,12 +24,14 @@ public class Launcher extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 4727156896020447859L;
 
+	private static Mod[] mods;
+	
 	private static Launcher launcher;
 	private static JFrame frame;
 	
-	private static String mod = "";
-	
 	private static boolean running = false;
+	
+	
 	
 	private Thread thread;
 	private Screen screen;
@@ -39,8 +43,9 @@ public class Launcher extends Canvas implements Runnable {
 	public Launcher(Destinyor game) {
 		this.game = game;
 		screen = new Screen(512, 384);
+		
 		Sprites.setSprite(Sprites.FONT, new SpriteHandler(Files.DestinyorFont, 8, 8, game));
-		Sprites.setSprite(Sprites.BUTTON, new SpriteHandler("/button.png", 120, 20, game));
+		Sprites.setSprite(Sprites.BUTTON, new SpriteHandler(Files.Buttons, 120, 20, game));
 		graphic.engine.screen.Font.setFont(Sprites.getSprites(Sprites.FONT));
 		
 		menus = new MenuHandler();
@@ -148,6 +153,7 @@ public class Launcher extends Canvas implements Runnable {
 	
 	public void update() {
 		menus.update(game, mouse);
+		Time.tick();
 	}
 	
 	public void render() {
@@ -169,8 +175,20 @@ public class Launcher extends Canvas implements Runnable {
 		strategy.show();
 	}
 	
-	public static void launch() {
+	public static void launch(Mod[] mods) {
+		Launcher.mods = mods;
 		launcher.stop();
+		Time.resetCutsceneTimer();
+		Time.resetKeyTimer();
+		Time.resetObjectTimer();
+		Time.entityTimer(0);
+		Time.frameTimer(0);
+		Time.getTime(0);
+		Time.inventoryTimer(0);
+		Time.mapTimer(0);
+		Time.moveTimer(0);
+		Time.playersTimer(0);
+		Time.playerTimer(0);
 	}
 	
 	public static void setLauncher(Launcher launcher) {
@@ -191,12 +209,8 @@ public class Launcher extends Canvas implements Runnable {
 		launcher = null;
 	}
 	
-	public static void setMod(String mod) {
-		Launcher.mod = mod;
-	}
-	
-	public static String getMod() {
-		return mod;
+	public static Mod[] getMods() {
+		return Launcher.mods;
 	}
 	
 }

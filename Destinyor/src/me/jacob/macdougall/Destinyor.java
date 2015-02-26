@@ -84,6 +84,7 @@ import me.jacob.macdougall.battles.*;
 import me.jacob.macdougall.cutscenes.*;
 import me.jacob.macdougall.files.*;
 import me.jacob.macdougall.files.mod.FileChecker;
+import me.jacob.macdougall.files.mod.Mod;
 import me.jacob.macdougall.files.saves.Saves;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
@@ -105,7 +106,6 @@ import graphic.engine.screen.Screen;
 import graphic.engine.screen.SpriteHandler;
 
 import java.awt.Font;
-
 import javax.swing.JFrame;
 
 import input.engine.keyboard.InputHandler;
@@ -173,7 +173,6 @@ public class Destinyor extends Canvas implements Runnable {
 		input = new InputHandler(this);
 		GetKeys.getKeys();
 		battle = new Battles();
-		//menus = new Menus(this);
 		menu = new MenuHandler();
 		Thread_Controller.init(screen, battle);
 		Thread_Controller.startAudio();
@@ -231,12 +230,8 @@ public class Destinyor extends Canvas implements Runnable {
 		if(!player.spells.isEmpty() || player.spells.size() >= 1) {
 			for(int i = 1; i < player.spells.size(); i++) {
 				Spells spell = player.spells.get(i);
-				//GameFont.render(spell.getName() + ", " + spell.getDamage() + ", " + spell.cost, screen, 12, 8);
 				GameFont.render("Name: " + spell.getName(), screen, 12, 288);
-				//GameFont.render("Useable: " + spell.UseAbleOutsideCombat, screen, 12, 288 + 16);
 				GameFont.render("Attack: " + spell.getDamage(), screen, 12, 288 + 32);
-				//GameFont.render("Price: " + spell.cost, screen, 12, 288 + 48);
-				//GameFont.render("Element: " + spell.element.getElement(), screen, 12, 288 + 64);
 			}
 		}
 	}
@@ -396,7 +391,7 @@ public class Destinyor extends Canvas implements Runnable {
 		
 
 		city1.goToTown(this);
-		pInv.updateInventory();
+		pInv.updateInventory(mouse);
 		PlayerEquipment.updateEquipment();
 		
 		menu.update(this, mouse);
@@ -408,7 +403,6 @@ public class Destinyor extends Canvas implements Runnable {
 				if(AIBattle.enemies != null) {
 					battle.assignTarget(mouse, AIBattle.enemies);
 					battle.bInput.clicker(mouse, AIBattle.enemies);
-					//battle.calculateDamage(AIBattle.enemies, move);
 				}
 			}
 		}
@@ -416,7 +410,7 @@ public class Destinyor extends Canvas implements Runnable {
 
 	// Thread
 	@Override
-	// @SuppressWarnings({"SleepWhileInLoop", "CallToPrintStackTrace"})
+	// @SuppressWarnings("SleepWhileInLoop")
 	public synchronized void run() {
 		int fps = 0, update = 0;
 		long fps_Timer = System.currentTimeMillis();
@@ -473,11 +467,11 @@ public class Destinyor extends Canvas implements Runnable {
 
 				try {
 					if(GameVariables.isFpsLimit())
-						Thread.sleep(1000 / GameVariables.getFPSLimit()); // 1000m = 1s so (1000 / 60) = 1/10th of a second-ish
+						Thread.sleep(1000 / GameVariables.getFPSLimit());
 					else
 						Thread.sleep(100);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					System.err.println(e.getMessage());
 				}
 			}
 		}
@@ -493,11 +487,25 @@ public class Destinyor extends Canvas implements Runnable {
 		Destinyor game = new Destinyor();
 		
 		Launcher.setLauncher(new Launcher(game));
-		while(Launcher.isRunning()) {
-			fc.setMod("");
+		
+		while(Launcher.isRunning()) { // The while loops needs to do something in order for it to end
+			Destinyor.wait(1);
 		}
+		if(Launcher.getMods() != null && Launcher.getMods().length >= 0) {
+			for(Mod mod : Launcher.getMods()) {
+				fc.setMod(mod.getName());
+				System.out.println("Setting Mod: " + mod.getName());
+			}
+		} else {
+			System.out.println("No mods loaded");
+		}
+		Launcher.clear();
+		
+		
 		FileLoader.ReadFromFiles(Files.Settings);
 		FileLoader.CreateFolder(Files.SaveFolder);
+		
+		
 		
 		// http://www.innerbody.com/anatomy/integumentary // for limbs
 
@@ -507,7 +515,8 @@ public class Destinyor extends Canvas implements Runnable {
 		
 		Sprites.setSprite(Sprites.MAP, new SpriteHandler(Files.DestinyorMap, 512, 512, game));
 		
-		Sprites.setSprite(Sprites.SCROLL, new SpriteHandler("/Scrollbar.png", 10, 20, game));
+		//Sprites.setSprite(Sprites.SCROLL, new SpriteHandler("/Scrollbar.png", 10, 20, game));
+		
 		
 		
 		Saves.loadSaves();
@@ -576,8 +585,6 @@ public class Destinyor extends Canvas implements Runnable {
 				Resolution.setHeight(frame.getHeight());
 			}
 		}
-
-		Launcher.clear();
 		
 		// Starts Game
 		game.init();

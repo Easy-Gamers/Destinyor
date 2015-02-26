@@ -15,10 +15,9 @@ public class LevelMap {
 	public List<Objects> objects = new ArrayList<>();
 	public List<NPC> npcs = new ArrayList<>();
 	
-	Destinyor game;
 	public static int levelX = 1; // For miniMap
-        public static int levelY = 1; // For MiniMap
-        public static int level = 1; // For Level
+    public static int levelY = 1; // For MiniMap
+    public static int level = 1; // For Level
 	public static final int FloorWidth = 512;
 	public static final int FloorHeight = 512;
 	public int MapX_Pos;
