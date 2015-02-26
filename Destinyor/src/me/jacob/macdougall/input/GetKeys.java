@@ -17,7 +17,6 @@ public class GetKeys {
 			readKeys(file);
 		} else {
 			file = new File(Destinyor.class.getResource("/Keys.txt").getFile());
-			System.out.println((Destinyor.class.getResource("/Keys.txt").getFile()));
 			readKeys(file);
 		}
 	}

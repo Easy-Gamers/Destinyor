@@ -36,7 +36,6 @@ public class FileChecker {
 				if(dir.isDirectory()) {
 					directories.add(dir);
 					mods.add(new Mod(dir.getName(), dir.listFiles()));
-					System.out.println(dir.getName());
 				}
 			}
 		}
@@ -44,16 +43,12 @@ public class FileChecker {
 	
 	public void setMod(String file) {
 		for(File files : directories) {
-			System.out.println(file);
-			System.out.println(files.getName());
 			if(files.getName().contains(file)) {
-				for(File modFiles : files.listFiles()) {
-					for(String fileName : fileNames) {
-						System.out.println(modFiles.getName());
+				
+				for(File modFiles : files.listFiles())
+					for(String fileName : fileNames)
 						if(modFiles.getName().contains(fileName))
 							Files.setFile(fileName, modFiles.getPath());
-					}
-				}
 
 				for(String pictureName : pictureNames)
 					if(files.getPath().contains(pictureName))

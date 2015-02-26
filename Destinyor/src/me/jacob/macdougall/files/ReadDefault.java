@@ -1,5 +1,6 @@
 package me.jacob.macdougall.files;
 
+import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.player.Player;
 import me.jacob.macdougall.enemies.Enemy;;
 
@@ -54,6 +55,7 @@ public class ReadDefault {
 	};
 	
 	public static void addPlayers(String location) {
+		System.out.println();
 		String[][] players = Reader.readDefault(location, playerHeader, playerInfo);
 		Player.Level = Integer.parseInt(players[0][1]);
 		players[0][2] = players[0][2].trim();
@@ -67,6 +69,7 @@ public class ReadDefault {
 	}
 	
 	public static void addEnemies(String location) {
+		System.out.println();
 		String[][] enemies = Reader.readDefault(location, enemyHeader, enemyInfo);
 		for(int i = 1; i < enemies.length; i++) {
 			Enemy enemy = Enemy.readStats(enemies[i]);
@@ -76,10 +79,12 @@ public class ReadDefault {
 	}
 	
 	public static void addNpcs(String location) {
+		System.out.println();
 		String[][] npcs = Reader.readDefault(location, npcHeader, npcInfo);
 		for(int i = 1; i < npcs.length; i++) {
-			
+			NPC.npcs.add(NPC.readStats(npcs[i]));
+			System.out.println(NPC.npcs.get(i - 1).getName());
 		}
-		
+		System.out.println();
 	}
 }

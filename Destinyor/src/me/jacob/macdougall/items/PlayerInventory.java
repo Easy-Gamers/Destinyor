@@ -36,6 +36,7 @@ public class PlayerInventory {
 				}
 				dropdown = new DropDowns("Inventory", 12, 16, maxWidth, 8, Player.inventory.size(), 0, commands);
 				dropdown.alwaysFocus();
+				dropdown.dontMoveOnLocationChange();
 			}
 		}
 		dropdown.update(mouse);

@@ -453,7 +453,6 @@ public class Reader {
 					Boss boss = new Boss(stats[0], 
 							frames[0], frames[1], frames[2], frames[3], stat[0], stat[1], stat[2], stat[3], stat[4], stat[5], stat[6], stat[7], stat[8], stat[9],
 							Element.get(stats[12]), x, y, LevelMap.maps.get(Integer.parseInt(stats[14])));
-					System.out.println(boss.getName());
 					nullChecker = br.readLine();
 				}
 			

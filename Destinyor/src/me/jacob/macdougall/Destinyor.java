@@ -214,7 +214,7 @@ public class Destinyor extends Canvas implements Runnable {
 		for(int i = 0; i < Player.inventory.size(); i++) {
 			if(Player.inventory.get(i).equippable)
 				Player.getMainCharacter().Equip((Equipment) Player.inventory.get(i));
-			System.out.println(Player.inventory.get(i).name);
+			//System.out.println(Player.inventory.get(i).name);
 		}
 
 		pInv = new PlayerInventory();
@@ -501,23 +501,14 @@ public class Destinyor extends Canvas implements Runnable {
 		}
 		Launcher.clear();
 		
-		
 		FileLoader.ReadFromFiles(Files.Settings);
 		FileLoader.CreateFolder(Files.SaveFolder);
-		
-		
 		
 		// http://www.innerbody.com/anatomy/integumentary // for limbs
 
 		Dimension Res = new Dimension(Resolution.width(), Resolution.height());
-		
 		Sprites.setSprite(Sprites.SPRITE, new SpriteHandler(Files.SpriteSheet, 32, 32, game));
-		
 		Sprites.setSprite(Sprites.MAP, new SpriteHandler(Files.DestinyorMap, 512, 512, game));
-		
-		//Sprites.setSprite(Sprites.SCROLL, new SpriteHandler("/Scrollbar.png", 10, 20, game));
-		
-		
 		
 		Saves.loadSaves();
 		Element.setElements();

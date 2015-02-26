@@ -338,7 +338,7 @@ public class NPC {
 		Dialouge.setText(dialouge, dL);
 	}
 	
-	public static void readStats(String[] args) {
+	public static NPC readStats(String[] args) {
 		int i = 0;
 		String name = args[i++];
 		String frames = args[i++];
@@ -349,8 +349,10 @@ public class NPC {
 		
 		if(dialouge.contains(".txt")) {
 			String location = Files.DialougesFolder + Files.fileSplit + dialouge;
-			Reader.ReadDialouge(location);
+			dialouge = Reader.ReadDialouge(location);
 		}
+		
+		return new NPC(name, frames, x, y, dialouge, false, LevelMap.maps.get(lvl));
 	}
 
 }

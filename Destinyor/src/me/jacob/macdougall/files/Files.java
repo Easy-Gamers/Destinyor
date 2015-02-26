@@ -27,7 +27,7 @@ public class Files {
     public static String Enemies = "/Enemies" + EXT;
     public static String Settings = DestinyorHome + "Settings" + ".ini";
     public static String Spells = DestinyorHome + "Spells" + EXT;
-    public static String Npcs = DestinyorHome + "Npcs" + EXT;
+    public static String Npcs = "/Npcs" + EXT;
     public static String Items = DestinyorHome + "Items" + EXT;
     public static String Entities = DestinyorHome + "Entities" + EXT;
     public static String Bosses = DestinyorHome + "Bosses" + EXT;
@@ -56,7 +56,7 @@ public class Files {
     	//Enemies = DestinyorHome + "Enemies" + EXT;
     	Settings = DestinyorHome + "Settings" + ".ini";
     	Spells = DestinyorHome + "Spells" + EXT;
-    	Npcs = DestinyorHome + "Npcs" + EXT;
+    	//Npcs = DestinyorHome + "Npcs" + EXT;
     	Items = DestinyorHome + "Items" + EXT;
     	Entities = DestinyorHome + "Entities" + EXT;
     	Bosses = DestinyorHome + "Bosses" + EXT;
@@ -68,7 +68,6 @@ public class Files {
     
     
     public static void setFile(String file, String url) {
-    	System.out.println(url);
     	if(Characters.contains(file) || file.contains("Characters.destinyor"))
     		Characters = url;
     	

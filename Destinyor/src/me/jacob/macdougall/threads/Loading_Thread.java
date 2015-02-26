@@ -69,17 +69,18 @@ public class Loading_Thread implements Runnable {
             
             case 3:
             	ReadDefault.addPlayers(Files.Characters);
-            reader++;
-            break;
+            	reader++;
+            	break;
             
             case 4: 
             	ReadDefault.addEnemies(Files.Enemies);
-            reader++;
-            break;
+            	reader++;
+            	break;
             
-            case 5: FileLoader.ReadFromFiles(Files.Npcs);
-            reader++;
-            break;
+            case 5: 
+            	ReadDefault.addNpcs(Files.Npcs);
+            	reader++;
+            	break;
                 
             
                 
@@ -89,7 +90,6 @@ public class Loading_Thread implements Runnable {
                 reader = 10;
                 break;
         }
-        //System.out.println(reader);
     }
     
     private void writer() {
