@@ -109,6 +109,15 @@ public class MenuHandler {
 		gui.add(new TextBox("FPSLimiter", 100, 300, 120, 20, Sprites.getSprite(Sprites.BUTTON, 0, 0)));
 		
 		menus.put(OPTIONS, gui);
+		
+		buttons = new Buttons[1];
+		buttons[0] = new Buttons("Cancel", 100, 300);
+		
+		gui = new GUI("Saves", SAVES);
+		
+		gui.add(buttons);
+		
+		menus.put(SAVES, gui);
 	}
 	
 	public void update(Destinyor game, Mouse mouse) {
@@ -151,7 +160,12 @@ public class MenuHandler {
 				Destinyor.refresh(); 
 				break;
 			
-			case "Save": break;
+			case "Save": 
+				menu = SAVES;
+				mouse.reset();
+				gui.reset();
+				Destinyor.refresh();
+				break;
 			case "Load": break;
 			case "Accept":
 				if(!Resolution.getResolution(Resolution.getResolutionInt(gui.dropDowns.get("Resolution").getCurrent().name)).equals((Resolution.width() + " * " + Resolution.height()))) {

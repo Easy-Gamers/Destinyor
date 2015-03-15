@@ -11,6 +11,8 @@ import java.util.List;
 
 import me.jacob.macdougall.GameVariables;
 import me.jacob.macdougall.files.Files;
+import me.jacob.macdougall.files.ReadDefault;
+import me.jacob.macdougall.files.Reader;
 import me.jacob.macdougall.magic.Spells;
 import me.jacob.macdougall.player.Player;
 
@@ -23,9 +25,18 @@ public class Save {
 	 * Achievements file holds data like, quest completed, cutscenes watched, ect.
 	 */
 	private File achievements;
+	
+	private File spells;
+	private File equipment;
+	private File inventory;
+	
 	private int id;
 	
 	public Save(String location, int id) {
+		File folder = new File(location);
+		if(!folder.exists()) {
+			folder.mkdirs();
+		}
 		saveFile = new File(location + Files.fileSplit + "Characters.destinyor");
 		achievements = new File(location + Files.fileSplit + "Achievements.destinyor");
 		if(!achievements.exists() || !saveFile.exists()) {
@@ -39,10 +50,10 @@ public class Save {
 	}
 	
 	private void createSave() {
-		if(saveFile.mkdir() && !saveFile.exists()) {
+		if(!saveFile.exists()) {
 			writeSave();
 		}
-		if(achievements.mkdir() && !achievements.exists()) {
+		if(!achievements.exists()) {
 			writeAchievements();
 		}
 	}
@@ -50,12 +61,46 @@ public class Save {
 	private void writeSave() {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(saveFile));
+			bw.write("Players");
+			bw.newLine();
+			bw.write("Level = " + Player.Level);
+			bw.newLine();
+			bw.write("X & Y = " + Player.X + "," + Player.Y);
+			//bw.newLine();
+
 			
 			for(Player player : Player.players) {
 				bw.newLine();
-				player.writeStats(bw);
 				bw.newLine();
+				player.writeStats(bw);
 			}
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	private void writeAchievements() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(achievements));
+			
+			bw.write("Difficultly = " + GameVariables.getDifficultly().toString());
+			
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void loadSave() {
+		readSave();
+		readAchievements();
+	}
+	
+	private void writeSpells() {
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(spells));
 			for(Player player : Player.players) {
 				bw.newLine();
 				bw.write(player.getName() + " spells = {");
@@ -83,42 +128,15 @@ public class Save {
 				bw.write("}");
 				bw.newLine();
 			}
-			
 			bw.close();
-		} catch (IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
-	private void writeAchievements() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(achievements));
-			
-			bw.write("Difficultly = " + GameVariables.getDifficultly().toString());
-			bw.write("Level = " + Player.Level);
-			bw.write("X & Y = " + Player.X + "," + Player.Y);
-			
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void loadSave() {
-		readSave();
-		readAchievements();
-	}
-	
 	private void readSave() {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(saveFile));
-			
-			br.close();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		ReadDefault.addPlayers(saveFile.getAbsolutePath());
 	}
 	
 	private void readAchievements() {

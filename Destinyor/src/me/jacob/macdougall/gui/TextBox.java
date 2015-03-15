@@ -2,6 +2,7 @@ package me.jacob.macdougall.gui;
 
 import java.awt.event.KeyEvent;
 
+import me.jacob.macdougall.Time;
 import me.jacob.macdougall.input.Keys;
 
 import input.engine.keyboard.Key;
@@ -41,6 +42,7 @@ public class TextBox extends GUI_Objects {
 					if(key.effect == Keys.RIGHT) {
 						text.moveRight();
 					}
+					return;
 				}
 				
 			}

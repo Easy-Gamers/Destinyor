@@ -8,7 +8,6 @@ import me.jacob.macdougall.enemies.Boss;
 import me.jacob.macdougall.items.Equipment;
 import me.jacob.macdougall.magic.Element;
 import me.jacob.macdougall.magic.Spells;
-import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.npcs.body.Entities;
 import me.jacob.macdougall.npcs.body.Limb;
 import me.jacob.macdougall.world.LevelMap;
@@ -16,6 +15,7 @@ import me.jacob.macdougall.world.LevelMap;
 import graphic.engine.window.Resolution;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
@@ -116,6 +116,97 @@ public class Reader {
 		
 		return dialouge;
 	}
+	
+	public static String[][] readDefault(String location, String[] header, String[] args) {
+		ArrayHandler ah = new ArrayHandler();
+		BufferedReader br;
+		try {
+			br = getReader(location);
+			
+			
+			
+			if(header != null) {
+				String readline;
+				//String[] headerInfo = null;
+				for(int i = 0; i < header.length; i++) {
+					br.skip(header[i].length());
+					readline = br.readLine();
+					ah.add(readline);
+				}
+				ah.close();
+			}
+			
+			String nullChecker = "";
+			String readline = "";
+			
+			while(nullChecker != null) {
+				for(int i = 0; i < args.length; i++) {
+					br.skip(args[i].length());
+					readline = br.readLine();
+					ah.add(readline);	
+				}
+				ah.close();
+				nullChecker = br.readLine();
+			}
+		br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
+		String[][] info = new String[ah.get().length][];
+		String[] singleInfo;
+		for(int i = 0; i < ah.get().length; i++) {
+			singleInfo = new String[ah.get()[i].length];
+			for(int j = 0; j < ah.get()[i].length; j++) {
+				singleInfo[j] = (String) ah.get()[i][j];
+			}
+			info[i] = singleInfo;
+		}
+		return info;
+	}
+	
+	public static String readDefault(String location) {
+		BufferedReader br;
+		String info = "";
+		try {
+			br = getReader(location);
+			String linereader = "";
+			
+			while(linereader != null) {
+				linereader = br.readLine();
+				if(linereader != null) {
+					info += linereader;
+				}
+			}
+			
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
+		
+		return info;
+	}
+	
+	private static BufferedReader getReader(String location) throws FileNotFoundException {
+		BufferedReader br = null;
+		if(location.startsWith("/")) {
+			InputStream input = Destinyor.class.getResourceAsStream(location);
+			InputStreamReader inputReader = new InputStreamReader(input);
+			br = new BufferedReader(inputReader);
+		} else {
+			File file = new File(location);
+			br = new BufferedReader(new FileReader(file));
+		}
+		
+		return br;
+	}
 
 	public static void ReadSettings(String location) {
 		BufferedReader br;
@@ -182,10 +273,6 @@ public class Reader {
 				Spells.spells.put(name, new Spells(name, damage, targets, attribute));
 			}
 
-			//DebugWriter.println("Menu: Adding: " + name);
-
-			//Spells.spells.put(name, new Spells(name, Element.get(type), damage, targets, cost, condition));
-
 			br.close();
 
 		} catch (IOException e) {
@@ -244,66 +331,6 @@ public class Reader {
 		br = null;
 	}
 	
-	public static String[][] readDefault(String location, String[] header, String[] args) {
-				ArrayHandler ah = new ArrayHandler();
-				BufferedReader br;
-				try {
-					if(location.startsWith("/")) {
-						InputStream input = Destinyor.class.getResourceAsStream(location);
-						InputStreamReader inputReader = new InputStreamReader(input);
-						br = new BufferedReader(inputReader);
-					} else {
-						File file = new File(location);
-						br = new BufferedReader(new FileReader(file));
-					}
-					
-					
-					
-					if(header != null) {
-						String readline;
-						//String[] headerInfo = null;
-						for(int i = 0; i < header.length; i++) {
-							br.skip(header[i].length());
-							readline = br.readLine();
-							ah.add(readline);
-						}
-						ah.close();
-					}
-					
-					String nullChecker = "";
-					String readline = "";
-					
-					while(nullChecker != null) {
-						for(int i = 0; i < args.length; i++) {
-							br.skip(args[i].length());
-							readline = br.readLine();
-							ah.add(readline);	
-						}
-						ah.close();
-						nullChecker = br.readLine();
-					}
-				br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
-					System.err.println(e.getMessage());
-					System.exit(1);
-				}
-				String[][] info = new String[ah.get().length][];
-				String[] singleInfo;
-				for(int i = 0; i < ah.get().length; i++) {
-					singleInfo = new String[ah.get()[i].length];
-					for(int j = 0; j < ah.get()[i].length; j++) {
-						singleInfo[j] = (String) ah.get()[i][j];
-					}
-					info[i] = singleInfo;
-				}
-				return info;
-			}
-	
-	
-
 	public static void readEntities(String location) {
 		BufferedReader br;
 		

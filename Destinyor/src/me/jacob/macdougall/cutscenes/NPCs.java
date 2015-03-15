@@ -1,6 +1,5 @@
 package me.jacob.macdougall.cutscenes;
 
-import me.jacob.macdougall.DebugWriter;
 import me.jacob.macdougall.npcs.Keywords;
 import me.jacob.macdougall.npcs.NPC;
 
@@ -29,7 +28,6 @@ public class NPCs extends NPC {
 	 */
 	public NPCs(String name, String frame, int x, int y, String Dialouge) {
 		super(name, frame, x, y, Dialouge, false);
-		DebugWriter.println("Menu: Adding: NPC: " + getName());
 		//this.cutscene = true;
 		cNpcs.add(this);
 	}

@@ -1,6 +1,7 @@
 package me.jacob.macdougall.gui;
 
 import input.engine.mouse.Mouse;
+import me.jacob.macdougall.ArrayHandler;
 import me.jacob.macdougall.Destinyor;
 import me.jacob.macdougall.Time;
 import me.jacob.macdougall.input.Keys;
@@ -9,25 +10,44 @@ import graphic.engine.screen.Screen;
 
 public class DropDowns extends GUI_Objects {
 
-	private GUI_Objects[] options;
+	//private GUI_Objects[] options;
+	
+	private ArrayHandler ah = new ArrayHandler();
 	
 	private int amount;
-	
 	private int location;
+	private int space;
 	
 	private boolean clickable = true;
 	private boolean alwaysFocused = false;
 	private boolean moveOnLocationChange = true; // Move if when location is changed?
+	
 	
 	public DropDowns(String name, int x, int y, int width, int height, int amountPerScroll, int startingLocation, GUI_Objects... options) {
 		super(name, x, y, width, height);
 		for(GUI_Objects objects : options) {
 			objects.x = x;
 			objects.y = y;
+			ah.add(objects);
 		}
-		this.options = options;
+		
+		//this.options = options;
 		amount = amountPerScroll;
 		location = startingLocation;
+		space = 1;
+		//ah = new ArrayHandler();
+	}
+	
+	public void add(GUI_Objects option) {
+		ah.add(option);
+	}
+	
+	public void remove(GUI_Objects option) {
+		ah.remove(option);
+	}
+	
+	public void remove(int i) {
+		ah.remove(0, i);
 	}
 	
 	public void alwaysFocus() {
@@ -40,6 +60,10 @@ public class DropDowns extends GUI_Objects {
 	
 	public void setClickable(boolean clickable) {
 		this.clickable = clickable;
+	}
+	
+	public void setSpace(int space) {
+		this.space = space;
 	}
 	
 	public void render(Screen screen) {
@@ -57,10 +81,10 @@ public class DropDowns extends GUI_Objects {
 			}
 			GUI_Objects option;
 			if(moveOnLocationChange)
-				option = options[selected(i)];
+				option = (GUI_Objects) ah.get(0, selected(i));//options[selected(i)];
 			else
-				option = options[i];
-			int tempHeight = option.height + 1;
+				option = (GUI_Objects) ah.get(0, i); //options[i];
+			int tempHeight = option.height + space;
 			option.y = (y - tempHeight) + (tempHeight * i);
 			if(option.getSprite() != null) {
 				option.masterRender(screen);
@@ -78,10 +102,10 @@ public class DropDowns extends GUI_Objects {
 			for(int i = 0; i < amount; i++) {
 				GUI_Objects option;
 				if(moveOnLocationChange)
-					option = options[selected(i)];
-				 else
-					option = options[i];
-				int tempHeight = option.height + 1;
+					option = (GUI_Objects) ah.get(0, selected(i));//options[selected(i)];
+				else
+					option = (GUI_Objects) ah.get(0, i); //options[i];
+				int tempHeight = option.height + space;
 				option.y = (y - tempHeight) + (tempHeight * i);
 				if(option.inBox(mouse.getPressed(Mouse.X), mouse.getPressed(Mouse.Y))) {
 					Time.resetKeyTimer();
@@ -110,19 +134,19 @@ public class DropDowns extends GUI_Objects {
 					location--;
 					Time.resetKeyTimer();
 				}
-				if(location >= options.length) {
+				if(location >= ah.getLength(0)) {
 					location = 0;
 				}
 				if(location <= -1) {
-					location = options.length - 1;
+					location = ah.getLength(0) - 1;
 				}
 			}
 		} else {
 			location += mouse.getMouseWheel();
-			if(location >= options.length)
+			if(location >= ah.getLength(0))
 				location = 0;
 			if(location <= -1)
-				location = options.length - 1;
+				location = ah.getLength(0) - 1;
 			mouse.setMouseWheelMoved(false);
 		}
 	}
@@ -133,28 +157,29 @@ public class DropDowns extends GUI_Objects {
 	
 	private int[] selected() {
 		if(location <= -1)
-			location = options.length - 1;
+			location = ah.getLength(0) - 1;
 	
-		if(location >= options.length)
+		if(location >= ah.getLength(0))
 			location = 0;
 		
 		int[] selectedButtons = new int[amount];
-		if(options[0].getSprite() != null) {
+		GUI_Objects option = (GUI_Objects) ah.get(0,0);
+		if(option.getSprite() != null) {
 			for(int i = -1; i < amount - 1; i++) {
 				if(location + i >= 0) {
-					if(location + i <= options.length - 1) {
+					if(location + i <= ah.getLength(0) - 1) {
 						selectedButtons[i + 1] = location + i;
 					} else {
 						selectedButtons[i + 1] = 0;
 					}
 				} else {
-					selectedButtons[i + 1] = options.length - 1;
+					selectedButtons[i + 1] = ah.getLength(0) - 1;
 				}
 			}
 		} else {
 			for(int i = 0; i < amount; i++) {
 				if(location + i > 0)
-				if(location + i <= options.length - 1) {
+				if(location + i <= ah.getLength(0) - 1) {
 					selectedButtons[i] = location + i;
 				} else {
 					selectedButtons[i] = 0 + i;
@@ -171,7 +196,7 @@ public class DropDowns extends GUI_Objects {
 	 * @return the current selected button
 	 */
 	public GUI_Objects getCurrent() {
-		return options[location];
+		return (GUI_Objects) ah.get(0, location);
 	}
 	
 	public int getCurrentLocation() {
@@ -179,7 +204,7 @@ public class DropDowns extends GUI_Objects {
 	}
 	
 	public int getLength() {
-		return options.length;
+		return ah.getLength(0);
 	}
 	
 	public void update(Mouse mouse) {

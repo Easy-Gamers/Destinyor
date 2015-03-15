@@ -40,14 +40,6 @@ public class UI {
 	
 	public static void renderSaves(Screen screen) {
 		renderDefault(screen);
-		BorderSaves(screen, BorderWidth);
-	}
-	
-	private static void BorderSaves(Screen screen, int w) {
-		for(int i = 0; i < w; i++) {
-			
-			screen.render(Sprites.getSprite(Sprites.SPRITE, 17, 3), (i + 0) * Tile.SIZE, (4) * Tile.SIZE);
-		}
 	}
 
 	public static void renderInventory(Screen screen) {

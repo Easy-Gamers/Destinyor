@@ -4,6 +4,7 @@ import me.jacob.macdougall.DebugWriter;
 import me.jacob.macdougall.Time;
 import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
+import me.jacob.macdougall.files.Reader;
 import me.jacob.macdougall.input.Keys;
 import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.player.Move;
@@ -130,7 +131,7 @@ public class Cutscene {
 					directions.put(j, 0);
 					dir[j] = 2;
 					ddf++;
-					nDialouge = FileLoader.readDialouges(Files.DialougesFolder + Files.fileSplit + stuff[i][j]);
+					nDialouge = Reader.readDefault(Files.DialougesFolder + stuff[i][j]);
 				}
 
 				if(stuff[i][j].contains("x = ")) {
@@ -140,9 +141,10 @@ public class Cutscene {
 				if(stuff[i][j].contains("y = ")) {
 					nY = Integer.parseInt(String.valueOf(stuff[i][j].charAt(4)));
 				}
-
+				
 				if(nX == 0)
 					nX = NPC.getNpc(names[i]).getX();
+				
 
 				if(nY == 0)
 					nY = NPC.getNpc(names[i]).getY();

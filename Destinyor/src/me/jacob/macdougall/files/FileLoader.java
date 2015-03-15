@@ -41,21 +41,26 @@ public class FileLoader {
 	
 	public static String[] fileChecker(String[] files, String check) {
 		ArrayHandler ah = new ArrayHandler();
-		//String[] list = null;
 		for(String file : files) {
 			if(accept(file, check)) {
 				ah.add(file);
+				System.out.println(file);
 			}
 		}
 		
-		ah.close();
+		//ah.close();
 		
-		String[] arrayOfFiles = new String[ah.get()[0].length];
-		for(int i = 0; i < files.length; i++) {
-			arrayOfFiles[i] = (String) ah.get()[0][i];
+		if(ah.get() != null) {
+		
+			String[] arrayOfFiles = new String[ah.get()[0].length];
+			//System.out.println(files.length);
+			for(int i = 0; i < arrayOfFiles.length; i++) {
+				arrayOfFiles[i] = (String) ah.get()[0][i];
+			}
+			return arrayOfFiles;
 		}
-		
-		return arrayOfFiles;
+		return null;
+	
 	}
 	
 	@SuppressWarnings("unused")
@@ -130,10 +135,6 @@ public class FileLoader {
 			Reader.readSpells(location);
 		}
 
-//		if(location.equals(Files.Npcs)) {
-//			Reader.ReadNpcs(location);
-//		}
-
 		if(location.equals(Files.Items)) {
 			Reader.ReadItems(location);
 		}
@@ -144,17 +145,9 @@ public class FileLoader {
 		if(location.equals(Files.Settings)) {
 			Writer.writeSettingFile(location);
 		}
-//		if(location.equals(Files.Characters)) {
-//			Writer.writeDefaultCharacterFile(location);
-//		}
-
 		if(location.equals(Files.Spells)) {
 			Writer.WriteSpellFile(location);
 		}
-
-//		if(location.equals(Files.Npcs)) {
-//			Writer.writeNpcs(location);
-//		}
 
 	}
 

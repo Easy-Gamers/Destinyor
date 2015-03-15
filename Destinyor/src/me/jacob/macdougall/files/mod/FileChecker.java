@@ -9,9 +9,9 @@ import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.FileLoader;
 
 public class FileChecker {
-
-	private static List<File> directories = new ArrayList<>();
-	public static List<Mod> mods = new ArrayList<>();
+	
+	public List<File> directories = new ArrayList<>();
+	public List<File> files = new ArrayList<>();
 	
 	public static final String characters = "Characters.destinyor";
 	public static final String enemies = "Enemies.destinyor";
@@ -29,13 +29,15 @@ public class FileChecker {
 
 	public static String[] pictureNames = { spriteSheet, character1Sheet, character2Sheet, character3Sheet, character4Sheet };
 	
-	public FileChecker() {
-		File file = FileLoader.CreateFolderAndReturn(Files.ModFolder);
+	public FileChecker(String location) {
+		File file = FileLoader.CreateFolderAndReturn(location);
 		if(file.isDirectory()) {
 			for(File dir : file.listFiles()) {
 				if(dir.isDirectory()) {
 					directories.add(dir);
-					mods.add(new Mod(dir.getName(), dir.listFiles()));
+					for(File dirFiles : dir.listFiles()) {
+						files.add(dirFiles);
+					}
 				}
 			}
 		}
@@ -56,69 +58,16 @@ public class FileChecker {
 			}
 		}
 	}
-	
-	private static Mod[] checkCompatibleMods(Mod checkMod) {
-		List<Mod> cMods = new ArrayList<>();
-		boolean compatible = true;
-		for(Mod mod : mods) {
-			if(mod.getName() != checkMod.getName()) {
-				for(File file : checkMod.getFiles()) {
-					if(!mod.checkCompatibility(file)) {
-						compatible = false;
-						break;
-					}
-					
-				}
-			}
-			if(compatible)
-				cMods.add(mod);
-			else
-				compatible = true;
-		}
-		
-		Object[] array = ArrayHandler.convertSingle(cMods);
-		Mod[] mods = new Mod[array.length];
-		
-		for(int i = 0; i < array.length; i++) {
-			mods[i] = (Mod) array[i];
-		}
-		
-		return mods;
-	}
-	
-//	public static Mod[] convertToMods(List<Mod> mods) {
-//		Mod[] modArray = new Mod[mods.size()];
-//		for(int i = 0; i < mods.size(); i++) {
-//			modArray[i] = mods.get(i);
-//		}
-//		return modArray;
-//	}
  	
-	public static Mod[] getMods(Mod checkMod) {
-		if(checkMod != null) {
-			return checkCompatibleMods(checkMod);
-		} else {
-			
-			Object[] array = ArrayHandler.convertSingle(mods);
-			Mod[] modArray = new Mod[array.length];
-			
-			for(int i = 0; i < array.length; i++) {
-				modArray[i] = (Mod) array[i];
-			}
-			
-			return modArray;
-			//return convertToMods(mods);
-		}
+	
+	public File getFile(int i) {
+		return files.get(i);
 	}
 	
-	public static Mod getMod(int i) {
-		return mods.get(i);
-	}
-	
-	public static Mod getMod(String name) {
-		for(Mod mod : mods) {
-			if(mod.getName().equals(name)) {
-				return mod;
+	public File getFile(String name) {
+		for(File file : files) {
+			if(file.getName().equals(name)) {
+				return file;
 			}
 		}
 		return null;

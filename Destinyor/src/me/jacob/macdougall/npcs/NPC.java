@@ -326,7 +326,7 @@ public class NPC {
 		this.map = level;
 	}
 
-	public void add(NPC npc) {
+	public static void add(NPC npc) {
 		npcs.add(npc);
 	}
 
@@ -349,7 +349,7 @@ public class NPC {
 		
 		if(dialouge.contains(".txt")) {
 			String location = Files.DialougesFolder + dialouge;
-			dialouge = Reader.ReadDialouge(location);
+			dialouge = Reader.readDefault(location);
 		}
 		
 		return new NPC(name, frames, x, y, dialouge, false, LevelMap.maps.get(lvl));

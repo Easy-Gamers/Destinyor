@@ -78,11 +78,11 @@ public class Sound implements LineListener {
 		if(clip != null && clip.isOpen()) {
 			// System.out.println("Closing: " + name);
 			clip.close();
-			try {
-				audioInputStream.reset();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				//audioInputStream.reset();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 

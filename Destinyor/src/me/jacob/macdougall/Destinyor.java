@@ -85,7 +85,6 @@ import me.jacob.macdougall.cutscenes.*;
 import me.jacob.macdougall.files.*;
 import me.jacob.macdougall.files.mod.FileChecker;
 import me.jacob.macdougall.files.mod.Mod;
-import me.jacob.macdougall.files.saves.SaveData;
 import me.jacob.macdougall.files.saves.Saves;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
@@ -107,6 +106,8 @@ import graphic.engine.screen.Screen;
 import graphic.engine.screen.SpriteHandler;
 
 import java.awt.Font;
+import java.io.File;
+
 import javax.swing.JFrame;
 
 import input.engine.keyboard.InputHandler;
@@ -249,6 +250,7 @@ public class Destinyor extends Canvas implements Runnable {
 	}
 
 	public void renderSave() {
+		UI.REFRESH(screen);
 		map.render(screen, -Camera.cX, -Camera.cY);
 		map.renderObjects(screen);
 		for(NPC n : NPC.npcs)
@@ -337,6 +339,9 @@ public class Destinyor extends Canvas implements Runnable {
 			if(!Dialouge.isEmpty())
 				UI.TextBox(screen);
 			Dialouge.render(screen);
+		} else if(MenuHandler.menu == MenuHandler.SAVES){
+			renderMenu();
+			Saves.renderSaveScreen(screen);
 		} else {
 			renderMenu();
 		}
@@ -383,7 +388,7 @@ public class Destinyor extends Canvas implements Runnable {
 		Time.tick();
 		clock.tick();
 		
-		Saves.update(mouse, screen, this);
+		Saves.update(mouse, this);
 		
 		input.tick();
 
@@ -483,8 +488,10 @@ public class Destinyor extends Canvas implements Runnable {
 		FileLoader.CreateFolder(Files.DestinyorFolder);
 		FileLoader.CreateFile(Files.Settings);
 		FileLoader.ReadFromFiles(Files.Settings);
-		FileChecker fc = new FileChecker();
-		
+		FileChecker fc = new FileChecker(Files.ModFolder);
+		for(File dir : fc.directories) {
+			Mod.mods.add(new Mod(dir.getName(), dir.listFiles()));
+		}
 		Destinyor game = new Destinyor();
 		
 		Launcher.setLauncher(new Launcher(game));
@@ -540,8 +547,8 @@ public class Destinyor extends Canvas implements Runnable {
 		Reader.readEntities(Files.Entities);
 		FileLoader.ReadFromFiles(Files.Items);
 		
-		SaveData sd = new SaveData(Files.SaveFolder + Files.fileSplit);
-		sd.writeCharacters();
+		//SaveData sd = new SaveData(Files.SaveFolder + Files.fileSplit);
+		//sd.writeCharacters();
 		
 		game.setSize(Res);
 
@@ -673,6 +680,10 @@ public class Destinyor extends Canvas implements Runnable {
 	
 	public static void refresh() {
 		refresh = true;
+	}
+	
+	public static Screen getScreen() {
+		return screen;
 	}
 
 }

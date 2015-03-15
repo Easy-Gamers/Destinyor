@@ -1,5 +1,6 @@
 package me.jacob.macdougall.launcher;
 
+import input.engine.keyboard.InputHandler;
 import input.engine.mouse.Mouse;
 
 import java.awt.Canvas;
@@ -15,6 +16,9 @@ import me.jacob.macdougall.files.Files;
 import me.jacob.macdougall.files.mod.Mod;
 import me.jacob.macdougall.graphics.Sprites;
 import me.jacob.macdougall.graphics.UI;
+import me.jacob.macdougall.gui.Buttons;
+import me.jacob.macdougall.gui.Scroll;
+import me.jacob.macdougall.gui.Scroller;
 import me.jacob.macdougall.launcher.gui.MenuHandler;
 import graphic.engine.screen.Screen;
 import graphic.engine.screen.SpriteHandler;
@@ -31,14 +35,13 @@ public class Launcher extends Canvas implements Runnable {
 	
 	private static boolean running = false;
 	
-	
-	
 	private Thread thread;
 	private Screen screen;
 	
 	private MenuHandler menus;
 	private Destinyor game;
 	private Mouse mouse;
+	private InputHandler input;
 	
 	public Launcher(Destinyor game) {
 		this.game = game;
@@ -67,6 +70,7 @@ public class Launcher extends Canvas implements Runnable {
 		frame.requestFocus();
 		frame.requestFocusInWindow();
 		launcher.mouse = new Mouse(launcher);
+		launcher.input = new InputHandler(launcher);
 	}
 	
 	private void start() {
@@ -152,6 +156,7 @@ public class Launcher extends Canvas implements Runnable {
 	}
 	
 	public void update() {
+		input.tick();
 		menus.update(game, mouse);
 		Time.tick();
 	}
@@ -167,7 +172,6 @@ public class Launcher extends Canvas implements Runnable {
 		
 		UI.REFRESH(screen);
 		menus.render(screen);
-		
 		Graphics g = strategy.getDrawGraphics();
 		g.drawImage(screen.image, 0, 0, 800, 600, null);
 		

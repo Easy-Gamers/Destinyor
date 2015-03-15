@@ -78,12 +78,12 @@ public class MenuHandler {
 		}
 		buttons[1].setEnabled(false);
 		
-		checkboxes = new CheckBoxes[FileChecker.getMods(null).length];
+		checkboxes = new CheckBoxes[Mod.getMods(null).length];
 		int x = 64;
 		int y = 80;
 		int yy = 0;
 		for(i = 0; i < checkboxes.length; i++) {
-			checkboxes[i] = new CheckBoxes(FileChecker.getMod(i).getName(), x, y + (25 * yy), 120, 20, false, Sprites.getSprite(Sprites.BUTTON, 0, 0));
+			checkboxes[i] = new CheckBoxes(Mod.getMod(i).getName(), x, y + (25 * yy), 120, 20, false, Sprites.getSprite(Sprites.BUTTON, 0, 0));
 			yy++;
 			if(yy > 9) {
 				x = 64 + 260;
@@ -237,7 +237,7 @@ public class MenuHandler {
 		if(!resetting(gui)) {
 			if(getFocused(gui).isChecked()) {
 			boolean[] enabled = new boolean[gui.checkBoxes.size()];
-			Mod[] mods = FileChecker.getMods(FileChecker.getMod(gui.focused.getName()));
+			Mod[] mods = Mod.getMods(Mod.getMod(gui.focused.getName()));
 			
 			int j = 0;
 			for(int i = 0; i < mods.length; i++) {
@@ -261,9 +261,9 @@ public class MenuHandler {
 				checkbox.setEnabled(enabled[i]);
 				i++;
 			}
-			addMods(FileChecker.getMod(gui.focused.getName()));
+			addMods(Mod.getMod(gui.focused.getName()));
 			} else {
-				removeMods(FileChecker.getMod(getFocused(gui).getName()));
+				removeMods(Mod.getMod(getFocused(gui).getName()));
 			}
 		}
 	}
@@ -280,7 +280,7 @@ public class MenuHandler {
 			if(!anychecked) {
 				for(CheckBoxes checkbox : gui.checkBoxes.values()) {
 					checkbox.setEnabled(true);
-					removeMods(FileChecker.getMod(checkbox.getName()));
+					removeMods(Mod.getMod(checkbox.getName()));
 				}
 				return true;
 			} else {
@@ -288,7 +288,7 @@ public class MenuHandler {
 					if(checkbox.isChecked()) {
 						System.out.println("Checkbox " + checkbox.getName() + " is checked.");
 						boolean[] enabled = new boolean[gui.checkBoxes.size()];
-						Mod[] mods = FileChecker.getMods(FileChecker.getMod(checkbox.getName()));
+						Mod[] mods = Mod.getMods(Mod.getMod(checkbox.getName()));
 						int j = 0;
 						for(int i = 0; i < mods.length; i++) {
 							j = 0;

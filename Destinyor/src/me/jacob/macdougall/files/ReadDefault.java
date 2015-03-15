@@ -1,5 +1,6 @@
 package me.jacob.macdougall.files;
 
+import me.jacob.macdougall.DebugWriter;
 import me.jacob.macdougall.npcs.NPC;
 import me.jacob.macdougall.player.Player;
 import me.jacob.macdougall.enemies.Enemy;;
@@ -64,7 +65,7 @@ public class ReadDefault {
 		Player.Y = Integer.parseInt(pos[1]);
 		for(int i = 1; i < players.length; i++) {
 			Player.addPlayer(Player.readStats(players[i]));
-			System.out.println(Player.players.get(i - 1).getName());
+			DebugWriter.println("Adding character: " + Player.players.get(i - 1).getName());
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class ReadDefault {
 		for(int i = 1; i < enemies.length; i++) {
 			Enemy enemy = Enemy.readStats(enemies[i]);
 			Enemy.enemies.put(enemy.getName(), enemy);
-			System.out.println(enemy.getName());
+			DebugWriter.println("Adding enemy: " + enemy.getName());
 		}
 	}
 	
@@ -82,9 +83,16 @@ public class ReadDefault {
 		System.out.println();
 		String[][] npcs = Reader.readDefault(location, npcHeader, npcInfo);
 		for(int i = 1; i < npcs.length; i++) {
-			NPC.npcs.add(NPC.readStats(npcs[i]));
-			System.out.println(NPC.npcs.get(i - 1).getName());
+			NPC.add(NPC.readStats(npcs[i]));
+			DebugWriter.println("Adding npc: " + NPC.npcs.get(i - 1).getName());
 		}
-		System.out.println();
+	}
+	
+	public static void addSpells(String location) {
+		
+	}
+	
+	public static void addItems(String location) {
+		
 	}
 }
